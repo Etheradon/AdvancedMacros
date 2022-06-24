@@ -1,3 +1,0 @@
-getHotbar()
-Returns the current index of your hotbar slot.
-(1 through 9)

@@ -1,3 +1,0 @@
-listTextures()
-return a list of textures registered to
-the in game texture map.

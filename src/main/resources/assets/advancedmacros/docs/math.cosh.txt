@@ -1,2 +1,0 @@
-math.cosh (Number:n)
-Returns the hyperbolic cosine of n

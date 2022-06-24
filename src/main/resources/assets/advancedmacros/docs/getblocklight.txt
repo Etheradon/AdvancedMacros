@@ -1,3 +1,0 @@
-getBlockLight(Number:x, Number:y, Number:z)
-Returns the amount of block light at x,y,z
-Tip: 7 and darker mobs can spawn

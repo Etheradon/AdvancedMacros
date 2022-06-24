@@ -1,3 +1,0 @@
-jump()
-Makes the player jump.
-Plain and simple.

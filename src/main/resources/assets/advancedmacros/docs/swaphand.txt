@@ -1,3 +1,0 @@
-swapHand()
-Switches your current hotbar 
-slot with your off hand.

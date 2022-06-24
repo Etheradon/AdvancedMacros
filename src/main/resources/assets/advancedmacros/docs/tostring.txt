@@ -1,3 +1,0 @@
-tostring(Value:v)
-Turn v into a string! If its a table with 
-a metatable with __tostring it will use that.

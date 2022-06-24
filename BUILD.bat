@@ -1,3 +1,0 @@
-@echooff
-gradlew build
-pause

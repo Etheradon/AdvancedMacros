@@ -1,3 +1,0 @@
-table.insert(Table:sTable, [Number:pos,] Any:value)
-Insert a given value into a table at the given position
-if a position is given.

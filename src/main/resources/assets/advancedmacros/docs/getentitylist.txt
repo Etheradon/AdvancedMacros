@@ -1,3 +1,0 @@
-getEntityList()
-Returns a table filled with something like (getEntity for details)
-{name="Creeper",id=3847, class="net.minecraft.hostile.Creeper"}

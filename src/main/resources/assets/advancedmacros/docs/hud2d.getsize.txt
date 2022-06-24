@@ -1,3 +1,0 @@
-getSize()
-Returns the size of
-the 2D GUI/HUD

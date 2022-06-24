@@ -1,3 +1,0 @@
-sprint([Boolean:sprinting])
-Change weather or not the player is sprinting.
-(should be moving)

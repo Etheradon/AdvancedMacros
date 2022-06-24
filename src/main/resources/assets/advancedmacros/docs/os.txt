@@ -1,3 +1,0 @@
-OS library
-contains some tools to get system information
-such as the time and date.

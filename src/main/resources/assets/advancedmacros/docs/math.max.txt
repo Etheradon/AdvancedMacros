@@ -1,3 +1,0 @@
-math.max(Number:v...)
-Return the LARGEST of the arguments.
-Example: math.max(1, 5, 3, 2) -> 5

@@ -1,3 +1,0 @@
-String library
-contains handy tools for working with strings.
-http://lua-users.org/wiki/StringLibraryTutorial for more.

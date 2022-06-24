@@ -1,3 +1,0 @@
-filesystem.exists(String:sFile)
-Checks if sFile exists as either
-a file or a folder.

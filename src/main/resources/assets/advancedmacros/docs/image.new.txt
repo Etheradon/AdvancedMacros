@@ -1,2 +1,0 @@
-image.new(int:width, int:height)
-Creates a new image with a table of controls

@@ -1,3 +1,0 @@
-os.millis()
-Get the operating system time
-in milliseconds.

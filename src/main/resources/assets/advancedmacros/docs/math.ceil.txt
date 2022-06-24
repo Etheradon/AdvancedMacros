@@ -1,2 +1,0 @@
-math.ceil(Number:n)
-Returns the smallest integer larger than or equal to n.

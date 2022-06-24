@@ -1,3 +1,0 @@
-math.randomseed(Number:s)
-Sets s as the seed for the number generator
-The same seeds produce the same sequences of numbers.

@@ -1,3 +1,0 @@
-math.ln(Number:n)
-Returns the natral log of n.
-(log base e)

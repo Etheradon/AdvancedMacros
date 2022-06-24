@@ -1,3 +1,0 @@
-sleep(Number:milliseconds)
-Make the current thread sleep for
-some number of milliseconds.

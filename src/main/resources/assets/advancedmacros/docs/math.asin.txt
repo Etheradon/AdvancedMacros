@@ -1,3 +1,0 @@
-math.asin(Number:n)
-Return the inverse sine in RADIANS
-(n should also be radians)

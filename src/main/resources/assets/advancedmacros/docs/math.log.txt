@@ -1,3 +1,0 @@
-math.log(Number:n [,Number:base])
-base defaults to 10
-This can solve x in n = base^x

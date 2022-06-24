@@ -1,3 +1,0 @@
-getProfile()
-Gives you the name of the
-current profile.

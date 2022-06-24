@@ -1,3 +1,0 @@
-use([Integer:millis])
-Either hit the use button once instantly or hold it for the 
-given number of milliseconds. (-1 is forever, 0 to cancel)

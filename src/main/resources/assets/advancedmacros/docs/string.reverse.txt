@@ -1,3 +1,0 @@
-string.reverse(String:s) or s:reverse()
-Returns a reversed version of the given string
-Example: ("abc"):reverse() -> "cba"

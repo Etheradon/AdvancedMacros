@@ -1,3 +1,0 @@
-This table includes functions for the
-2D HUD, includes: addRectangle, addBox, addText,
-addImage, clearAll

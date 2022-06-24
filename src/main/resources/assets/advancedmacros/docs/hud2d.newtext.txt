@@ -1,3 +1,0 @@
-addText()
-Create a 2D text element for your HUD.
-Returns a table with controls.

@@ -1,3 +1,0 @@
-table.concat(Table:table [, String:sep [, Number:i [, Number:j]]])
-Concatenate the elements of a table together to form a string.
-i&j are range. http://lua-users.org/wiki/TableLibraryTutorial for more.

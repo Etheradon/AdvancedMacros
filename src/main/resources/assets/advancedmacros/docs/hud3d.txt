@@ -1,3 +1,0 @@
-This table includes functions for
-3D overlay in the world.
-Try: addBlock, addText, and clearAll

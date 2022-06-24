@@ -1,2 +1,0 @@
-load(String:s [, String:chunkName])
-Compile text into a LuaFunction

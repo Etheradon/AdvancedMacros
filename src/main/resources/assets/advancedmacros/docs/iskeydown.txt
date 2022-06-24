@@ -1,3 +1,0 @@
-isKeyDown(String:keyName)
-Returns a boolean indicating if the key is held down.
-Mouse buttons also work. (LMB, MMB, RMB, MOUSE:4, ...)

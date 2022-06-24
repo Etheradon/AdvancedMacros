@@ -1,3 +1,0 @@
-getPlayerBlockPos([String:playerName])
-Returns the player's block pos (default: you)
-Example: x,y,z = getPlayerBlockPos()

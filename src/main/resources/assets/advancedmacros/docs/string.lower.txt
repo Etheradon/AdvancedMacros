@@ -1,2 +1,0 @@
-string.lower(String:sString) or sString:lower()
-Returns a lower-case version of the string.

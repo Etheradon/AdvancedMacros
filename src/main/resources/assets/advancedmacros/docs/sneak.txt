@@ -1,3 +1,0 @@
-sneak([Integer:millis])
-Make the player sneak for the given number
-of milliseconds. (-1 is forever, 0 to cancel)

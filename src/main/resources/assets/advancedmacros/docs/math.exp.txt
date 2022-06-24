@@ -1,2 +1,0 @@
-math.exp(Number:n)
-Returns e raised to the n

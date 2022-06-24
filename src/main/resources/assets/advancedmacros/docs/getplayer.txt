@@ -1,3 +1,0 @@
-getPlayer([String:playerName])
-Gives you a hoard of data about some player.
-Defaults to you!

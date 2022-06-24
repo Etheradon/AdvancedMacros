@@ -1,3 +1,0 @@
-filesystem.copy(String:sourceName, String:newName)
-Copies a file. Plain and simple.
-It will overwrite existing files, caution.

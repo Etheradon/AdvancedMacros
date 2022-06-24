@@ -1,2 +1,0 @@
-clearAll()
-Remove all elements from the 2D HUD.

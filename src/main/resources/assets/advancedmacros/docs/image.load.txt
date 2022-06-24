@@ -1,3 +1,0 @@
-image.load(String: file)
-loads an image from file and returns a
-table with controls

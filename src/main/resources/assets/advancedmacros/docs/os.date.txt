@@ -1,3 +1,0 @@
-os.date([format [,time]])
-http://lua-users.org/wiki/OsLibraryTutorial
-for more help.

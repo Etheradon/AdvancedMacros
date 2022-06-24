@@ -1,3 +1,0 @@
-math.min(Number:v...)
-Return the SMALLEST of the arguments.
-Example: math.max(1, 5, 3, 2) -> 1

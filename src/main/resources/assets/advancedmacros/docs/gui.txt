@@ -1,2 +1,0 @@
-This table includes functions for the
-GUI library

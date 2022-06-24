@@ -1,3 +1,0 @@
-type(Value:v)
-Returns the type of v as a string.
-"number","table","string","boolean"...

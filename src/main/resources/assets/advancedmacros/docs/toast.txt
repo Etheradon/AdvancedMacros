@@ -1,3 +1,0 @@
-toast(String:Title, String:details)
-Display a message in the top right
-of your screen.

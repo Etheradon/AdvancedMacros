@@ -1,3 +1,0 @@
-getBlock(Int:x, Int:y, Int:z)
-Returns the block at <x,y,z> in your
-dimension, false if chunk isn't loaded

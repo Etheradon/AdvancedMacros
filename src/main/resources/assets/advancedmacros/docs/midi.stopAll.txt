@@ -1,3 +1,0 @@
-midi.stopAll()
-Stops and closes all active MIDI
-device connections.

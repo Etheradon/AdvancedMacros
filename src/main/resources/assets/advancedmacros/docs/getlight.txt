@@ -1,3 +1,0 @@
-getLight(Number:x, Number:y, Number:z)
-Returns overall, sky, block light levels
-Tip: 7 and darker mobs can spawn

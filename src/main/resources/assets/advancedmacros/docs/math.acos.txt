@@ -1,3 +1,0 @@
-math.acos(Number:n)
-Return the inverse cosine in RADIANS
-(n should also be radians)

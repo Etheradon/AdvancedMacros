@@ -1,3 +1,0 @@
-forward([Integer:millis])
-Make the player move forward for the given number
-of milliseconds. (-1 is forever, 0 to cancel)
