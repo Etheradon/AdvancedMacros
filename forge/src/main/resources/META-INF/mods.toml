@@ -1,0 +1,22 @@
+modLoader = "javafml"
+loaderVersion = "[41,)"
+issueTrackerURL = "https://github.com/TheIncgi/AdvancedMacros-Source/issues"
+license = "LGPL 2.1"
+
+[[mods]]
+modId = "advancedmacros"
+version = "${version}"
+displayName = "Advanced Macros"
+authors = "TheIncgi"
+description = '''
+The Advanced Macros mod lets you write Lua scripts to automate just about anything
+in in Minecraft.
+'''
+logoFile = "assets/advancedmacros/logo.png"
+
+[[dependencies.advancedmacros]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19,)"
+ordering = "NONE"
+side = "CLIENT"

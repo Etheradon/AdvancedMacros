@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "advancedmacros",
+  "version": "${version}",
+  "name": "Advanced Macros",
+  "description": "The Advanced Macros mod lets you write Lua scripts to automate just about anything in in Minecraft.",
+  "authors": [
+    "TheIncgi"
+  ],
+  "contact": {
+    "homepage": "https://github.com/AdvancedMacros/AdvancedMacros",
+    "sources": "https://github.com/AdvancedMacros/AdvancedMacros"
+  },
+  "license": "LGPL 2.1",
+  "icon": "assets/advancedmacros/logo.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.theincgi.advancedmacros.fabric.AdvancedMacrosFabric"
+    ]
+  },
+  "mixins": [
+    "advancedmacros.mixins.json",
+    "advancedmacros-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19"
+  }
+}
