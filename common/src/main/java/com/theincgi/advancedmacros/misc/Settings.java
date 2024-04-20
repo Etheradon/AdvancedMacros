@@ -132,7 +132,7 @@ public class Settings {
         if (file.startsWith("resource:")) {
             file = file.substring("resource:".length());
             //System.out.println("Resource is \""+file+"\"");
-            Identifier r = new Identifier(AdvancedMacros.MODID, file);
+            Identifier r = new Identifier(AdvancedMacros.MOD_ID, file);
             val = new LuaValTexture("resource:" + file, r);
         } else if (file.startsWith("block:")) {
             file = file.substring("block:".length());

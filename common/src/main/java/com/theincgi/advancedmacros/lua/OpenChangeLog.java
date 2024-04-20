@@ -22,7 +22,7 @@ public class OpenChangeLog extends ZeroArgFunction {
 
     public static void openChangeLog(boolean force) {
         try {
-            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MODID, "scripts/changelogviewer.lua"));
+            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MOD_ID, "scripts/changelogviewer.lua"));
             if (res.isEmpty()) {
                 return;
             }

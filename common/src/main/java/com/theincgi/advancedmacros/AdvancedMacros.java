@@ -70,7 +70,7 @@ public class AdvancedMacros {
     /**
      * advancedMacros
      */
-    public static final String MODID = "advancedmacros";
+    public static final String MOD_ID = "advancedmacros";
 
     public static final String VERSION = "11";
     public static final String GAME_VERSION = "1.19";
@@ -357,7 +357,7 @@ public class AdvancedMacros {
 
     private static void loadScripts() {
         try {
-            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MODID, "scripts/searcher.lua"));
+            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MOD_ID, "scripts/searcher.lua"));
             if (res.isEmpty()) {
                 return;
             }
@@ -368,7 +368,7 @@ public class AdvancedMacros {
             e.printStackTrace();
         }
         try {
-            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MODID, "scripts/settings_fix.lua"));
+            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MOD_ID, "scripts/settings_fix.lua"));
             if (res.isEmpty()) {
                 return;
             }
@@ -379,7 +379,7 @@ public class AdvancedMacros {
             e.printStackTrace();
         }
         try {
-            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MODID, "scripts/morefunc.lua"));
+            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MOD_ID, "scripts/morefunc.lua"));
             if (res.isEmpty()) {
                 return;
             }
@@ -390,7 +390,7 @@ public class AdvancedMacros {
             e.printStackTrace();
         }
         try {
-            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MODID, "scripts/easings.lua"));
+            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MOD_ID, "scripts/easings.lua"));
             if (res.isEmpty()) {
                 return;
             }
@@ -401,7 +401,7 @@ public class AdvancedMacros {
             e.printStackTrace();
         }
         try {
-            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MODID, "scripts/repl.lua"));
+            Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MOD_ID, "scripts/repl.lua"));
             if (res.isEmpty()) {
                 return;
             }

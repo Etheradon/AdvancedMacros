@@ -224,7 +224,7 @@ public class CallableTable extends LuaTable {
             return json;
         }
 
-        Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MODID, "newdocs/" + languageCode + ".lang"));
+        Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MOD_ID, "newdocs/" + languageCode + ".lang"));
 
         if (res.isEmpty()) {
             return json = null;

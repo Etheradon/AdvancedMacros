@@ -90,7 +90,7 @@ public class DocumentationManager {
         }
         if (in == null) {
             try {
-                Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MODID, "docs/" + fName + ".txt"));
+                Optional<Resource> res = MinecraftClient.getInstance().getResourceManager().getResource(new Identifier(AdvancedMacros.MOD_ID, "docs/" + fName + ".txt"));
                 if (res.isPresent()) {
                     in = res.get().getInputStream();
                 }
