@@ -1,20 +1,20 @@
 package com.theincgi.advancedmacros.gui2;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.elements.GuiButton;
 import com.theincgi.advancedmacros.gui.elements.GuiDropDown;
 import com.theincgi.advancedmacros.gui.elements.GuiRect;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.lwjgl.glfw.GLFW;
 
 public class PopupPrompt2 extends Gui {
+
     GuiRect background;
     TextFieldWidget textField;
     GuiDropDown choiceBox;
@@ -120,7 +120,7 @@ public class PopupPrompt2 extends Gui {
         choiceBox.setVisible(false);
         textField.setVisible(false);
 
-        textField.changeFocus(false);
+        textField.setFocused(false);
 
         type = Type.Notification;
         MinecraftClient.getInstance().setScreen(this);
@@ -138,7 +138,7 @@ public class PopupPrompt2 extends Gui {
         choiceBox.setVisible(false);
         textField.setVisible(false);
 
-        textField.changeFocus(false);
+        textField.setFocused(false);
 
         type = Type.Confirmation;
         MinecraftClient.getInstance().setScreen(this);
@@ -157,7 +157,7 @@ public class PopupPrompt2 extends Gui {
         choiceBox.setVisible(false);
         textField.setVisible(true);
 
-        textField.changeFocus(true);
+        textField.setFocused(true);
         textField.setText("");
         //	System.out.println(background.getFrame());
 
@@ -188,7 +188,7 @@ public class PopupPrompt2 extends Gui {
         choiceBox.setVisible(true);
         textField.setVisible(false);
 
-        textField.changeFocus(false);
+        textField.setFocused(false);
 
         choiceBox.select(options[0]);
 
@@ -219,19 +219,19 @@ public class PopupPrompt2 extends Gui {
 
         choiceBox.setPos(prefWid + 1, ok.getY() - 17);
 
-        textField.x = prefWid + 2;
-        textField.y = ok.getY() - 25;
+        textField.setX(prefWid + 2);
+        textField.setY(ok.getY() - 25);
 
         choiceBox.setMaxHeight(height - choiceBox.getY() - 12 - 5);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        owner.render(matrixStack, mouseX, mouseY, partialTicks);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        textField.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
+        owner.render(drawContext, mouseX, mouseY, partialTicks);
+        super.render(drawContext, mouseX, mouseY, partialTicks);
+        textField.render(drawContext, mouseX, mouseY, partialTicks);
 
-        getFontRend().draw(matrixStack, msg, background.getX() + 2, background.getY() + 8, propertyPalette.getColor("popupPrompt", "colors", "text").toInt());
+        drawContext.drawText(getFontRend(), msg, background.getX() + 2, background.getY() + 8, propertyPalette.getColor("popupPrompt", "colors", "text").toInt(), false);
     }
 
     @Override
@@ -270,6 +270,7 @@ public class PopupPrompt2 extends Gui {
     //	}
 
     public static class Result {
+
         String result;
         boolean canceled = false;
 
@@ -280,6 +281,7 @@ public class PopupPrompt2 extends Gui {
         public boolean isCanceled() {
             return canceled;
         }
+
     }
 
     private static enum Type {
@@ -291,6 +293,9 @@ public class PopupPrompt2 extends Gui {
 
     @FunctionalInterface
     public static interface ResultHandler {
+
         public boolean onResult(Result r);
+
     }
+
 }

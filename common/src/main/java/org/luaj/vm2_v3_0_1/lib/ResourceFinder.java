@@ -10,7 +10,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,39 +21,41 @@
  ******************************************************************************/
 package org.luaj.vm2_v3_0_1.lib;
 
-import java.io.InputStream;
-
 import org.luaj.vm2_v3_0_1.Globals;
 
-/** 
- * Interface for opening application resource files such as scripts sources.  
+import java.io.InputStream;
+
+/**
+ * Interface for opening application resource files such as scripts sources.
  * <p>
- * This is used by required to load files that are part of 
+ * This is used by required to load files that are part of
  * the application, and implemented by BaseLib
- * for both the Jme and Jse platforms. 
+ * for both the Jme and Jse platforms.
  * <p>
- * The Jme version of base lib {@link BaseLib} 
- * implements {@link Globals#finder} via {@link Class#getResourceAsStream(String)}, 
+ * The Jme version of base lib {@link BaseLib}
+ * implements {@link Globals#finder} via {@link Class#getResourceAsStream(String)},
  * while the Jse version {@link org.luaj.vm2_v3_0_1.lib.jse.JseBaseLib} implements it using {@link java.io.File#File(String)}.
  * <p>
  * The io library does not use this API for file manipulation.
  * <p>
+ *
  * @see BaseLib
  * @see Globals#finder
  * @see org.luaj.vm2_v3_0_1.lib.jse.JseBaseLib
  * @see org.luaj.vm2.lib.jme.JmePlatform
- * @see org.luaj.vm2_v3_0_1.lib.jse.JsePlatform 
+ * @see org.luaj.vm2_v3_0_1.lib.jse.JsePlatform
  */
 public interface ResourceFinder {
-	
-	/** 
-	 * Try to open a file, or return null if not found.
-	 * 
-	 * @see org.luaj.vm2_v3_0_1.lib.BaseLib
-	 * @see org.luaj.vm2_v3_0_1.lib.jse.JseBaseLib
-	 * 
-	 * @param filename
-	 * @return InputStream, or null if not found. 
-	 */
-	public InputStream findResource( String filename );
+
+    /**
+     * Try to open a file, or return null if not found.
+     *
+     * @param filename
+     * @return InputStream, or null if not found.
+     *
+     * @see BaseLib
+     * @see org.luaj.vm2_v3_0_1.lib.jse.JseBaseLib
+     */
+    public InputStream findResource(String filename);
+
 }

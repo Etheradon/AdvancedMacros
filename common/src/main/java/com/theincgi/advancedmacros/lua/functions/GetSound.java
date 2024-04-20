@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GetSound extends OneArgFunction {
+
     @Override
     public LuaValue call(LuaValue arg) {
         return play(Utils.parseFileLocation(arg));
@@ -69,6 +70,7 @@ public class GetSound extends OneArgFunction {
     }
 
     public static class Cntrls {
+
         Clip c;
         boolean paused = false;
 
@@ -88,6 +90,7 @@ public class GetSound extends OneArgFunction {
         }
 
         public class SetVolume extends OneArgFunction {
+
             @Override
             public LuaValue call(LuaValue arg) {
                 FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
@@ -97,36 +100,44 @@ public class GetSound extends OneArgFunction {
                 gainControl.setValue(gain);
                 return NONE;
             }
+
         }
 
         private class Start extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 c.start();
                 paused = false;
                 return LuaValue.NONE;
             }
+
         }
 
         private class Pause extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 paused = true; //TODO  If desired, the retained data can bediscarded by invoking the flush method.When audio capture or playback stops, a STOP event is generated.
                 c.stop();
                 return LuaValue.FALSE;
             }
+
         }
 
         private class Stop extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 paused = false;
                 c.stop();
                 return LuaValue.NONE;
             }
+
         }
 
         private class Loop extends OneArgFunction {
+
             @Override
             public LuaValue call(LuaValue arg) {
                 if (arg.isnil()) {
@@ -136,13 +147,18 @@ public class GetSound extends OneArgFunction {
                 }
                 return LuaValue.NONE;
             }
+
         }
 
         private class IsPlaying extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 return LuaValue.valueOf(c.isRunning());
             }
+
         }
+
     }
+
 }

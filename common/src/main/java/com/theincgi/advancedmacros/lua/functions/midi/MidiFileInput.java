@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class MidiFileInput extends LuaTable {
+
     public MidiFileInput(LuaValue fileName) {
         try {
             File f = Utils.parseFileLocation(fileName);
@@ -190,4 +191,5 @@ public class MidiFileInput extends LuaTable {
             throw Utils.toLuaError(e);
         }
     }
+
 }

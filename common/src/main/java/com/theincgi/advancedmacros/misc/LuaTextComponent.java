@@ -6,13 +6,13 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextContent;
-
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
 import java.util.List;
 
 public class LuaTextComponent implements Text {
+
     private String text;
     private LuaValue action;
     private boolean allowHover;

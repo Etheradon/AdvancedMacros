@@ -19,12 +19,15 @@ import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
 public class LuaDebug extends DebugLib {
+
     private static final HashMap<Thread, LuaThread> threads = new HashMap<>();
 
     private static LinkedList<StatusListener> statusListeners = new LinkedList<>();
 
     public abstract static class StatusListener {
+
         public abstract void onStatus(final Thread sThread, Status status);
+
     }
 
     public void addStatusListener(StatusListener sl) {
@@ -122,10 +125,13 @@ public class LuaDebug extends DebugLib {
     }
 
     public abstract static class OnScriptFinish {
+
         abstract public void onFinish(Varargs v);
+
     }
 
     public static class LuaThread {
+
         LuaFunction sFunc;
         Varargs varagrs;
         protected long launchTime;
@@ -239,6 +245,7 @@ public class LuaDebug extends DebugLib {
      * cancel-able
      */
     public static class JavaThread extends LuaThread {
+
         Runnable r;
 
         public JavaThread(Runnable r) {
@@ -288,13 +295,16 @@ public class LuaDebug extends DebugLib {
         public void setName(String s) {
             thread.setName(s);
         }
+
     }
 
     public static class GetCurrent extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return ThreadControls.getControls(LuaThread.getCurrent());
         }
+
     }
 
     public static enum Status {
@@ -343,6 +353,7 @@ public class LuaDebug extends DebugLib {
     }
 
     public static class ThreadControls extends LuaTable {
+
         static final WeakHashMap<LuaThread, ThreadControls> controlLookup = new WeakHashMap<>();
         LuaThread t;
 
@@ -373,36 +384,45 @@ public class LuaDebug extends DebugLib {
         }
 
         class Start extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 t.start();
                 return LuaValue.NIL;
             }
+
         }
 
         class Stop extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 t.stop();
                 return LuaValue.NIL;
             }
+
         }
 
         class GetID extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 return valueOf(t.thread.getId());
             }
+
         }
 
         class GetStatus extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 return LuaValue.valueOf(t.status.toString());
             }
+
         }
 
         class Pause extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 if (t.status.equals(Status.RUNNING)) {
@@ -412,9 +432,11 @@ public class LuaDebug extends DebugLib {
                 }
                 throw new LuaError("Attempt to pause a thread in state '" + t.status + "'");
             }
+
         }
 
         class Unpause extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 if (t.status.equals(Status.PAUSED)) {
@@ -424,25 +446,31 @@ public class LuaDebug extends DebugLib {
                 }
                 throw new LuaError("Attempt to unpause a thread in state '" + t.status + "'");
             }
+
         }
 
         class GetUptime extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 return valueOf(getUptime(t.thread));
             }
+
         }
 
         class GetLabel extends ZeroArgFunction {
+
             @Override
             public LuaValue call() {
                 return valueOf(t.label);
             }
+
         }
 
         public LuaThread getThread() {
             return t;
         }
+
     }
 
     public void stopAll() { //FIXME concurrent mod
@@ -454,6 +482,7 @@ public class LuaDebug extends DebugLib {
     }
 
     public static class GetRunningScripts extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             LuaTable scripts = new LuaTable();
@@ -466,6 +495,7 @@ public class LuaDebug extends DebugLib {
             }
             return scripts;
         }
+
     }
 
 }

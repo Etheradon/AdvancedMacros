@@ -8,6 +8,7 @@ import org.luaj.vm2_v3_0_1.Varargs;
 import java.util.LinkedList;
 
 public interface IBindingsGui {
+
     /**
      * Exists, and is enabled
      */
@@ -45,6 +46,7 @@ public interface IBindingsGui {
     public void onGuiOpened();
 
     public static interface IBinding {
+
         public boolean isEnabled();
 
         public boolean isDisabled();
@@ -59,5 +61,7 @@ public interface IBindingsGui {
         public String getScriptName();
 
         public Drawable getDrawableElement();
+
     }
+
 }

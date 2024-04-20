@@ -1,10 +1,5 @@
 package com.theincgi.advancedmacros.gui;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.event.EventHandler;
 import com.theincgi.advancedmacros.gui.elements.ColorTextArea;
@@ -12,6 +7,10 @@ import com.theincgi.advancedmacros.gui.elements.GuiButton;
 import com.theincgi.advancedmacros.gui.elements.OnClickHandler;
 import com.theincgi.advancedmacros.gui2.ScriptBrowser2;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
 public class EditorGUI extends Gui {
@@ -24,7 +23,7 @@ public class EditorGUI extends Gui {
 
     //TODO Help bar
     public void postInit() {
-        gtf.changeFocus(false);
+        gtf.setFocused(false);
     }
 
     public EditorGUI() {
@@ -97,7 +96,7 @@ public class EditorGUI extends Gui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
         if (cta.isNeedsSave()) {
             if (ColorTextArea.isCTRLDown()) {
                 exit.setFill(Color.TEXT_6);//Orange
@@ -107,13 +106,13 @@ public class EditorGUI extends Gui {
         } else {
             exit.setFill(Color.TEXT_2);//Green
         }
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        gtf.render(matrixStack, mouseX, mouseY, partialTicks);
-        save.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
-        exit.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
-        quickRun.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
-        cta.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
-        this.getFontRend().draw(matrixStack, String.format("%3d, %4d", cta.getCursor().getX() + 1, cta.getCursor().getY() + 1), (int) (8 + width * 7 / 8f), 5, Color.WHITE.toInt());
+        super.render(drawContext, mouseX, mouseY, partialTicks);
+        gtf.render(drawContext, mouseX, mouseY, partialTicks);
+        save.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
+        exit.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
+        quickRun.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
+        cta.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
+        drawContext.drawText(this.getFontRend(), String.format("%3d, %4d", cta.getCursor().getX() + 1, cta.getCursor().getY() + 1), (int) (8 + width * 7 / 8f), 5, Color.WHITE.toInt(), false);
     }
 
     public void updateKeywords() {
@@ -159,7 +158,7 @@ public class EditorGUI extends Gui {
         save.setPos(7 + width / 3, 2);
         exit.setPos(7 + width / 3, 12);
         quickRun.setPos(save.getX() + save.getWid(), 12);
-        cta.setPos(5, gtf.y + gtf.getHeight() + 1);
+        cta.setPos(5, gtf.getY() + gtf.getHeight() + 1);
         cta.resize(width - 10, height - 6 - gtf.getHeight());
 
     }
@@ -167,7 +166,7 @@ public class EditorGUI extends Gui {
     public void openScript(String sScript) {
         cta.openScript(sScript);
         gtf.setText(sScript);
-        gtf.setCursor(0);
+        gtf.setCursor(0, false);
     }
 
 }

@@ -1,16 +1,5 @@
 package com.theincgi.advancedmacros.gui;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.render.DiffuseLighting;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.event.TaskDispatcher;
 import com.theincgi.advancedmacros.gui.elements.Drawable;
@@ -21,6 +10,15 @@ import com.theincgi.advancedmacros.lua.LuaDebug;
 import com.theincgi.advancedmacros.misc.HIDUtils.Mouse;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
@@ -32,11 +30,12 @@ import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
 public class InputGUI extends Gui {
+
     private Thread threadCheck;
     InputType inputType;
     private LuaDebug debug;
     TextFieldWidget textInput = new TextFieldWidget(fontRend, 5, 5, 30, 12, Text.literal(""));
-    private Collection<Item> itemList = Registry.ITEM.stream().toList();
+    private Collection<Item> itemList = Registries.ITEM.stream().toList();
     private final int WHITE = Color.WHITE.toInt();
     private String prompt;
     private boolean answered = true;
@@ -122,7 +121,7 @@ public class InputGUI extends Gui {
                 this.inputType = inputType;
                 this.prompt = prompt;
                 answered = false;
-                textInput.changeFocus(inputType == InputType.TEXT);
+                textInput.setFocused(inputType == InputType.TEXT);
                 textInput.setVisible(inputType == InputType.TEXT);
                 textInput.setText("");
                 listItemPicker.setVisible(inputType == InputType.ITEM);
@@ -137,30 +136,30 @@ public class InputGUI extends Gui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
+        super.render(drawContext, mouseX, mouseY, partialTicks);
         switch (inputType) {
             case TEXT -> {
-                fill(matrixStack, 1, height - 49, width - 1, height - 1, 0xDD000000);
+                drawContext.fill(1, height - 49, width - 1, height - 1, 0xDD000000);
                 int drawHei = height - 5;
-                textInput.y = (drawHei -= 12);
+                textInput.setY(drawHei -= 12);
                 drawHei -= 5;
                 drawHei -= getFontRend().fontHeight;
-                getFontRend().draw(matrixStack, prompt, 5, drawHei, WHITE);
+                drawContext.drawText(getFontRend(), prompt, 5, drawHei, WHITE, false);
                 drawHei -= 5;
                 drawHei -= getFontRend().fontHeight;
-                getFontRend().draw(matrixStack, LuaDebug.getLabel(threadCheck), 5, drawHei, WHITE);
-                textInput.render(matrixStack, mouseX, mouseY, partialTicks);
+                drawContext.drawText(getFontRend(), LuaDebug.getLabel(threadCheck), 5, drawHei, WHITE, false);
+                textInput.render(drawContext, mouseX, mouseY, partialTicks);
             }
             case ITEM -> {
-                getFontRend().draw(matrixStack, LuaDebug.getLabel(threadCheck), 5, 5, WHITE);
-                getFontRend().draw(matrixStack, prompt, 5, 15, WHITE);
-                listItemPicker.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
+                drawContext.drawText(getFontRend(), LuaDebug.getLabel(threadCheck), 5, 5, WHITE, false);
+                drawContext.drawText(getFontRend(), prompt, 5, 15, WHITE, false);
+                listItemPicker.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
             }
             case CHOICE -> {
-                getFontRend().draw(matrixStack, LuaDebug.getLabel(threadCheck), 5, 5, WHITE);
-                getFontRend().draw(matrixStack, prompt, 5, 15, WHITE);
-                choices.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
+                drawContext.drawText(getFontRend(), LuaDebug.getLabel(threadCheck), 5, 5, WHITE, false);
+                drawContext.drawText(getFontRend(), prompt, 5, 15, WHITE, false);
+                choices.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
             }
             default -> {
             }
@@ -218,7 +217,7 @@ public class InputGUI extends Gui {
         answer = value;
         answered = true;
         semaphore.release();
-        textInput.changeFocus(false);
+        textInput.setFocused(false);
         MinecraftClient.getInstance().player.closeScreen();
     }
 
@@ -246,6 +245,7 @@ public class InputGUI extends Gui {
             HEIGHLIGHT = 0x550010F0;
 
     private class ItemOption implements Moveable, InputSubscriber, Drawable {
+
         ItemStack stack;
         private int x, y, width, height;
 
@@ -351,25 +351,26 @@ public class InputGUI extends Gui {
         }
 
         @Override
-        public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
+        public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
             if (!isVisible) {
                 return;
             }
-            g.drawBoxedRectangle(matrixStack, x, y, width, 20, BGColor, FILLColor);
+            g.drawBoxedRectangle(drawContext, x, y, width, 20, BGColor, FILLColor);
             DiffuseLighting.disableGuiDepthLighting();
             DiffuseLighting.enableGuiDepthLighting();
-            MinecraftClient.getInstance().getItemRenderer().renderGuiItemIcon(stack, x + 3, y + 2);
+            drawContext.drawItemInSlot(textRenderer, stack, x + 3, y + 2);
 
             if (GuiRect.isInBounds(mouseX, mouseY, this.x, this.y, width, 20)) {
-                Screen.fill(matrixStack, x, y, x + width, y + 20, HEIGHLIGHT);
+                drawContext.fill(x, y, x + width, y + 20, HEIGHLIGHT);
             }
-            g.getFontRend().draw(matrixStack, stack.getName(), x + 25, y + 5, TEXTCOLOR);
+            drawContext.drawText(g.getFontRend(), stack.getName(), x + 25, y + 5, TEXTCOLOR, false);
 
         }
 
     }
 
     private class CustomOption implements Moveable, InputSubscriber, Drawable {
+
         private int x, y, width, height;
         String option;
 
@@ -475,16 +476,16 @@ public class InputGUI extends Gui {
         }
 
         @Override
-        public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
+        public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
             if (!isVisible) {
                 return;
             }
-            g.drawBoxedRectangle(matrixStack, x, y, width, 20, BGColor, FILLColor);
+            g.drawBoxedRectangle(drawContext, x, y, width, 20, BGColor, FILLColor);
 
             if (GuiRect.isInBounds(mouseX, mouseY, this.x, this.y, width, 20)) {
-                Screen.fill(matrixStack, x, y, x + width, y + 20, HEIGHLIGHT);
+                drawContext.fill(x, y, x + width, y + 20, HEIGHLIGHT);
             }
-            g.getFontRend().draw(matrixStack, option, x + 7, y + 5, TEXTCOLOR);
+            drawContext.drawText(g.getFontRend(), option, x + 7, y + 5, TEXTCOLOR, false);
 
         }
 
@@ -559,5 +560,7 @@ public class InputGUI extends Gui {
 
             }
         }
+
     }
+
 }

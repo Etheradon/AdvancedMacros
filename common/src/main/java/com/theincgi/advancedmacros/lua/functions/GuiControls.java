@@ -1,5 +1,12 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.theincgi.advancedmacros.access.IAnvilScreen;
+import com.theincgi.advancedmacros.access.IBookEditScreen;
+import com.theincgi.advancedmacros.access.ICommandBlockScreen;
+import com.theincgi.advancedmacros.access.ISignBlockEntity;
+import com.theincgi.advancedmacros.access.ISignEditScreen;
+import com.theincgi.advancedmacros.misc.CallableTable;
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.block.entity.CommandBlockBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -19,14 +26,6 @@ import net.minecraft.text.Text;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.world.CommandBlockExecutor;
-
-import com.theincgi.advancedmacros.access.IAnvilScreen;
-import com.theincgi.advancedmacros.access.IBookEditScreen;
-import com.theincgi.advancedmacros.access.ICommandBlockScreen;
-import com.theincgi.advancedmacros.access.ISignBlockEntity;
-import com.theincgi.advancedmacros.access.ISignEditScreen;
-import com.theincgi.advancedmacros.misc.CallableTable;
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -95,6 +94,7 @@ public class GuiControls {
     }
 
     private static class DoRepair extends VarArgFunction {
+
         RepairOp op;
         AnvilScreen gr;
 
@@ -120,9 +120,11 @@ public class GuiControls {
                     throw new LuaError("Unimplemented function '" + op.name() + "'");
             }
         }
+
     }
 
     private static class DoTrade extends VarArgFunction {
+
         TradeOp op;
         MerchantScreen gm;
 
@@ -157,9 +159,11 @@ public class GuiControls {
                     throw new LuaError("Unimplemented function '" + op.name() + "'");
             }
         }
+
     }
 
     private static class DoEnchant extends VarArgFunction {
+
         EnchantOp op;
         EnchantmentScreen ge;
 
@@ -201,9 +205,11 @@ public class GuiControls {
                     throw new LuaError("Unimplemented function '" + op.name() + "'");
             }
         }
+
     }
 
     private static class DoSign extends VarArgFunction {
+
         SignOp op;
         SignEditScreen es;
 
@@ -216,7 +222,8 @@ public class GuiControls {
         @Override
         public Varargs invoke(Varargs args) {
             SignBlockEntity ts = ((ISignEditScreen) es).am_getSignBlockEntity();
-            Text[] texts = ((ISignBlockEntity) ts).am_getLines();
+            Text[] texts = ((ISignBlockEntity) ts).am_getFrontLines();
+            // TODO: 1.20.4 add front and back side
             switch (op) {
                 case getLines: {
                     LuaTable lines = new LuaTable();
@@ -255,6 +262,7 @@ public class GuiControls {
                     throw new LuaError("Unimplemented function '" + op.name() + "'");
             }
         }
+
     }
     //nbt is good enough for now
     //	private static class DoReadBook extends VarArgFunction {
@@ -283,6 +291,7 @@ public class GuiControls {
 
     //TODO readbookscreen
     private static class DoBook extends VarArgFunction {
+
         BookOp op;
         BookEditScreen book;
 
@@ -427,9 +436,11 @@ public class GuiControls {
             }
             return NONE;
         }
+
     }
 
     private static class DoCommand extends VarArgFunction {
+
         CommandOp op;
         CommandBlockScreen cb;
         //updateGui is public
@@ -558,9 +569,11 @@ public class GuiControls {
 
             MinecraftClient.getInstance().setScreen(null);
         }
+
     }
 
     private static class DoChestOp extends VarArgFunction {
+
         GenericContainerScreen gc;
         ChestOp op;
 
@@ -583,6 +596,7 @@ public class GuiControls {
             }
             return NONE;
         }
+
     }
 
     private static enum RepairOp {
@@ -687,4 +701,5 @@ public class GuiControls {
             return new String[]{"guiEvent#chest", name()};
         }
     }
+
 }

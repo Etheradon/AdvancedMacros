@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 
 public class Call extends VarArgFunction {
+
     @Override
     public Varargs invoke(Varargs arg0) {
         try {
@@ -24,4 +25,5 @@ public class Call extends VarArgFunction {
             throw new LuaError(e);
         }
     }
+
 }

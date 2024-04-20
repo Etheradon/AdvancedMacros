@@ -1,11 +1,10 @@
 package com.theincgi.advancedmacros.lua.functions;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.PlayerListEntry;
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.theincgi.advancedmacros.event.TaskDispatcher;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.PlayerListEntry;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -16,6 +15,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 public class GetPlayerList extends ZeroArgFunction {
+
     @Override
     public LuaValue call() {
 

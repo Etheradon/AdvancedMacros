@@ -2,13 +2,11 @@ package com.theincgi.advancedmacros.misc;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Window;
-
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.AWTException;
-import java.awt.Robot;
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -19,6 +17,7 @@ public class HIDUtils {
     private static final long MC_WINDOW = MinecraftClient.getInstance().getWindow().getHandle();
 
     public static class Keyboard {
+
         private final static ConcurrentHashMap<Integer, String> LOOKUP_BY_ID = new ConcurrentHashMap<>();
         private final static ConcurrentHashMap<String, Integer> LOOKUP_BY_NAME = new ConcurrentHashMap<>();
         private static final String KEY_PREFIX = "GLFW_KEY_";
@@ -99,9 +98,11 @@ public class HIDUtils {
         public static boolean isShiftDown() {
             return Keyboard.isDown(GLFW.GLFW_KEY_LEFT_SHIFT) || Keyboard.isDown(GLFW.GLFW_KEY_RIGHT_SHIFT);
         }
+
     }
 
     public static class Mouse {
+
         public static final int UNKNOWN_MOUSE_BUTTON = -1;
         private final static String MOUSE_PREFIX = "MOUSE:";
 
@@ -170,10 +171,12 @@ public class HIDUtils {
                 e.printStackTrace();
             }
         }
+
     }
 
     //TODO joystick and gamepad support!
     public static class Joystick {
+
         public static final String JOYSTICK_PREFIX = "JOYSTICK_";
         public static final int UNKNOWN_JOYSTICK_BUTTON = -1;
 
@@ -262,6 +265,7 @@ public class HIDUtils {
     }
 
     public static class GamePad {
+
         public static final String JOYSTICK_PREFIX = "GAMEPAD_";
         public static final int UNKNOWN_GAMEPAD_BUTTON = -1;
 
@@ -354,6 +358,7 @@ public class HIDUtils {
             return out;
 
         }
+
     }
 
     public static enum HatDir {
@@ -398,4 +403,5 @@ public class HIDUtils {
             };
         }
     }
+
 }

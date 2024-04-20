@@ -1,12 +1,5 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
@@ -14,6 +7,13 @@ import com.theincgi.advancedmacros.gui.elements.GuiRect;
 import com.theincgi.advancedmacros.lua.LuaValTexture;
 import com.theincgi.advancedmacros.misc.Settings;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
@@ -22,6 +22,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class GuiImage extends ScriptGuiElement {
+
     LuaValTexture lvt = Utils.checkTexture(Settings.getTextureID("resource:holoblock.png"));
     float uMin = 0, uMax = 1, vMin = 0, vMax = 1;
 
@@ -57,18 +58,19 @@ public class GuiImage extends ScriptGuiElement {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-        super.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+        super.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
         if (!visible) {
             return;
         }
+        MatrixStack matrixStack = drawContext.getMatrices();
 
         matrixStack.push();
         //TODO 1.19 Update:  RenderSystem.pushTextureAttributes();
         float dx = x, dy = y, dw = wid, dh = hei;
 
         RenderSystem.setShaderColor(color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, color.getA() / 255f);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableBlend();
         if (lvt != null) {
@@ -120,4 +122,5 @@ public class GuiImage extends ScriptGuiElement {
         this.uMax = uMax;
         this.vMax = vMax;
     }
+
 }

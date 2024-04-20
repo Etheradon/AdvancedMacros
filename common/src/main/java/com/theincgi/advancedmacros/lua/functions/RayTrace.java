@@ -1,14 +1,13 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.theincgi.advancedmacros.misc.CallableTable;
+import com.theincgi.advancedmacros.misc.Pair;
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
-
-import com.theincgi.advancedmacros.misc.CallableTable;
-import com.theincgi.advancedmacros.misc.Pair;
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
@@ -32,6 +31,7 @@ public class RayTrace {
     }
 
     public static class RayTraceFunc extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             //args: {vector}, <{from}>, <maxDist/REACH_LIMIT>, stopOnLiquid
@@ -64,5 +64,7 @@ public class RayTrace {
             LuaValue result = Utils.rayTraceResultToLuaValue(rtr);
             return result;
         }
+
     }
+
 }

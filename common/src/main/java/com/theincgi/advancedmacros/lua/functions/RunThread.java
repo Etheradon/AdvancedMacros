@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class RunThread extends VarArgFunction {
+
     @Override
     public Varargs invoke(Varargs args) {
         try {
@@ -35,4 +36,5 @@ public class RunThread extends VarArgFunction {
             throw new LuaError("No such file: " + args.arg1().tojstring());
         }
     }
+
 }

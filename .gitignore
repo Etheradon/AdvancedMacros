@@ -1,19 +1,17 @@
-build/
-*.ipr
-run/
-*.iws
-out/
-*.iml
+# gradle
 .gradle/
-output/
-bin/
-libs/
+build/
+out/
 
-.classpath
-.project
+# idea
 .idea/
-classes/
-.metadata
-.vscode
-.settings
-*.launch
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+*.log.gz
+
+# Minecraft
+run/

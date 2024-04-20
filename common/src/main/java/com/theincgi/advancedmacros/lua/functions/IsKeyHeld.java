@@ -8,6 +8,7 @@ import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 import org.lwjgl.glfw.GLFW;
 
 public class IsKeyHeld extends OneArgFunction {
+
     @Override
     public LuaValue call(LuaValue arg0) {
         String s = arg0.checkjstring();
@@ -35,4 +36,5 @@ public class IsKeyHeld extends OneArgFunction {
                 }
         }
     }
+
 }

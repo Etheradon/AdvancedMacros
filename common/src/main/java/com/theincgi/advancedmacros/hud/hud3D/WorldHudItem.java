@@ -1,14 +1,13 @@
 package com.theincgi.advancedmacros.hud.hud3D;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec3f;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.hud.Destroyable;
 import com.theincgi.advancedmacros.hud.hud3D.HoloBlock.DrawType;
 import com.theincgi.advancedmacros.misc.CallableTable;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.util.math.MatrixStack;
+import org.joml.Quaternionf;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -16,6 +15,7 @@ import org.luaj.vm2_v3_0_1.Varargs;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
 public abstract class WorldHudItem implements Destroyable {
+
     protected DrawType drawType = DrawType.NO_XRAY;
     private LuaValue controls;
     Color color = Color.WHITE.copy();
@@ -138,9 +138,9 @@ public abstract class WorldHudItem implements Destroyable {
 
         ms.translate(x, y, z);
 
-        ms.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(roll));
-        ms.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(pitch));
-        ms.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(yaw));
+        ms.multiply(new Quaternionf().rotateLocalZ((float) Math.toRadians(roll)));
+        ms.multiply(new Quaternionf().rotateLocalX((float) Math.toRadians(pitch)));
+        ms.multiply(new Quaternionf().rotateLocalY((float) Math.toRadians(yaw)));
 
         //ms.translate(-playerX, -playerY, -playerZ);
 
@@ -235,6 +235,7 @@ public abstract class WorldHudItem implements Destroyable {
     }
 
     private class DoOp extends VarArgFunction {
+
         Hud3DElementOp op;
 
         public DoOp(Hud3DElementOp op) {
@@ -308,6 +309,7 @@ public abstract class WorldHudItem implements Destroyable {
                     throw new LuaError("unimplemented function " + op);
             }
         }
+
     }
 
 }

@@ -10,7 +10,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,18 +22,19 @@
 package org.luaj.vm2_v3_0_1;
 
 /**
- * Extension of {@link LuaValue} which can hold a Java boolean as its value. 
+ * Extension of {@link LuaValue} which can hold a Java boolean as its value.
  * <p>
- * These instance are not instantiated directly by clients.  
- * Instead, there are exactly twon instances of this class, 
- * {@link LuaValue#TRUE} and {@link LuaValue#FALSE} 
+ * These instance are not instantiated directly by clients.
+ * Instead, there are exactly twon instances of this class,
+ * {@link LuaValue#TRUE} and {@link LuaValue#FALSE}
  * representing the lua values {@code true} and {@code false}.
- * The function {@link LuaValue#valueOf(boolean)} will always 
- * return one of these two values. 
+ * The function {@link LuaValue#valueOf(boolean)} will always
+ * return one of these two values.
  * <p>
- * Any {@link LuaValue} can be converted to its equivalent 
+ * Any {@link LuaValue} can be converted to its equivalent
  * boolean representation using {@link LuaValue#toboolean()}
  * <p>
+ *
  * @see LuaValue
  * @see LuaValue#valueOf(boolean)
  * @see LuaValue#TRUE
@@ -41,72 +42,82 @@ package org.luaj.vm2_v3_0_1;
  */
 public final class LuaBoolean extends LuaValue {
 
-	/** The singleton instance representing lua {@code true} */
-	static final LuaBoolean _TRUE = new LuaBoolean(true);
-	
-	/** The singleton instance representing lua {@code false} */
-	static final LuaBoolean _FALSE = new LuaBoolean(false);
-	
-	/** Shared static metatable for boolean values represented in lua. */
-	public static LuaValue s_metatable;
+    /**
+     * The singleton instance representing lua {@code true}
+     */
+    static final LuaBoolean _TRUE = new LuaBoolean(true);
 
-	/** The value of the boolean */
-	public final boolean v;
+    /**
+     * The singleton instance representing lua {@code false}
+     */
+    static final LuaBoolean _FALSE = new LuaBoolean(false);
 
-	LuaBoolean(boolean b) {
-		this.v = b;
-	}
+    /**
+     * Shared static metatable for boolean values represented in lua.
+     */
+    public static LuaValue s_metatable;
 
-	@Override
-	public int type() {
-		return LuaValue.TBOOLEAN;
-	}
+    /**
+     * The value of the boolean
+     */
+    public final boolean v;
 
-	@Override
-	public String typename() {
-		return "boolean";
-	}
+    LuaBoolean(boolean b) {
+        this.v = b;
+    }
 
-	@Override
-	public boolean isboolean() {
-		return true;
-	}
+    @Override
+    public int type() {
+        return LuaValue.TBOOLEAN;
+    }
 
-	@Override
-	public LuaValue not() {
-		return v ? FALSE : LuaValue.TRUE;
-	}
+    @Override
+    public String typename() {
+        return "boolean";
+    }
 
-	/**
-	 * Return the boolean value for this boolean
-	 * @return value as a Java boolean
-	 */
-	public boolean booleanValue() {
-		return v;
-	}
+    @Override
+    public boolean isboolean() {
+        return true;
+    }
 
-	@Override
-	public boolean toboolean() {
-		return v;
-	}
+    @Override
+    public LuaValue not() {
+        return v ? FALSE : LuaValue.TRUE;
+    }
 
-	@Override
-	public String tojstring() {
-		return v ? "true" : "false";
-	}
+    /**
+     * Return the boolean value for this boolean
+     *
+     * @return value as a Java boolean
+     */
+    public boolean booleanValue() {
+        return v;
+    }
 
-	@Override
-	public boolean optboolean(boolean defval) {
-		return this.v;
-	}
-	
-	@Override
-	public boolean checkboolean() {
-		return v;
-	}
-	
-	@Override
-	public LuaValue getmetatable() { 
-		return s_metatable; 
-	}
+    @Override
+    public boolean toboolean() {
+        return v;
+    }
+
+    @Override
+    public String tojstring() {
+        return v ? "true" : "false";
+    }
+
+    @Override
+    public boolean optboolean(boolean defval) {
+        return this.v;
+    }
+
+    @Override
+    public boolean checkboolean() {
+        return v;
+    }
+
+    @Override
+    public LuaValue getmetatable() {
+        return s_metatable;
+    }
+
 }

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.WeakHashMap;
 
 public class LuaMutex extends CallableTable {
+
     private static WeakHashMap<String, Long> mutex = new WeakHashMap<>();
     private static WeakHashMap<Long, LinkedList<String>> reverse = new WeakHashMap<>();
     private static String[] DOC_LOCATION = new String[]{"newMutex"};
@@ -102,6 +103,7 @@ public class LuaMutex extends CallableTable {
     }
 
     private static class Mutex extends LuaTable {
+
         String key;
 
         public Mutex(String key) {
@@ -112,6 +114,7 @@ public class LuaMutex extends CallableTable {
         }
 
         private class DoOp extends VarArgFunction {
+
             Op op;
 
             public DoOp(Op op) {
@@ -136,6 +139,7 @@ public class LuaMutex extends CallableTable {
                 }
                 return NONE;
             }
+
         }
 
         private static enum Op {
@@ -148,5 +152,7 @@ public class LuaMutex extends CallableTable {
                 return new String[]{"newMutex()", this.name()};
             }
         }
+
     }
+
 }

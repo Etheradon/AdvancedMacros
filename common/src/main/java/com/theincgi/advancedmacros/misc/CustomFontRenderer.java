@@ -1,17 +1,17 @@
 package com.theincgi.advancedmacros.misc;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.theincgi.advancedmacros.gui.Color;
+import com.theincgi.advancedmacros.lua.LuaValTexture;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.util.math.Matrix4f;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.theincgi.advancedmacros.gui.Color;
-import com.theincgi.advancedmacros.lua.LuaValTexture;
+import org.joml.Matrix4f;
 
 public class CustomFontRenderer {
+
     static LuaValTexture consolas = Utils.checkTexture(Settings.getTextureID("resource:consolas.png"));
     static LuaValTexture consolas_bold = Utils.checkTexture(Settings.getTextureID("resource:consolas_bold.png"));
     static LuaValTexture consolas_italics = Utils.checkTexture(Settings.getTextureID("resource:consolas_italic.png"));
@@ -457,7 +457,9 @@ public class CustomFontRenderer {
     }
 
     class UVPair {
+
         float umin, umax, vmin, vmax;
+
     }
 
     private static final float ratio = charWid / (float) charHei;
@@ -503,4 +505,5 @@ public class CustomFontRenderer {
         }
         return lines * size;
     }
+
 }

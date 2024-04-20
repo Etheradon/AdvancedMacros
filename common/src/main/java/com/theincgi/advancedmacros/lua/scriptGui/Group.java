@@ -1,11 +1,10 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.Gui.InputSubscriber;
 import com.theincgi.advancedmacros.gui.elements.Drawable;
 import com.theincgi.advancedmacros.gui.elements.Moveable;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -18,6 +17,7 @@ import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 import java.util.ArrayList;
 
 public class Group extends LuaTable implements Moveable, InputSubscriber, Drawable {
+
     //gui group, xy 0,0
     //passes events to child elements/groups
     //child element needs getParent detail functions
@@ -133,12 +133,12 @@ public class Group extends LuaTable implements Moveable, InputSubscriber, Drawab
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
         if (groupVisiblity) {
             for (int i = 0; i < children.size(); i++) {
                 if (children.get(i) instanceof ScriptGuiElement) {
                     ScriptGuiElement child = (ScriptGuiElement) children.get(i);
-                    child.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+                    child.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
                 }
             }
         }
@@ -356,4 +356,5 @@ public class Group extends LuaTable implements Moveable, InputSubscriber, Drawab
         this.parent = arg;
         arg.children.add(this);
     }
+
 }

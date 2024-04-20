@@ -1,5 +1,10 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.theincgi.advancedmacros.AdvancedMacros;
+import com.theincgi.advancedmacros.access.IMinecraftClient;
+import com.theincgi.advancedmacros.event.TaskDispatcher;
+import com.theincgi.advancedmacros.misc.HIDUtils.Keyboard;
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -12,12 +17,6 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.chunk.Chunk;
-
-import com.theincgi.advancedmacros.AdvancedMacros;
-import com.theincgi.advancedmacros.access.IMinecraftClient;
-import com.theincgi.advancedmacros.event.TaskDispatcher;
-import com.theincgi.advancedmacros.misc.HIDUtils.Keyboard;
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -28,43 +27,53 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class Action {
+
     MinecraftClient minecraft = MinecraftClient.getInstance();
     GameOptions sets = minecraft.options;
 
     class Forward extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             holdKeybind(sets.forwardKey, arg.optlong(0));
             return LuaValue.NONE;
         }
+
     }
 
     class Back extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             holdKeybind(sets.backKey, arg.optlong(0));
             return LuaValue.NONE;
         }
+
     }
 
     class Left extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             holdKeybind(sets.leftKey, arg.optlong(0));
             return LuaValue.NONE;
         }
+
     }
 
     class Right extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             holdKeybind(sets.rightKey, arg.optlong(0));
             return LuaValue.NONE;
         }
+
     }
 
     //the legit version
     class Jump extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             //do not document forced jumps unless they are discovered...maybe
@@ -74,19 +83,23 @@ public class Action {
             //holdKeybind(sets.keyBindJump, arg.optlong(0));
             return LuaValue.NONE;
         }
+
     }
 
     class Sneak extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             holdKeybind(sets.sneakKey, arg.checklong());
             return LuaValue.NONE;
         }
+
     }
 
     private BlockPos attackTarget = null;
 
     private class WaitForBreak extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             while (attackTarget != null) {
@@ -145,16 +158,20 @@ public class Action {
             }
             return LuaValue.NONE;
         }
+
     }
 
     class GetHotbar extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return LuaValue.valueOf(minecraft.player.getInventory().selectedSlot + 1);
         }
+
     }
 
     class Use extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             if (arg.isnil()) {
@@ -166,18 +183,22 @@ public class Action {
             }
             return LuaValue.NONE;
         }
+
     }
 
     class Drop extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             minecraft.player.dropSelectedItem(arg.optboolean(false));
             //tapKeybind(sets.keyBindDrop);
             return LuaValue.NONE;
         }
+
     }
 
     class SwapHand extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             if (!minecraft.player.isSpectator()) {
@@ -187,6 +208,7 @@ public class Action {
 
             return LuaValue.NONE;
         }
+
     }
 
     class PickBlock extends ZeroArgFunction {
@@ -196,17 +218,21 @@ public class Action {
             ((IMinecraftClient) minecraft).am_doItemPick();
             return LuaValue.NONE;
         }
+
     }
 
     class Sprint extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue v) {
             minecraft.player.setSprinting(v.optboolean(true));
             return LuaValue.NONE;
         }
+
     }
 
     class SetHotbar extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             int i = arg.checkint();
@@ -216,9 +242,11 @@ public class Action {
             minecraft.player.getInventory().selectedSlot = i - 1;
             return LuaValue.NONE;
         }
+
     }
 
     class LookAt extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             if (args.narg() < 3) {
@@ -257,22 +285,27 @@ public class Action {
     //		}
     //	}
     class Key extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg1, LuaValue arg2) {
             holdKeybind(Keyboard.codeOf(arg1.checkjstring()), arg2.optlong(0));
             return LuaValue.NONE;
         }
+
     }
 
     class WaitTick extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             Utils.waitTick();
             return LuaValue.NONE;
         }
+
     }
 
     class Look extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             //BOOKMARK ForgeEventHandler on tick, release key from list of timers and also look solver MathHelper cos*range+start to fit in time
@@ -291,6 +324,7 @@ public class Action {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private Look look;
@@ -359,4 +393,5 @@ public class Action {
         InputUtil.Key input = InputUtil.fromKeyCode(keycode, 0); //TESTME keybinding holds
         holdKeybind(input, time);
     }
+
 }

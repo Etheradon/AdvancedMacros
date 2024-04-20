@@ -1,9 +1,5 @@
 package com.theincgi.advancedmacros.gui;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.gui.elements.Drawable;
 import com.theincgi.advancedmacros.gui.elements.GuiButton;
 import com.theincgi.advancedmacros.gui.elements.ListManager;
@@ -15,11 +11,15 @@ import com.theincgi.advancedmacros.lua.LuaDebug.StatusListener;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Utils;
 import com.theincgi.advancedmacros.misc.Utils.TimeFormat;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RunningScriptsGui extends Gui {
+
     ListManager listManager;
     private LuaDebug luaDebug;
     ConcurrentHashMap<Thread, Script> scripts = new ConcurrentHashMap<>(10);
@@ -82,13 +82,14 @@ public class RunningScriptsGui extends Gui {
     final int WHITE = Color.WHITE.toInt();
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.getFontRend().draw(matrixStack, "Running Scripts:", 5, 3, WHITE);
-        listManager.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
+    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
+        super.render(drawContext, mouseX, mouseY, partialTicks);
+        drawContext.drawText(this.getFontRend(), "Running Scripts:", 5, 3, WHITE, false);
+        listManager.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
     }
 
     private class Script implements Drawable, Moveable, InputSubscriber {
+
         Thread thread;
         GuiButton stop;
         int labelColor = Status.NEW.getStatusColor().toInt();
@@ -164,20 +165,20 @@ public class RunningScriptsGui extends Gui {
         }
 
         @Override
-        public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-            stop.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+        public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+            stop.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
             int dY = getY() + 2;
-            int m = g.drawMonospaceString(matrixStack, "[", (int) (getX() + stop.getWid() * 1.5), dY, Color.WHITE.toInt());
+            int m = g.drawMonospaceString(drawContext, "[", (int) (getX() + stop.getWid() * 1.5), dY, Color.WHITE.toInt());
             double uptime = LuaDebug.getUptime(thread);
             TimeFormat timeFormat = Utils.formatTime(uptime);
-            m = g.drawMonospaceString(matrixStack,
+            m = g.drawMonospaceString(drawContext,
                     String.format("%02d:%02d:%02d.%02d",
                             timeFormat.days * 24 + timeFormat.hours,
                             timeFormat.mins, timeFormat.seconds, timeFormat.millis), m, dY, Color.TEXT_7.toInt());
-            m = g.drawMonospaceString(matrixStack, "] ", m, dY, Color.WHITE.toInt());
+            m = g.drawMonospaceString(drawContext, "] ", m, dY, Color.WHITE.toInt());
             String label = LuaDebug.getLabel(thread);
             label = label == null ? "?" : label;
-            g.drawMonospaceString(matrixStack, label, m, dY, labelColor);
+            g.drawMonospaceString(drawContext, label, m, dY, labelColor);
         }
 
         @Override
@@ -221,4 +222,5 @@ public class RunningScriptsGui extends Gui {
         }
 
     }
+
 }

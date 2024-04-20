@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class RAFFuncs {
+
     private RandomAccessFile raf;
     private LuaTable controls = new LuaTable();
 
@@ -52,6 +53,7 @@ public class RAFFuncs {
     }
 
     private class Seek extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -61,9 +63,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class GetLength extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -72,9 +76,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class SetLength extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -84,9 +90,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class GetPos extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -95,9 +103,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadByte extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -106,9 +116,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadInt extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -117,9 +129,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadBoolean extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -128,9 +142,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadDouble extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -139,9 +155,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadLine extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -150,9 +168,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadUTF extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -161,9 +181,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadUByte extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -172,9 +194,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadShort extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -183,9 +207,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadUShort extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -194,9 +220,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadFloat extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -205,9 +233,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadChar extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -216,9 +246,11 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private class ReadLong extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -227,12 +259,14 @@ public class RAFFuncs {
                 throw new LuaError("IOException: (" + e.getMessage() + ")");
             }
         }
+
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //~~~~~~~~~            Write Section            ~~~~~~~~~~~~~~~~~~~
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private class WriteString extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -242,9 +276,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class WriteBoolean extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -254,9 +290,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class WriteByte extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -266,9 +304,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class WriteDouble extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -278,9 +318,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class WriteFloat extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -290,9 +332,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class WriteInt extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -302,9 +346,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class WriteLong extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -314,9 +360,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class WriteShort extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -326,9 +374,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class WriteUTF extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -338,9 +388,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class Force extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -350,9 +402,11 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class Skip extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             try {
@@ -362,9 +416,11 @@ public class RAFFuncs {
             }
             //return LuaValue.NONE;
         }
+
     }
 
     private class Close extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -374,6 +430,7 @@ public class RAFFuncs {
             }
             return LuaValue.NONE;
         }
+
     }
 
 }

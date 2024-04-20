@@ -1,10 +1,5 @@
 package com.theincgi.advancedmacros;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.resource.Resource;
-import net.minecraft.util.Identifier;
-
 import com.theincgi.advancedmacros.access.IMinecraftClient;
 import com.theincgi.advancedmacros.event.EventHandler;
 import com.theincgi.advancedmacros.gui.EditorGUI;
@@ -20,44 +15,7 @@ import com.theincgi.advancedmacros.lua.DocumentationManager;
 import com.theincgi.advancedmacros.lua.LuaDebug;
 import com.theincgi.advancedmacros.lua.LuaFunctions;
 import com.theincgi.advancedmacros.lua.OpenChangeLog;
-import com.theincgi.advancedmacros.lua.functions.Action;
-import com.theincgi.advancedmacros.lua.functions.Call;
-import com.theincgi.advancedmacros.lua.functions.Connect;
-import com.theincgi.advancedmacros.lua.functions.Disconnect;
-import com.theincgi.advancedmacros.lua.functions.FileSystem;
-import com.theincgi.advancedmacros.lua.functions.GetBiome;
-import com.theincgi.advancedmacros.lua.functions.GetBlock;
-import com.theincgi.advancedmacros.lua.functions.GetBlockList;
-import com.theincgi.advancedmacros.lua.functions.GetInventory;
-import com.theincgi.advancedmacros.lua.functions.GetLoadedPlayers;
-import com.theincgi.advancedmacros.lua.functions.GetPlayer;
-import com.theincgi.advancedmacros.lua.functions.GetPlayerBlockPos;
-import com.theincgi.advancedmacros.lua.functions.GetPlayerList;
-import com.theincgi.advancedmacros.lua.functions.GetPlayerPos;
-import com.theincgi.advancedmacros.lua.functions.GetProfile;
-import com.theincgi.advancedmacros.lua.functions.GetRecipe;
-import com.theincgi.advancedmacros.lua.functions.GetScreen;
-import com.theincgi.advancedmacros.lua.functions.GetSound;
-import com.theincgi.advancedmacros.lua.functions.GetTextureList;
-import com.theincgi.advancedmacros.lua.functions.GetWorld;
-import com.theincgi.advancedmacros.lua.functions.HID;
-import com.theincgi.advancedmacros.lua.functions.HTTP;
-import com.theincgi.advancedmacros.lua.functions.IsKeyHeld;
-import com.theincgi.advancedmacros.lua.functions.LightAt;
-import com.theincgi.advancedmacros.lua.functions.MathPlus;
-import com.theincgi.advancedmacros.lua.functions.Narrate;
-import com.theincgi.advancedmacros.lua.functions.NewThread;
-import com.theincgi.advancedmacros.lua.functions.OpenInventory;
-import com.theincgi.advancedmacros.lua.functions.PCall;
-import com.theincgi.advancedmacros.lua.functions.PlaySound;
-import com.theincgi.advancedmacros.lua.functions.RayTrace;
-import com.theincgi.advancedmacros.lua.functions.RunOnMC;
-import com.theincgi.advancedmacros.lua.functions.RunThread;
-import com.theincgi.advancedmacros.lua.functions.SetProfile;
-import com.theincgi.advancedmacros.lua.functions.SkinCustomizer;
-import com.theincgi.advancedmacros.lua.functions.StopAllScripts;
-import com.theincgi.advancedmacros.lua.functions.StringTrim;
-import com.theincgi.advancedmacros.lua.functions.Toast;
+import com.theincgi.advancedmacros.lua.functions.*;
 import com.theincgi.advancedmacros.lua.functions.entity.GetAABB;
 import com.theincgi.advancedmacros.lua.functions.entity.GetEntityData;
 import com.theincgi.advancedmacros.lua.functions.entity.GetEntityList;
@@ -79,6 +37,10 @@ import com.theincgi.advancedmacros.misc.JarLibSearcher;
 import com.theincgi.advancedmacros.misc.Settings;
 import com.theincgi.advancedmacros.misc.Utils;
 import com.theincgi.advancedmacros.publicInterfaces.LuaPlugin;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
 import org.luaj.vm2_v3_0_1.Globals;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaFunction;
@@ -104,6 +66,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class AdvancedMacros {
+
     /**
      * advancedMacros
      */

@@ -4,6 +4,7 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 
 public class Interpolator {
+
     public static final Interpolator linear = new Interpolator();
     public static final Interpolator smooth = new Interpolator() {
         @Override

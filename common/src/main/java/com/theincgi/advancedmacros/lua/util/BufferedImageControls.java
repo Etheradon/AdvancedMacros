@@ -1,8 +1,5 @@
 package com.theincgi.advancedmacros.lua.util;
 
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.NativeImageBackedTexture;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.event.TaskDispatcher;
@@ -10,6 +7,8 @@ import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.lua.LuaValTexture;
 import com.theincgi.advancedmacros.lua.functions.HTTP;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.texture.NativeImageBackedTexture;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -20,13 +19,13 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 import javax.imageio.ImageIO;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class BufferedImageControls extends LuaTable {
+
     BufferedImage img;
     NativeImageBackedTexture dynamicTexture;
     LuaValTexture tex;
@@ -39,14 +38,17 @@ public class BufferedImageControls extends LuaTable {
     };
 
     public static class CreateImg extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg1, LuaValue arg2) {
             BufferedImage img = new BufferedImage(arg1.checkint(), arg2.checkint(), BufferedImage.TYPE_INT_ARGB);
             return new BufferedImageControls(img);
         }
+
     }
 
     public static class LoadImg extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             if (arg instanceof HTTP.LuaInputStream) {
@@ -64,9 +66,11 @@ public class BufferedImageControls extends LuaTable {
                 }
             }
         }
+
     }
 
     public static class GetFonts extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             LuaTable fonts = new LuaTable();
@@ -79,9 +83,11 @@ public class BufferedImageControls extends LuaTable {
             }
             return fonts;
         }
+
     }
 
     public static class GetFormats extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             LuaTable out = new LuaTable();
@@ -97,6 +103,7 @@ public class BufferedImageControls extends LuaTable {
             out.set("writers", temp);
             return out;
         }
+
     }
 
     public BufferedImageControls(BufferedImage img) {
@@ -241,4 +248,5 @@ public class BufferedImageControls extends LuaTable {
         }
         return tex;
     }
+
 }

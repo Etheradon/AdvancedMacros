@@ -1,18 +1,17 @@
 package com.theincgi.advancedmacros.hud.hud3D;
 
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Matrix4f;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.lua.LuaValTexture;
 import com.theincgi.advancedmacros.misc.CallableTable;
 import com.theincgi.advancedmacros.misc.Settings;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
+import org.joml.Matrix4f;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
@@ -22,6 +21,7 @@ import org.luaj.vm2_v3_0_1.lib.TwoArgFunction;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
 public class HoloBlock extends WorldHudItem {
+
     LuaValTexture texture;
     LuaValTexture textureUp;
     LuaValTexture textureDown;
@@ -223,6 +223,7 @@ public class HoloBlock extends WorldHudItem {
     }
 
     private class setColorSide extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue color, LuaValue optSide) {
             Color c = Utils.parseColor(color, AdvancedMacros.COLOR_SPACE_IS_255);
@@ -255,9 +256,11 @@ public class HoloBlock extends WorldHudItem {
             HoloBlock.this.color = c;
             return NONE;
         }
+
     }
 
     private class GetColorSide extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue optside) {
             boolean use = AdvancedMacros.COLOR_SPACE_IS_255;
@@ -283,17 +286,21 @@ public class HoloBlock extends WorldHudItem {
             }
             return color.toLuaValue(use);
         }
+
     }
 
     private class SetWidth extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             setWidth((float) arg.checkdouble());
             return LuaValue.NONE;
         }
+
     }
 
     private class ChangeTexture extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg, LuaValue optSide) {
             LuaValTexture tmp = Utils.parseTexture(arg);
@@ -334,9 +341,11 @@ public class HoloBlock extends WorldHudItem {
 
             return LuaValue.NONE;
         }
+
     }
 
     private class SetUV extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             if (args.narg() < 4) {
@@ -345,15 +354,18 @@ public class HoloBlock extends WorldHudItem {
             setUV((float) args.arg(1).checkdouble(), (float) args.arg(2).checkdouble(), (float) args.arg(3).checkdouble(), (float) args.arg(4).checkdouble());
             return LuaValue.NONE;
         }
+
     }
 
     private class Overlay extends ThreeArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg1, LuaValue arg2, LuaValue arg3) {
             setPos((float) (arg1.optdouble(x) - .0005), (float) (arg2.optdouble(y) - .0005), (float) (arg3.optdouble(z) - .0005));
             width = 1.001f;
             return LuaValue.NONE;
         }
+
     }
 
     @Override

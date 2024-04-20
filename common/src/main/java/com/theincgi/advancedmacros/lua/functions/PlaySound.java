@@ -24,6 +24,7 @@ import java.io.IOException;
 
 @Deprecated
 public class PlaySound {
+
     public static class FromFile extends OneArgFunction {
 
         public static LuaTable play(File f) {
@@ -65,6 +66,7 @@ public class PlaySound {
         }
 
         public static class Cntrls {
+
             Clip c;
             boolean paused = false;
 
@@ -84,6 +86,7 @@ public class PlaySound {
             }
 
             public class SetVolume extends OneArgFunction {
+
                 @Override
                 public LuaValue call(LuaValue arg) {
                     FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
@@ -93,36 +96,44 @@ public class PlaySound {
                     gainControl.setValue(gain);
                     return NONE;
                 }
+
             }
 
             private class Start extends ZeroArgFunction {
+
                 @Override
                 public LuaValue call() {
                     c.start();
                     paused = false;
                     return LuaValue.NONE;
                 }
+
             }
 
             private class Pause extends ZeroArgFunction {
+
                 @Override
                 public LuaValue call() {
                     paused = true;
                     c.stop();
                     return LuaValue.FALSE;
                 }
+
             }
 
             private class Stop extends ZeroArgFunction {
+
                 @Override
                 public LuaValue call() {
                     paused = false;
                     c.stop();
                     return LuaValue.NONE;
                 }
+
             }
 
             private class Loop extends OneArgFunction {
+
                 @Override
                 public LuaValue call(LuaValue arg) {
                     if (arg.isnil()) {
@@ -132,14 +143,18 @@ public class PlaySound {
                     }
                     return LuaValue.NONE;
                 }
+
             }
 
             private class IsPlaying extends ZeroArgFunction {
+
                 @Override
                 public LuaValue call() {
                     return LuaValue.valueOf(c.isRunning());
                 }
+
             }
+
         }
 
         //fromFile
@@ -148,5 +163,7 @@ public class PlaySound {
             File f = new File(AdvancedMacros.MACRO_SOUNDS_FOLDER, arg.checkjstring()); //TODO starts with *:// or something, and make folder
             return play(f);
         }
+
     }
+
 }

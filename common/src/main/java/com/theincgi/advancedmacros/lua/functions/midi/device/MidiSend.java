@@ -12,6 +12,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.ShortMessage;
 
 public class MidiSend extends OneArgFunction {
+
     MidiDevice device;
 
     public MidiSend(MidiDevice device) {

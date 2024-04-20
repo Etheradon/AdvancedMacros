@@ -1,9 +1,5 @@
 package com.theincgi.advancedmacros.gui2;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.event.EventHandler;
 import com.theincgi.advancedmacros.gui.Color;
@@ -19,6 +15,9 @@ import com.theincgi.advancedmacros.gui2.PopupPrompt2.Result;
 import com.theincgi.advancedmacros.gui2.PopupPrompt2.ResultHandler;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Settings;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
@@ -306,9 +305,9 @@ public class ScriptBrowser2 extends Gui {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.getFontRend().draw(matrixStack, pathText, returnButton.getX() + returnButton.getItemWidth() + 2, 8, Color.WHITE.toInt());
+    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
+        super.render(drawContext, mouseX, mouseY, partialTicks);
+        drawContext.drawText(this.getFontRend(), pathText, returnButton.getX() + returnButton.getItemWidth() + 2, 8, Color.WHITE.toInt(), false);
     }
 
     @Override
@@ -485,9 +484,9 @@ public class ScriptBrowser2 extends Gui {
         }
 
         @Override
-        public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
+        public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
             for (int i = 0; i < fileElements.length; i++) {
-                fileElements[i].button.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+                fileElements[i].button.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
             }
         }
 
@@ -549,9 +548,11 @@ public class ScriptBrowser2 extends Gui {
         public boolean onKeyRepeat(Gui gui, int keyCode, int scanCode, int modifiers, int n) {
             return false;
         }
+
     }
 
     public class FileElement {
+
         //private final WidgetID widgetID = new WidgetID(610);
         //
         //		private Property fileColorProp = new Property("colors.scriptBrowser2.file", Color.TEXT_f.toLuaValue(), "color.file", widgetID);
@@ -568,7 +569,7 @@ public class ScriptBrowser2 extends Gui {
             button = new GuiButton(5, 5, 12, 12, LuaValue.NIL, LuaValue.NIL) {
 
                 @Override
-                public void onDraw(MatrixStack matrixStack, Gui gui, int mouseX, int mouseY, float partialTicks) {
+                public void onDraw(DrawContext drawContext, Gui gui, int mouseX, int mouseY, float partialTicks) {
                     if (selectedFile != null && selectedFile.equals(filePath)) {
                         if (filePath.isDirectory()) {
                             setTextColor(propertyPalette.getColor("scriptBrowser", "colors", "selectedFolder"));//Utils.parseColor(selFolderColorProp.getPropValue()));
@@ -586,7 +587,7 @@ public class ScriptBrowser2 extends Gui {
                         }
                         setText(unselectedName);
                     }
-                    super.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
+                    super.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
                 }
             };
             button.setFrame(Color.BLACK);
@@ -673,6 +674,7 @@ public class ScriptBrowser2 extends Gui {
         public File getFilePath() {
             return filePath;
         }
+
     }
 
     private Gui requester;
@@ -752,4 +754,5 @@ public class ScriptBrowser2 extends Gui {
     public File getActivePath() {
         return activePath;
     }
+
 }

@@ -1,16 +1,16 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
 public class GetPlayerBlockPos extends VarArgFunction {
+
     @Override
     public Varargs invoke(Varargs args) {
         if (args.narg() == 0) {
@@ -36,4 +36,5 @@ public class GetPlayerBlockPos extends VarArgFunction {
             return LuaValue.FALSE;
         }
     }
+
 }

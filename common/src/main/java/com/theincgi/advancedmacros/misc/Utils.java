@@ -1,5 +1,13 @@
 package com.theincgi.advancedmacros.misc;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.theincgi.advancedmacros.AdvancedMacros;
+import com.theincgi.advancedmacros.event.EventHandler;
+import com.theincgi.advancedmacros.gui.Color;
+import com.theincgi.advancedmacros.lua.LuaValTexture;
+import com.theincgi.advancedmacros.lua.util.BufferedImageControls;
+import com.theincgi.advancedmacros.lua.util.ContainerControls;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.MapColor;
@@ -7,7 +15,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.texture.NativeImage;
-import net.minecraft.command.CommandRegistryWrapper;
 import net.minecraft.command.argument.ItemStringReader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -28,6 +35,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtLong;
 import net.minecraft.nbt.NbtShort;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
@@ -40,17 +48,8 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.dimension.DimensionType;
-
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.theincgi.advancedmacros.AdvancedMacros;
-import com.theincgi.advancedmacros.event.EventHandler;
-import com.theincgi.advancedmacros.gui.Color;
-import com.theincgi.advancedmacros.lua.LuaValTexture;
-import com.theincgi.advancedmacros.lua.util.BufferedImageControls;
-import com.theincgi.advancedmacros.lua.util.ContainerControls;
+import org.jetbrains.annotations.Nullable;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaFunction;
 import org.luaj.vm2_v3_0_1.LuaTable;
@@ -58,7 +57,6 @@ import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
-import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;
@@ -393,7 +391,9 @@ public class Utils {
     }
 
     public static class TimeFormat {
+
         public int seconds, mins, hours, days, millis;
+
     }
 
     public static TimeFormat formatTime(double time) {
@@ -416,7 +416,7 @@ public class Utils {
         }
         LuaTable table = new LuaTable();
         table.set("name", stack.getName() == null ? LuaValue.NIL : LuaValue.valueOf(codedFromTextComponent(stack.getName()).a));
-        table.set("id", Registry.ITEM.getId(stack.getItem()).toString());
+        table.set("id", Registries.ITEM.getId(stack.getItem()).toString());
         table.set("dmg", stack.getDamage());
         table.set("maxDmg", stack.getMaxDamage());
         table.set("amount", stack.getCount());
@@ -442,7 +442,7 @@ public class Utils {
     public static LuaTable blockToTable(BlockState blockState, @Nullable BlockEntity te) {
         Block block = blockState.getBlock();
         LuaTable out = new LuaTable();
-        out.set("id", Registry.BLOCK.getId(block).toString());
+        out.set("id", Registries.BLOCK.getId(block).toString());
         out.set("name", block.getName().getString());
         // looks like they don't have dmg values for blocks anymore? out.set("dmg", block.getMetaFromState(blockState));
         if (te != null) {
@@ -457,7 +457,7 @@ public class Utils {
     }
 
     public static boolean itemsEqual(ItemStack sourceStack, ItemStack sinkStack) {
-        return ItemStack.areItemsEqual(sourceStack, sinkStack) && ItemStack.areNbtEqual(sourceStack, sinkStack);
+        return ItemStack.areItemsEqual(sourceStack, sinkStack) && ItemStack.areEqual(sourceStack, sinkStack);
     }
 
     public static LuaValue inventoryToTable(PlayerInventory inventory, boolean collapseEmpty) {
@@ -475,7 +475,7 @@ public class Utils {
 
     public static LuaValue effectToTable(StatusEffectInstance pe) {
         LuaTable table = new LuaTable();
-        table.set("id", Registry.STATUS_EFFECT.getId(pe.getEffectType()).toString());
+        table.set("id", Registries.STATUS_EFFECT.getId(pe.getEffectType()).toString());
         table.set("strength", pe.getAmplifier());
         table.set("duration", pe.getDuration());
         table.set("showsParticles", LuaValue.valueOf(pe.shouldShowParticles()));
@@ -575,10 +575,9 @@ public class Utils {
         t.set("isInWater", LuaValue.valueOf(entity.isTouchingWater()));
         t.set("isInLava", LuaValue.valueOf(entity.isInLava()));
         t.set("immuneToFire", LuaValue.valueOf(entity.isFireImmune()));
-        t.set("isImmuneToExplosion", LuaValue.valueOf(entity.isImmuneToExplosion()));
         t.set("isOnFire", LuaValue.valueOf(entity.isOnFire()));
         t.set("isSprinting", LuaValue.valueOf(entity.isSprinting()));
-        t.set("entityRiding", Utils.entityToTable(entity.getPrimaryPassenger()));
+        t.set("entityRiding", Utils.entityToTable(entity.getControllingPassenger()));
         t.set("isInvisible", LuaValue.valueOf(entity.isInvisible()));
         NbtCompound compound = new NbtCompound();
         entity.writeNbt(compound);
@@ -628,7 +627,7 @@ public class Utils {
             }
         }
         System.out.println(msg + "]");
-        return Text.Serializer.fromJson(msg + "]");
+        return Text.Serialization.fromJson(msg + "]");
     }
 
     private static String parseTableToComJson(LuaTable table) {
@@ -725,6 +724,7 @@ public class Utils {
     }
 
     public static class NBTUtils {
+
         public static LuaTable fromCompound(NbtCompound comp) {
             LuaTable out = new LuaTable();
             for (String k : comp.getKeys()) {
@@ -1568,7 +1568,7 @@ public class Utils {
 
     public static Item itemFromName(String name) {
         try {
-            return new ItemStack(ItemStringReader.item(CommandRegistryWrapper.of(Registry.ITEM), new StringReader(name)).item()).getItem();
+            return new ItemStack(ItemStringReader.item(Registries.ITEM.getReadOnlyWrapper(), new StringReader(name)).item()).getItem();
         } catch (CommandSyntaxException e) {
             return null;
         }

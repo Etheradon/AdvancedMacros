@@ -1,6 +1,7 @@
 package com.theincgi.advancedmacros.gui.elements;
 
 public class GuiAnimation {
+
     Interpolator interpolator;
     private long start = -1;
     private long dur = -1;
@@ -107,6 +108,7 @@ public class GuiAnimation {
     }
 
     public static class Durration {
+
         public static long seconds(double d) {
             return (long) (d / 1000);
         }
@@ -120,4 +122,5 @@ public class GuiAnimation {
     public boolean isAtStart() {
         return pos == 0;
     }
+
 }

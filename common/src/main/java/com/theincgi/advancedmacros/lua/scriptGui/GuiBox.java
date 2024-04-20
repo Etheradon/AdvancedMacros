@@ -1,13 +1,13 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.gui.Gui;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class GuiBox extends ScriptGuiElement {
+
     public float thickness = 1;
 
     public GuiBox(Gui gui, Group parent) {
@@ -31,8 +31,8 @@ public class GuiBox extends ScriptGuiElement {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-        super.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+        super.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
         if (!visible) {
             return;
         }

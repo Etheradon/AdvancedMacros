@@ -5,6 +5,7 @@ import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
 public class Color {
+
     int a, r, g, b;
     //public boolean quoteMode;
     public static final Color WHITE = new Color(255, 255, 255);
@@ -26,8 +27,8 @@ public class Color {
             TEXT_7 = new Color(170, 170, 170),
             TEXT_8 = new Color(85, 85, 85),
             TEXT_9 = new Color(85, 85, 255),
-            TEXT_a = new Color( 85, 255, 85),
-            TEXT_b = new Color( 85, 255, 255),
+            TEXT_a = new Color(85, 255, 85),
+            TEXT_b = new Color(85, 255, 255),
             TEXT_c = new Color(255, 85, 85),
             TEXT_d = new Color(255, 85, 255),
             TEXT_e = new Color(255, 255, 85),

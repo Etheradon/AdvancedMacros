@@ -1,12 +1,11 @@
 package com.theincgi.advancedmacros.lua;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.resource.Resource;
-import net.minecraft.util.Identifier;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.lua.LuaDebug.LuaThread;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
@@ -14,6 +13,7 @@ import java.io.InputStream;
 import java.util.Optional;
 
 public class OpenChangeLog extends ZeroArgFunction {
+
     @Override
     public LuaValue call() {
         openChangeLog(true);

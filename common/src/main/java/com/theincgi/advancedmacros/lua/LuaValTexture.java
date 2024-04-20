@@ -1,16 +1,16 @@
 package com.theincgi.advancedmacros.lua;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.theincgi.advancedmacros.event.TaskDispatcher;
+import com.theincgi.advancedmacros.misc.Settings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.theincgi.advancedmacros.event.TaskDispatcher;
-import com.theincgi.advancedmacros.misc.Settings;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
 public class LuaValTexture extends LuaValue {
+
     Identifier r;
     NativeImageBackedTexture dTex;
     private float u1, v1, u2 = 1, v2 = 1;

@@ -13,6 +13,7 @@ import java.util.HashMap;
  * Automatically synchronized
  */
 public class _S extends LuaTable {
+
     private static HashMap<String, LuaTable> map = new HashMap<>();
 
     public _S() {
@@ -108,4 +109,5 @@ public class _S extends LuaTable {
             }).getmetatable();
         }
     }
+
 }

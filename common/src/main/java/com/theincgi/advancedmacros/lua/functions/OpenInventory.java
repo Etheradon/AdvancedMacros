@@ -1,5 +1,9 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.google.common.util.concurrent.ListenableFuture;
+import com.theincgi.advancedmacros.event.TaskDispatcher;
+import com.theincgi.advancedmacros.misc.CallableTable;
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.BeaconScreen;
@@ -20,11 +24,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
-
-import com.google.common.util.concurrent.ListenableFuture;
-import com.theincgi.advancedmacros.event.TaskDispatcher;
-import com.theincgi.advancedmacros.misc.CallableTable;
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -33,6 +32,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class OpenInventory extends ZeroArgFunction {
+
     private static LuaValue mapping = LuaValue.FALSE;
 
     @Override
@@ -50,6 +50,7 @@ public class OpenInventory extends ZeroArgFunction {
     }
 
     private class DoOp extends VarArgFunction {
+
         OpCode code;
 
         public DoOp(OpCode code) {
@@ -523,4 +524,5 @@ public class OpenInventory extends ZeroArgFunction {
     public static boolean inRange(int x, int a, int b) {
         return a <= x && x <= b;
     }
+
 }

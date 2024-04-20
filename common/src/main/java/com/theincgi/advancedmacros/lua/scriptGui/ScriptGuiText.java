@@ -1,10 +1,5 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.gui.Gui;
@@ -13,6 +8,11 @@ import com.theincgi.advancedmacros.gui.elements.GuiRect;
 import com.theincgi.advancedmacros.hud.hud2D.Hud2D_Rectangle;
 import com.theincgi.advancedmacros.misc.CustomFontRenderer;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
@@ -21,6 +21,7 @@ import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 import java.util.Scanner;
 
 public class ScriptGuiText extends ScriptGuiElement {
+
     public int textSize = 12;
     private String text = "";
     public boolean monospaced = true;
@@ -66,8 +67,8 @@ public class ScriptGuiText extends ScriptGuiElement {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-        super.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+        super.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
         if (!visible) {
             return;
         }
@@ -84,10 +85,12 @@ public class ScriptGuiText extends ScriptGuiElement {
         } else {
             Scanner s = new Scanner(text);
             TextRenderer fr = MinecraftClient.getInstance().textRenderer; //AdvancedMacros.otherCustomFontRenderer;
+            MatrixStack matrixStack = drawContext.getMatrices();
+
             for (int i = 0; s.hasNextLine(); i += textSize) {
                 matrixStack.push();
                 matrixStack.translate(0, 0, z);
-                fr.draw(matrixStack, Text.literal(s.nextLine()), x, y + i, color.toInt());
+                drawContext.drawText(fr, Text.literal(s.nextLine()), (int) x, (int) y + i, color.toInt(), false);
                 matrixStack.pop();
             }
             s.close();
@@ -161,4 +164,5 @@ public class ScriptGuiText extends ScriptGuiElement {
         }
         return false;
     }
+
 }

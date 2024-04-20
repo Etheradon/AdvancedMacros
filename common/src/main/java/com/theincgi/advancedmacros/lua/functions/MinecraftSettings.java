@@ -1,7 +1,7 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.AoMode;
 import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.option.ParticlesMode;
 import net.minecraft.client.option.Perspective;
@@ -9,8 +9,6 @@ import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Arm;
-
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.Varargs;
@@ -20,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MinecraftSettings extends LuaTable {
+
     public MinecraftSettings() {
         for (OpCode code : OpCode.values()) {
             set(code.name(), new DoOp(code)); //TODO document me
@@ -30,6 +29,7 @@ public class MinecraftSettings extends LuaTable {
     private static final String[] PERSPECTIVE = new String[]{"first", "front", "back"};
 
     private static class DoOp extends VarArgFunction {
+
         OpCode code;
 
         public DoOp(OpCode code) {
@@ -82,7 +82,7 @@ public class MinecraftSettings extends LuaTable {
                     mc.options.getViewDistance().setValue(Math.max(2, Math.min(args.checkint(1), 32)));
                     return NONE;
                 case setVolume:
-                    mc.options.setSoundVolume(SoundCategory.valueOf(args.checkjstring(1).toUpperCase()), (float) args.checkdouble(2));
+                    mc.options.getSoundVolumeOption(SoundCategory.valueOf(args.checkjstring(1).toUpperCase())).setValue(args.checkdouble(2));
                     return NONE;
                 case getMaxFps:
                     return valueOf(mc.options.getMaxFps().getValue());
@@ -90,7 +90,7 @@ public class MinecraftSettings extends LuaTable {
                     mc.options.getMaxFps().setValue(Math.max(1, args.checkint(1)));
                     return NONE;
                 case getSmoothLighting: {
-                    name = mc.options.getAo().getValue().name().toLowerCase();
+                    name = mc.options.getAo().getValue().toString();
                     return valueOf(name);
                 }
                 case getChatHeightFocused:
@@ -98,13 +98,13 @@ public class MinecraftSettings extends LuaTable {
                 case getChatHeightUnfocused:
                     return valueOf(mc.options.getChatHeightUnfocused().getValue());
                 case getChatOpacity:
-                    return valueOf(mc.options.getChtOpacity().getValue());
+                    return valueOf(mc.options.getChatOpacity().getValue());
                 case getChatScale:
                     return valueOf(mc.options.getChatScale().getValue());
                 case getChatWidth:
                     return valueOf(mc.options.getChatWidth().getValue());
                 case getCloudsMode:
-                    return valueOf(mc.options.getCloudRenderMod().getValue().name().toLowerCase());
+                    return valueOf(mc.options.getCloudRenderMode().getValue().name().toLowerCase());
 /*                case getDifficulty:
                     return valueOf(mc.options.difficulty.name().toLowerCase());*/
                 case getGuiScale:
@@ -113,8 +113,8 @@ public class MinecraftSettings extends LuaTable {
                     return valueOf(mc.options.language);
                 case getLanguages: {
                     LuaTable langs = new LuaTable();
-                    for (LanguageDefinition l : mc.getLanguageManager().getAllLanguages()) {
-                        langs.set(langs.length() + 1, l.getCode());
+                    for (LanguageDefinition l : mc.getLanguageManager().getAllLanguages().values()) {
+                        langs.set(langs.length() + 1, l.region());
                     }
                 }
                 case getLastServer:
@@ -138,7 +138,7 @@ public class MinecraftSettings extends LuaTable {
 /*                case isFancyGraphics:
                     return valueOf(mc.options.fancyGraphics);*/
                 case isHeldItemTooltips:
-                    return valueOf(mc.options.heldItemTooltips);
+                    return valueOf(mc.options.advancedItemTooltips);
                 case isInvertMouse:
                     return valueOf(mc.options.getInvertYMouse().getValue());
                 case isPauseOnLostFocus:
@@ -155,8 +155,7 @@ public class MinecraftSettings extends LuaTable {
                     mc.options.advancedItemTooltips = args.arg1().checkboolean();
                     return NONE;
                 case setSmoothLighting: {
-                    AoMode status = AoMode.valueOf(args.arg1().checkjstring().toUpperCase());
-                    mc.options.getAo().setValue(status);
+                    mc.options.getAo().setValue(args.arg1().checkboolean());
                     return NONE;
                 }
                 case setAutoJump:
@@ -172,7 +171,7 @@ public class MinecraftSettings extends LuaTable {
                     return NONE;
 
                 case setChatOpacity:
-                    mc.options.getChtOpacity().setValue(Utils.clamp(0, args.arg1().checkdouble(), 1));
+                    mc.options.getChatOpacity().setValue(Utils.clamp(0, args.arg1().checkdouble(), 1));
                     return NONE;
 
                 case setChatScale:
@@ -185,7 +184,7 @@ public class MinecraftSettings extends LuaTable {
 
                 case setCloudsMode:
                     CloudRenderMode co = CloudRenderMode.valueOf(args.arg1().checkjstring().toUpperCase());
-                    mc.options.getCloudRenderMod().setValue(co);
+                    mc.options.getCloudRenderMode().setValue(co);
                     return NONE;
 /*                case setDifficulty:
                     mc.options.difficulty = args.arg1().isnumber() ? Difficulty.byId(args.arg1().checkint()) : Difficulty.valueOf(args.arg1().checkjstring().toUpperCase());
@@ -215,15 +214,15 @@ public class MinecraftSettings extends LuaTable {
                     }
                     return NONE;
                 case setHeldItemTooltips:
-                    mc.options.heldItemTooltips = args.checkboolean(1);
+                    mc.options.advancedItemTooltips = args.checkboolean(1);
                     return NONE;
                 case setInvertMouse:
                     mc.options.getInvertYMouse().setValue(args.checkboolean(1));
                     return NONE;
                 case setLanguage:
-                    for (LanguageDefinition l : mc.getLanguageManager().getAllLanguages()) {
-                        if (l.getCode().toLowerCase() == args.checkjstring(1).toLowerCase()) {
-                            mc.options.language = l.getCode();
+                    for (LanguageDefinition l : mc.getLanguageManager().getAllLanguages().values()) {
+                        if (l.region().toLowerCase() == args.checkjstring(1).toLowerCase()) {
+                            mc.options.language = l.region();
                             return NONE;
                         }
                     }
@@ -276,6 +275,7 @@ public class MinecraftSettings extends LuaTable {
                     throw new LuaError("Undefined op " + code.name());
             }
         }
+
     }
 
     private enum OpCode {
@@ -346,4 +346,5 @@ public class MinecraftSettings extends LuaTable {
         isViewBobbing,
 
     }
+
 }

@@ -1,9 +1,5 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.event.TaskDispatcher;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.Gui.InputSubscriber;
@@ -12,6 +8,10 @@ import com.theincgi.advancedmacros.misc.CallableTable;
 import com.theincgi.advancedmacros.misc.HIDUtils;
 import com.theincgi.advancedmacros.misc.HIDUtils.Mouse;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaFunction;
 import org.luaj.vm2_v3_0_1.LuaTable;
@@ -22,6 +22,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class ScriptGui extends LuaTable implements InputSubscriber {
+
     private static int counter = 1;
     String guiName = "generic_" + counter++;
     Gui gui;
@@ -56,6 +57,7 @@ public class ScriptGui extends LuaTable implements InputSubscriber {
     }
 
     public class DoOperation extends VarArgFunction {
+
         OpCodes opCode;
 
         public DoOperation(OpCodes opCode) {
@@ -225,6 +227,7 @@ public class ScriptGui extends LuaTable implements InputSubscriber {
                     throw new LuaError("This function hasn't been implemented D:");
             }
         }
+
     }
 
     public static enum OpCodes {
@@ -265,10 +268,12 @@ public class ScriptGui extends LuaTable implements InputSubscriber {
     //TODO resize event
 
     public static class CreateScriptGui extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return new ScriptGui();
         }
+
     }
 
     public void addInputControls(LuaTable s) {
@@ -442,19 +447,21 @@ public class ScriptGui extends LuaTable implements InputSubscriber {
         }
 
         @Override
-        public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
             lastMouseX = mouseX;
             lastMouseY = mouseY;
+            MatrixStack matrixStack = drawContext.getMatrices();
+
             if (parentGui != null) {
                 matrixStack.push();
                 matrixStack.translate(0, 0, -50);
-                parentGui.gui.render(matrixStack, mouseX, mouseY, partialTicks);
+                parentGui.gui.render(drawContext, mouseX, mouseY, partialTicks);
                 matrixStack.pop();
                 //setDrawDefaultBackground(false);
             } else {
                 //setDrawDefaultBackground(true);
             }
-            super.render(matrixStack, mouseX, mouseY, partialTicks);
+            super.render(drawContext, mouseX, mouseY, partialTicks);
         }
 
         @Override
@@ -543,16 +550,17 @@ public class ScriptGui extends LuaTable implements InputSubscriber {
         }
 
         @Override
-        public boolean mouseScrolled(double x, double y, double i) {
-            return super.onScroll(gui, i) ||
-                    ScriptGui.this.onScroll(this, i) ||
-                    (parentGui != null && parentGui.onScroll(parentGui.gui, i));
+        public boolean mouseScrolled(double x, double y, double horizontalScroll, double verticalScroll) {
+            return super.onScroll(gui, verticalScroll) ||
+                    ScriptGui.this.onScroll(this, verticalScroll) ||
+                    (parentGui != null && parentGui.onScroll(parentGui.gui, verticalScroll));
         }
 
         @Override
         public String toString() {
             return "ScriptGui:" + guiName;
         }
+
     }
 
 }

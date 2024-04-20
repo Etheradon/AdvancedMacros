@@ -1,13 +1,11 @@
 package com.theincgi.advancedmacros.gui.elements;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
@@ -16,6 +14,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class GuiRect implements Drawable, Moveable {
+
     WidgetID wID;
     //	Property colorFrame;
     //	Property colorFill;
@@ -164,9 +163,9 @@ public class GuiRect implements Drawable, Moveable {
         return false;
     }
 
-    protected void drawShade(MatrixStack matrixStack, Gui gui) {
+    protected void drawShade(DrawContext drawContext, Gui gui) {
         //RenderSystem.enableAlpha();
-        Screen.fill(matrixStack, drawX + 1, drawY + 1, drawX + drawWid, drawY + drawHei, shade.toInt());
+        drawContext.fill(drawX + 1, drawY + 1, drawX + drawWid, drawY + drawHei, shade.toInt());
         //System.out.println(shade);
     }
 
@@ -226,60 +225,75 @@ public class GuiRect implements Drawable, Moveable {
     }
 
     private class SetFill extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             fill = Utils.parseColor(args, AdvancedMacros.COLOR_SPACE_IS_255);
             return LuaValue.NONE;
         }
+
     }
 
     private class SetFrame extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             frame = Utils.parseColor(args, AdvancedMacros.COLOR_SPACE_IS_255);
             return LuaValue.NONE;
         }
+
     }
 
     private class SetShade extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             shade = Utils.parseColor(args, AdvancedMacros.COLOR_SPACE_IS_255);
             return LuaValue.NONE;
         }
+
     }
 
     private class Move extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg1, LuaValue arg2) {
             move(arg1.checkint(), arg2.checkint());
             return LuaValue.NONE;
         }
+
     }
 
     private class Resize extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg1, LuaValue arg2) {
             resize(arg1.checkint(), arg2.checkint());
             return LuaValue.NONE;
         }
+
     }
 
     private class GetFill extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return fill.toLuaValue(AdvancedMacros.COLOR_SPACE_IS_255);
         }
+
     }
 
     private class GetFrame extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return frame.toLuaValue(AdvancedMacros.COLOR_SPACE_IS_255);
         }
+
     }
 
     private class GetPos extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             LuaTable temp = new LuaTable();
@@ -287,9 +301,11 @@ public class GuiRect implements Drawable, Moveable {
             temp.set(2, LuaValue.valueOf(getY()));
             return temp.unpack();
         }
+
     }
 
     private class GetSize extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             LuaTable temp = new LuaTable();
@@ -297,13 +313,16 @@ public class GuiRect implements Drawable, Moveable {
             temp.set(2, LuaValue.valueOf(getHei()));
             return temp.unpack();
         }
+
     }
 
     private class GetShade extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return shade.toLuaValue(AdvancedMacros.COLOR_SPACE_IS_255);
         }
+
     }
 
     public static LuaTable getDefaultColorScheme() {
@@ -317,7 +336,7 @@ public class GuiRect implements Drawable, Moveable {
 
     //public int opacity = 255;
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui gui, int mouseX, int mouseY, float partialTicks) {
+    public void onDraw(DrawContext drawContext, Gui gui, int mouseX, int mouseY, float partialTicks) {
         //scale(GuiAnimation.map(scaleAnimation.doInterpolate(), 0, 1, 1, 1.2)); //map p from [0,1] to [1,1.5]
         //doOpacity();
         if (!isVisible) {
@@ -327,9 +346,9 @@ public class GuiRect implements Drawable, Moveable {
         //System.out.println(fill);
         if (doAnimation) {
             scale(scale);
-            gui.drawBoxedRectangle(matrixStack, drawX, drawY, drawWid, drawHei, frame.toInt(), fill.toInt());
+            gui.drawBoxedRectangle(drawContext, drawX, drawY, drawWid, drawHei, frame.toInt(), fill.toInt());
         } else {
-            gui.drawBoxedRectangle(matrixStack, x, y, wid, hei, frame.toInt(), fill.toInt());
+            gui.drawBoxedRectangle(drawContext, x, y, wid, hei, frame.toInt(), fill.toInt());
         }
     }
 
@@ -390,4 +409,5 @@ public class GuiRect implements Drawable, Moveable {
     public Color getFill() {
         return fill;
     }
+
 }

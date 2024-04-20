@@ -4,7 +4,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
 import net.minecraft.world.chunk.Chunk;
-
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -14,6 +13,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 public class LightAt {
 
     public static class AllLight extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             BlockPos pos = null;
@@ -37,9 +37,11 @@ public class LightAt {
             t.set(3, LuaValue.valueOf(block));
             return t.unpack();
         }
+
     }
 
     public static class BlockLight extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             BlockPos pos = null;
@@ -54,9 +56,11 @@ public class LightAt {
             //TESTME new chunk grabbing method, math needs checking just to be sure
             return LuaValue.valueOf(getBlockLight(c, pos));
         }
+
     }
 
     public static class SkyLight extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             BlockPos pos = null;
@@ -71,6 +75,7 @@ public class LightAt {
             //TESTME new chunk grabbing method, math needs checking just to be sure
             return LuaValue.valueOf(getSkyLight(c, pos));
         }
+
     }
 
     private static int getBlockLight(Chunk c, BlockPos p) {

@@ -1,38 +1,5 @@
 package com.theincgi.advancedmacros.event;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.AbstractCommandBlockScreen;
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
-import net.minecraft.client.gui.screen.ingame.AnvilScreen;
-import net.minecraft.client.gui.screen.ingame.BeaconScreen;
-import net.minecraft.client.gui.screen.ingame.BookEditScreen;
-import net.minecraft.client.gui.screen.ingame.BrewingStandScreen;
-import net.minecraft.client.gui.screen.ingame.CraftingScreen;
-import net.minecraft.client.gui.screen.ingame.EnchantmentScreen;
-import net.minecraft.client.gui.screen.ingame.FurnaceScreen;
-import net.minecraft.client.gui.screen.ingame.Generic3x3ContainerScreen;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-import net.minecraft.client.gui.screen.ingame.HopperScreen;
-import net.minecraft.client.gui.screen.ingame.HorseScreen;
-import net.minecraft.client.gui.screen.ingame.MerchantScreen;
-import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
-import net.minecraft.client.gui.screen.ingame.SignEditScreen;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.client.sound.SoundInstanceListener;
-import net.minecraft.client.sound.WeightedSoundSet;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.dimension.DimensionType;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.AdvancedMacros;
@@ -49,6 +16,24 @@ import com.theincgi.advancedmacros.lua.LuaDebug;
 import com.theincgi.advancedmacros.lua.functions.GuiControls;
 import com.theincgi.advancedmacros.misc.HIDUtils;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.*;
+import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.sound.SoundInstance;
+import net.minecraft.client.sound.SoundInstanceListener;
+import net.minecraft.client.sound.WeightedSoundSet;
+import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.dimension.DimensionType;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
@@ -64,6 +49,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EventHandler {
+
     int lastAir, lastHealth,
             lastItemDurablity, lastHotbar, lastHunger;
     boolean playerWasNull = true, lastSleepingState = false;
@@ -840,7 +826,7 @@ public class EventHandler {
     public class SoundListener implements SoundInstanceListener {
 
         @Override
-        public void onSoundPlayed(SoundInstance sound, WeightedSoundSet soundSet) {
+        public void onSoundPlayed(SoundInstance sound, WeightedSoundSet soundSet, float range) {
             LuaTable event = createEvent(EventName.Sound);
             event.set(3, sound.getX() + " " + sound.getY() + " " + sound.getZ());
 
@@ -886,6 +872,7 @@ public class EventHandler {
             fireEvent(EventName.Sound, event);
 
         }
+
     }
 
     public void onEntityRenderPre(MatrixStack matrixStack, LivingEntity entity) {
@@ -1169,7 +1156,7 @@ public class EventHandler {
         RenderSystem.disableBlend();//F1 is black otherwise
     }
 
-    public void afterOverlay(MatrixStack matrixStack) {
+    public void afterOverlay(DrawContext drawContext) {
         float p = MinecraftClient.getInstance().getTickDelta();
         //Entity player = MinecraftClient.getInstance().player;
 
@@ -1182,7 +1169,7 @@ public class EventHandler {
         synchronized (hud2DItems) {
             for (Hud2DItem hudItem : hud2DItems) {
                 RenderSystem.setShaderColor(1, 1, 1, hudItem.getOpacity() / 255f);
-                hudItem.render(matrixStack, p);
+                hudItem.render(drawContext, p);
             }
         }
         RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -1344,6 +1331,7 @@ public class EventHandler {
     }
 
     private class Look {
+
         float fromYaw, fromPitch;
         float toYaw, toPitch;
         long time, start;
@@ -1398,9 +1386,11 @@ public class EventHandler {
             float u = (f - t) / 2;
             return u * MathHelper.cos((float) ((x * Math.PI) / time)) - u + f;
         }
+
     }
 
     private class HeldKeybinds {
+
         InputUtil.Key input;
         long releaseTime;
         boolean done = false; //removal flag
@@ -1442,6 +1432,7 @@ public class EventHandler {
     }
 
     public static class RenderFlags {
+
         private boolean xray = false;
         private boolean glow = false;
         private boolean changed = false;
@@ -1462,5 +1453,7 @@ public class EventHandler {
         public boolean isChanged() {
             return changed;
         }
+
     }
+
 }

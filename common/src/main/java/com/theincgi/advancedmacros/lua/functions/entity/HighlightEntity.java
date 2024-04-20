@@ -1,15 +1,15 @@
 package com.theincgi.advancedmacros.lua.functions.entity;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.event.EventHandler.RenderFlags;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.ThreeArgFunction;
 
 public class HighlightEntity extends ThreeArgFunction {
+
     @Override
     public LuaValue call(LuaValue arg, LuaValue action, LuaValue active) {
         Entity e = MinecraftClient.getInstance().world.getEntityById(arg.checkint());
@@ -35,4 +35,5 @@ public class HighlightEntity extends ThreeArgFunction {
 
         return NONE;
     }
+
 }

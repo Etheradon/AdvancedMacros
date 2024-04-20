@@ -1,21 +1,21 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.access.ITextFieldWidget;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.misc.HIDUtils;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
 public class MCTextBar extends ScriptGuiElement {
+
     TextFieldWidget textField;
 
     public MCTextBar(Gui gui, Group parent) {
@@ -53,13 +53,13 @@ public class MCTextBar extends ScriptGuiElement {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-        super.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+        super.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
         if (!visible) {
             return;
         }
 
-        textField.render(matrixStack, mouseX, mouseY, partialTicks);
+        textField.render(drawContext, mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -83,6 +83,7 @@ public class MCTextBar extends ScriptGuiElement {
     }
 
     public class TextFieldOp extends VarArgFunction {
+
         Op op;
 
         public TextFieldOp(Op op) {
@@ -105,7 +106,7 @@ public class MCTextBar extends ScriptGuiElement {
                 case maxStrLen:
                     return LuaValue.valueOf(((ITextFieldWidget) textField).am_getMaxLength());
                 case setCursorPos:
-                    textField.setCursor(args.arg1().checkint());
+                    textField.setCursor(args.arg1().checkint(), false);
                     return NONE;
                 case setDisabledTxtColor:
                     textField.setUneditableColor(Utils.parseColor(args, AdvancedMacros.COLOR_SPACE_IS_255).toInt());
@@ -114,7 +115,7 @@ public class MCTextBar extends ScriptGuiElement {
                     textField.setEditable(args.arg1().checkboolean());
                     return NONE;
                 case setFocused:
-                    textField.changeFocus(args.arg1().checkboolean());
+                    textField.setFocused(args.arg1().checkboolean());
                     return NONE;
                 case setMaxStrLen:
                     textField.setMaxLength(args.arg1().checkint());
@@ -135,6 +136,7 @@ public class MCTextBar extends ScriptGuiElement {
                     throw new LuaError("Unimplemented");
             }
         }
+
     }
 
     public static enum Op {
@@ -162,7 +164,7 @@ public class MCTextBar extends ScriptGuiElement {
 
     @Override
     public void setX(int x) {
-        textField.x = x;
+        textField.setX(x);
     }
 
     @Override
@@ -172,13 +174,13 @@ public class MCTextBar extends ScriptGuiElement {
 
     @Override
     public void setY(int y) {
-        textField.y = y;
+        textField.setY(y);
     }
 
     @Override
     public void setPos(int x, int y) {
-        textField.x = x;
-        textField.y = y;
+        textField.setX(x);
+        textField.setY(y);
     }
 
     @Override
@@ -188,12 +190,12 @@ public class MCTextBar extends ScriptGuiElement {
 
     @Override
     public int getX() {
-        return textField.x;
+        return textField.getX();
     }
 
     @Override
     public int getY() {
-        return textField.y;
+        return textField.getY();
     }
 
     @Override
@@ -202,7 +204,7 @@ public class MCTextBar extends ScriptGuiElement {
             if (onMouseClick != null) {
                 Utils.pcall(onMouseClick, LuaValue.valueOf(x), LuaValue.valueOf(y), LuaValue.valueOf(buttonNum));
             }
-            textField.changeFocus(true);
+            textField.setFocused(true);
             return true;
         }
         return false;

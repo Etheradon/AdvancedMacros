@@ -91,4 +91,5 @@ public class MidiDeviceControl extends LuaTable {
 
         }
     }
+
 }

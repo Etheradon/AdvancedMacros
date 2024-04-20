@@ -1,9 +1,8 @@
 package com.theincgi.advancedmacros.mixin.events;
 
+import com.theincgi.advancedmacros.AdvancedMacros;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-
-import com.theincgi.advancedmacros.AdvancedMacros;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

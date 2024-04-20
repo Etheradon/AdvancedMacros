@@ -1,7 +1,10 @@
 package com.theincgi.advancedmacros.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.theincgi.advancedmacros.gui.elements.Drawable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.BufferBuilder;
@@ -12,10 +15,7 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Matrix4f;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.theincgi.advancedmacros.gui.elements.Drawable;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Gui extends Screen implements ParentElement {
+
     TextRenderer fontRend = MinecraftClient.getInstance().textRenderer;
     //private LinkedList<KeyTime> heldKeys = new LinkedList<>();
     private HashMap<Integer, Long> keyRepeatDelay = new HashMap<>();
@@ -52,41 +53,41 @@ public class Gui extends Screen implements ParentElement {
         super.client = MinecraftClient.getInstance();
     }
 
-    public void drawHorizontalLine(MatrixStack matrixStack, int startX, int endX, int y, int color) {
-        super.drawHorizontalLine(matrixStack, startX, endX, y, color);
+    public void drawHorizontalLine(DrawContext drawContext, int startX, int endX, int y, int color) {
+        drawContext.drawHorizontalLine(startX, endX, y, color);
     }
 
-    public void drawVerticalLine(MatrixStack matrixStack, int x, int startY, int endY, int color) {
-        super.drawVerticalLine(matrixStack, x, startY, endY, color);
+    public void drawVerticalLine(DrawContext drawContext, int x, int startY, int endY, int color) {
+        drawContext.drawVerticalLine(x, startY, endY, color);
     }
 
-    public static void drawBoxedRectangle(MatrixStack matrixStack, int x, int y, int w, int h, int boarderW, int frame, int fill) {
-        fill(matrixStack, x, y, x + w + 1, y + h + 1, frame);
-        fill(matrixStack, x + boarderW, y + boarderW, x + w - boarderW + 1, y + h - boarderW + 1, fill);
+    public static void drawBoxedRectangle(DrawContext drawContext, int x, int y, int w, int h, int boarderW, int frame, int fill) {
+        drawContext.fill(x, y, x + w + 1, y + h + 1, frame);
+        drawContext.fill(x + boarderW, y + boarderW, x + w - boarderW + 1, y + h - boarderW + 1, fill);
     }
 
-    public void drawBoxedRectangle(MatrixStack matrixStack, int x, int y, int w, int h, int frame, int fill) {
-        fill(matrixStack, x, y, x + w + 1, y + h + 1, fill);
-        drawHollowRect(matrixStack, x, y, w, h, frame);
+    public void drawBoxedRectangle(DrawContext drawContext, int x, int y, int w, int h, int frame, int fill) {
+        drawContext.fill(x, y, x + w + 1, y + h + 1, fill);
+        drawHollowRect(drawContext, x, y, w, h, frame);
     }
 
-    private void drawHollowRect(MatrixStack matrixStack, int x, int y, int w, int h, int col) {
-        drawHorizontalLine(matrixStack, x, x + w, y, col);
-        drawHorizontalLine(matrixStack, x, x + w, y + h, col);
-        drawVerticalLine(matrixStack, x, y, y + h, col);
-        drawVerticalLine(matrixStack, x + w, y, y + h, col);
+    private void drawHollowRect(DrawContext drawContext, int x, int y, int w, int h, int col) {
+        drawHorizontalLine(drawContext, x, x + w, y, col);
+        drawHorizontalLine(drawContext, x, x + w, y + h, col);
+        drawVerticalLine(drawContext, x, y, y + h, col);
+        drawVerticalLine(drawContext, x + w, y, y + h, col);
     }
 
     /**
      * returns next x to use in this for multiColoring
      */
-    public int drawMonospaceString(MatrixStack matrixStack, String str, int x, int y, int color) {
+    public int drawMonospaceString(DrawContext drawContext, String str, int x, int y, int color) {
         TextRenderer fr = getFontRend();
         int cWid = (int) ((8f / 12) * fr.fontHeight);
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             float offset = cWid / 2 - fr.getWidth(String.valueOf(c)) / 2;
-            fr.draw(matrixStack, c + "", x + offset + cWid * i, y, color);
+            drawContext.drawText(fr, c + "", (int) (x + offset + cWid * i), y, color, false);
         }
         return cWid * str.length() + x;
     }
@@ -191,7 +192,7 @@ public class Gui extends Screen implements ParentElement {
     private Window mainWindow;
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
         if (mainWindow == null) {
             mainWindow = MinecraftClient.getInstance().getWindow();
         }
@@ -229,7 +230,7 @@ public class Gui extends Screen implements ParentElement {
         }
 
         if (drawDefaultBackground) {
-            renderBackground(matrixStack); //prev default bg
+            renderBackground(drawContext, mouseX, mouseY, partialTicks); //prev default bg
         }
 
         if (MinecraftClient.getInstance().currentScreen == this) { //do not steal the child gui's events!
@@ -266,17 +267,19 @@ public class Gui extends Screen implements ParentElement {
                 //RenderSystem.disableBlend();
                 //RenderSystem.enableColorMaterial();
 
-                drawable.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
+                drawable.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
             }
         }
         if (drawLast != null) {
-            drawLast.onDraw(matrixStack, this, mouseX, mouseY, partialTicks);
+            drawLast.onDraw(drawContext, this, mouseX, mouseY, partialTicks);
         }
     }
 
-    public void drawImage(MatrixStack matrixStack, Identifier texture, int x, int y, int wid, int hei, float uMin, float vMin, float uMax, float vMax) {
+    public void drawImage(DrawContext drawContext, Identifier texture, int x, int y, int wid, int hei, float uMin, float vMin, float uMax, float vMax) {
+        MatrixStack matrixStack = drawContext.getMatrices();
+
         matrixStack.push();
-        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, texture);
@@ -296,18 +299,18 @@ public class Gui extends Screen implements ParentElement {
         RenderSystem.disableBlend();
     }
 
-    public static void drawPixel(MatrixStack matrixStack, int x, int y, int color) {
-        fill(matrixStack, x, y, x + 1, y + 1, color);
+    public static void drawPixel(DrawContext drawContext, int x, int y, int color) {
+        drawContext.fill(x, y, x + 1, y + 1, color);
     }
 
     @Override
-    public boolean mouseScrolled(double x, double y, double i) {
-        if (firstSubsciber != null && firstSubsciber.onScroll(this, i)) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        if (firstSubsciber != null && firstSubsciber.onScroll(this, verticalAmount)) {
             return true;
         }
         synchronized (inputSubscribers) {
             for (InputSubscriber inputSubscriber : inputSubscribers) {
-                if (inputSubscriber.onScroll(this, i)) {
+                if (inputSubscriber.onScroll(this, verticalAmount)) {
                     return true;
                 }
             }
@@ -350,9 +353,9 @@ public class Gui extends Screen implements ParentElement {
         return fontRend;
     }
 
-    public void drawCenteredString(MatrixStack matrixStack, TextRenderer TextRendererIn, String text, int x, int y, int color) {
+    public void drawCenteredString(DrawContext drawContext, TextRenderer TextRendererIn, String text, int x, int y, int color) {
         int wid = fontRend.getWidth(text);
-        TextRendererIn.draw(matrixStack, text, x - wid / 2, y - fontRend.fontHeight / 2, color);//, false);
+        drawContext.drawText(TextRendererIn, text, x - wid / 2, y - fontRend.fontHeight / 2, color, false);//, false);
     }
 
     @Override
@@ -408,12 +411,15 @@ public class Gui extends Screen implements ParentElement {
     }
 
     public static interface Focusable {
+
         public boolean isFocused();
 
         public void setFocused(boolean f);
+
     }
 
     public static interface InputSubscriber {
+
         /**
          * @param i scroll amount
          */
@@ -520,4 +526,5 @@ public class Gui extends Screen implements ParentElement {
     public boolean onScroll(Gui gui, double i) {
         return false;
     }
+
 }

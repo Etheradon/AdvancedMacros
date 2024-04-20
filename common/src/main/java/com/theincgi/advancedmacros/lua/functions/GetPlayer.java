@@ -1,5 +1,9 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.google.common.util.concurrent.ListenableFuture;
+import com.theincgi.advancedmacros.AdvancedMacros;
+import com.theincgi.advancedmacros.event.TaskDispatcher;
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -10,11 +14,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-
-import com.google.common.util.concurrent.ListenableFuture;
-import com.theincgi.advancedmacros.AdvancedMacros;
-import com.theincgi.advancedmacros.event.TaskDispatcher;
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaFunction;
 import org.luaj.vm2_v3_0_1.LuaTable;
@@ -45,7 +44,7 @@ public class GetPlayer extends OneArgFunction {
             return Utils.itemStackToLuatable(player.getOffHandStack());
         }));
         playerFunctions.set("getDimension", new PlayerValueFunction("getDimension", player -> {
-            return Utils.toTable(player.world.getDimension());
+            return Utils.toTable(player.getWorld().getDimension());
         }));
         playerFunctions.set("getPitch", new PlayerValueFunction("getPitch", player -> {
             return valueOf(MathHelper.wrapDegrees(player.getPitch()));
@@ -151,9 +150,6 @@ public class GetPlayer extends OneArgFunction {
         playerFunctions.set("isImmuneToFire", new PlayerValueFunction("isImmuneToFire", player -> {
             return valueOf(player.isFireImmune());
         }));
-        playerFunctions.set("isImmuneToExplosion", new PlayerValueFunction("isImmuneToExplosion", player -> {
-            return valueOf(player.isImmuneToExplosion());
-        }));
         playerFunctions.set("isEyltraFlying", new PlayerValueFunction("isEyltraFlying", player -> {
             return valueOf(player.isFallFlying());
         }));
@@ -223,7 +219,7 @@ public class GetPlayer extends OneArgFunction {
             return valueOf(player.isGlowing());
         }));
         playerFunctions.set("isInBubbleColumn", new PlayerValueFunction("isInBubbleColumn", player -> {
-            return valueOf(player.world.getBlockState(player.getBlockPos()).getBlock() == Blocks.BUBBLE_COLUMN);
+            return valueOf(player.getWorld().getBlockState(player.getBlockPos()).getBlock() == Blocks.BUBBLE_COLUMN);
         }));
         playerFunctions.set("isPassenger", new PlayerValueFunction("isPassenger", player -> {
             return valueOf(player.hasVehicle());
@@ -307,7 +303,7 @@ public class GetPlayer extends OneArgFunction {
                 t.set("invSlot", ((ClientPlayerEntity) player).getInventory().selectedSlot + 1);
             }
 
-            t.set("dimension", Utils.toTable(player.world.getDimension()));
+            t.set("dimension", Utils.toTable(player.getWorld().getDimension()));
             t.set("pitch", MathHelper.wrapDegrees(player.getPitch()));//player.rotationPitch);
             t.set("yaw", MathHelper.wrapDegrees(player.getYaw()));//player.rotationYawHead);
             //t.set("exp", player.experience);
@@ -350,7 +346,6 @@ public class GetPlayer extends OneArgFunction {
             t.set("isInWater", LuaValue.valueOf(player.isTouchingWater()));
             t.set("isInLava", LuaValue.valueOf(player.isInLava()));
             t.set("immuneToFire", LuaValue.valueOf(player.isOnFire()));
-            t.set("isImmuneToExplosion", LuaValue.valueOf(player.isImmuneToExplosion()));
             t.set("isEyltraFlying", LuaValue.valueOf(player.isFallFlying()));
             t.set("isOnFire", LuaValue.valueOf(player.isOnFire()));
             t.set("isSprinting", LuaValue.valueOf(player.isSprinting()));
@@ -411,6 +406,7 @@ public class GetPlayer extends OneArgFunction {
     }
 
     private static class PlayerValueFunction extends VarArgFunction {
+
         private boolean threadSensitive = false;
         private final Function<PlayerEntity, Varargs> get;
         private final String fName;
@@ -454,6 +450,7 @@ public class GetPlayer extends OneArgFunction {
         public String toString() {
             return "function " + fName + "([String: playerName])";
         }
+
     }
 
 }

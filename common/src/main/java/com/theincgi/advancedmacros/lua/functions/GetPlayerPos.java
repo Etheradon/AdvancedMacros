@@ -1,11 +1,10 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.theincgi.advancedmacros.event.EventHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-
-import com.theincgi.advancedmacros.event.EventHandler;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
@@ -14,6 +13,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import java.util.List;
 
 public class GetPlayerPos extends VarArgFunction {
+
     @Override
     public Varargs invoke(Varargs args) {
 
@@ -55,4 +55,5 @@ public class GetPlayerPos extends VarArgFunction {
             return t.unpack();
         }
     }
+
 }

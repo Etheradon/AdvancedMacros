@@ -1,12 +1,5 @@
 package com.theincgi.advancedmacros.hud.hud3D;
 
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Matrix4f;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.gui.Color;
@@ -14,6 +7,12 @@ import com.theincgi.advancedmacros.lua.LuaValTexture;
 import com.theincgi.advancedmacros.misc.CallableTable;
 import com.theincgi.advancedmacros.misc.Settings;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
+import org.joml.Matrix4f;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
@@ -22,6 +21,7 @@ import org.luaj.vm2_v3_0_1.lib.TwoArgFunction;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
 public class Hud3DPane extends WorldHudItem {
+
     LuaValTexture texture;
     float uMin = 0, uMax = 1, vMin = 0, vMax = 1, width = 1, length = 1;
     AxisFace axisFace;
@@ -194,22 +194,27 @@ public class Hud3DPane extends WorldHudItem {
     }
 
     private class SetWidth extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             setWidth((float) arg.checkdouble());
             return LuaValue.NONE;
         }
+
     }
 
     private class setLength extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             setLength((float) arg.checkdouble());
             return LuaValue.NONE;
         }
+
     }
 
     private class ChangeTexture extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg, LuaValue optSide) {
             texture = Utils.parseTexture(arg);
@@ -218,9 +223,11 @@ public class Hud3DPane extends WorldHudItem {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private class SetUV extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             if (args.narg() < 4) {
@@ -229,26 +236,32 @@ public class Hud3DPane extends WorldHudItem {
             setUV((float) args.arg(1).checkdouble(), (float) args.arg(2).checkdouble(), (float) args.arg(3).checkdouble(), (float) args.arg(4).checkdouble());
             return LuaValue.NONE;
         }
+
     }
 
     private class setColor extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue color, LuaValue optSide) {
             Color c = Utils.parseColor(color, AdvancedMacros.COLOR_SPACE_IS_255);
             Hud3DPane.this.color = c;
             return NONE;
         }
+
     }
 
     private class GetColor extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue optside) {
             boolean use = AdvancedMacros.COLOR_SPACE_IS_255;
             return color.toLuaValue(use);
         }
+
     }
 
     private class setSize extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue w, LuaValue l) {
             Hud3DPane.this.width = (float) w.checkdouble();
@@ -262,4 +275,5 @@ public class Hud3DPane extends WorldHudItem {
     public void changeTexture(LuaValue arg) {
         texture = Utils.parseTexture(arg);
     }
+
 }

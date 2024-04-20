@@ -8,9 +8,11 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class HID {
+
     public static final String TYPE_KEYBOARD = "keyboard", TYPE_MOUSE = "mouse", TYPE_GAMEPAD = "gamepad", TYPE_JOYSTICK = "joystick";
 
     public static class GetHIDTypes extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             LuaTable t = new LuaTable();
@@ -20,10 +22,12 @@ public class HID {
             t.set(4, TYPE_JOYSTICK);
             return t;
         }
+
     }
 
     //TODO isCtrl isShift isAlt
     public static class GetHIDState extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             LuaTable out = new LuaTable();
@@ -59,5 +63,7 @@ public class HID {
             }
             return out;
         }
+
     }
+
 }

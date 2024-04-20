@@ -1,9 +1,8 @@
 package com.theincgi.advancedmacros.hud.hud2D;
 
-import net.minecraft.client.MinecraftClient;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.misc.CallableTable;
+import net.minecraft.client.MinecraftClient;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -11,6 +10,7 @@ import org.luaj.vm2_v3_0_1.Varargs;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
 public class Hud2D extends LuaTable {
+
     public Hud2D() {
         //this.set("newProgressBar", new Hud2D_ProgressBar());
 
@@ -21,6 +21,7 @@ public class Hud2D extends LuaTable {
     }
 
     private class DoOp extends VarArgFunction {
+
         Hud2DOpCode code;
 
         public DoOp(Hud2DOpCode code) {
@@ -85,6 +86,7 @@ public class Hud2D extends LuaTable {
                     throw new LuaError("Unimplemented method " + code);
             }
         }
+
     }
 
     private enum Hud2DOpCode {
@@ -114,4 +116,5 @@ public class Hud2D extends LuaTable {
             }
         }
     }
+
 }

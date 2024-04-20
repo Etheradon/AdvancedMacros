@@ -1,5 +1,11 @@
 package com.theincgi.advancedmacros.misc;
 
+import com.google.common.util.concurrent.ListenableFuture;
+import com.theincgi.advancedmacros.AdvancedMacros;
+import com.theincgi.advancedmacros.event.TaskDispatcher;
+import com.theincgi.advancedmacros.lua.LuaValTexture;
+import com.theincgi.advancedmacros.lua.ProtectedLuaTable;
+import com.theincgi.advancedmacros.lua.functions.MinecraftSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
@@ -7,13 +13,6 @@ import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
-
-import com.google.common.util.concurrent.ListenableFuture;
-import com.theincgi.advancedmacros.AdvancedMacros;
-import com.theincgi.advancedmacros.event.TaskDispatcher;
-import com.theincgi.advancedmacros.lua.LuaValTexture;
-import com.theincgi.advancedmacros.lua.ProtectedLuaTable;
-import com.theincgi.advancedmacros.lua.functions.MinecraftSettings;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
@@ -31,6 +30,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 public class Settings {
+
     private static final File SETTINGS_FILE = new File(AdvancedMacros.MACROS_ROOT_FOLDER, "settings.txt");
     public static LuaTable settings = new LuaTable();
     private static final ProtectedLuaTable TEXTURES = new ProtectedLuaTable();
@@ -221,10 +221,12 @@ public class Settings {
     }
 
     public static class GetSettings extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return settings;
         }
+
     }
 
     private static void loadTable(Scanner s, LuaTable t, HashMap<Integer, LuaTable> tables) {
@@ -298,6 +300,7 @@ public class Settings {
     }
 
     private static class IntPointer {
+
         int i = 0;
 
         public int getI() {
@@ -313,6 +316,7 @@ public class Settings {
         public String toString() {
             return i + "";
         }
+
     }
 
     private static void saveTable(PrintWriter pw, LuaTable t, IntPointer tblID, LinkedList<LuaTable> tables, int indent) {
@@ -415,6 +419,7 @@ public class Settings {
     }
 
     public static class Save extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             save();
@@ -423,9 +428,11 @@ public class Settings {
             }
             return LuaValue.NIL;
         }
+
     }
 
     public static class Load extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             try {
@@ -436,6 +443,7 @@ public class Settings {
             }
             return LuaValue.TRUE;
         }
+
     }
 
 }

@@ -1,9 +1,10 @@
 package com.theincgi.advancedmacros.gui.elements;
 
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.gui.Gui;
+import net.minecraft.client.gui.DrawContext;
 
 public interface Drawable {
-    void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks);
+
+    void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks);
+
 }

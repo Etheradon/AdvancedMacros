@@ -1,12 +1,11 @@
 package com.theincgi.advancedmacros.lua;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.misc.CallableTable;
 import com.theincgi.advancedmacros.misc.Pair;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -19,6 +18,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 
 public class LuaFunctions {
+
     public static Dictionary<Character, String> chatColors = new Hashtable<>();
 
     static {
@@ -42,6 +42,7 @@ public class LuaFunctions {
     }
 
     public static class Sleep extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue time) {
             try {
@@ -50,15 +51,18 @@ public class LuaFunctions {
             }
             return LuaValue.NONE;
         }
+
     }
 
     public static class Say extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
-            MinecraftClient.getInstance().player.sendChatMessage(arg.tojstring());
+            MinecraftClient.getInstance().getNetworkHandler().sendChatMessage(arg.tojstring());
             MinecraftClient.getInstance().inGameHud.getChatHud().addToMessageHistory(arg.tojstring());
             return LuaValue.NONE;
         }
+
     }
 
     public static class Log extends VarArgFunction {
@@ -157,6 +161,7 @@ public class LuaFunctions {
             return out;
 
         }
+
     }
 
     public static String formatTableForLog(LuaTable t) {
@@ -237,6 +242,7 @@ public class LuaFunctions {
     }
 
     public static class Debug extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             System.out.println("LUA DEBUG: " + arg0.tojstring());

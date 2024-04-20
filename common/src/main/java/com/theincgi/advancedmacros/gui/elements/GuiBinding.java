@@ -1,8 +1,5 @@
 package com.theincgi.advancedmacros.gui.elements;
 
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.event.EventHandler;
 import com.theincgi.advancedmacros.event.EventHandler.EventName;
@@ -18,6 +15,7 @@ import com.theincgi.advancedmacros.misc.HIDUtils.Keyboard;
 import com.theincgi.advancedmacros.misc.HIDUtils.Mouse;
 import com.theincgi.advancedmacros.misc.Settings;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
@@ -25,6 +23,7 @@ import java.io.File;
 import java.util.LinkedList;
 
 public class GuiBinding implements Moveable, Drawable, InputSubscriber, IBinding {
+
     //[enable] [key/event] [detail]  [script] [edit] [move:up/down] [remove]
     //move by drag
     //needs a drag grid tool
@@ -424,22 +423,22 @@ public class GuiBinding implements Moveable, Drawable, InputSubscriber, IBinding
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui gui, int mouseX, int mouseY, float partialTicks) {
+    public void onDraw(DrawContext drawContext, Gui gui, int mouseX, int mouseY, float partialTicks) {
         if (!isVisible) {
             return;
         }
-        DrawableHelper.fill(matrixStack, x, y, x + fullWid, y + 12, Color.BLACK.toInt());
-        removeButton.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
-        enableButton.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
-        modeButton.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
-        eventSelector.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
-        pickScript.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
-        editButton.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
-        moveButton.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
+        drawContext.fill(x, y, x + fullWid, y + 12, Color.BLACK.toInt());
+        removeButton.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
+        enableButton.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
+        modeButton.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
+        eventSelector.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
+        pickScript.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
+        editButton.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
+        moveButton.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
 
-        gui.getFontRend().draw(matrixStack, shortScriptName(script), eventSelector.getX() + eventSelector.getItemWidth() + 2, eventSelector.getY() + 3, Color.WHITE.toInt());//TODO customizeable color
-        gui.drawHorizontalLine(matrixStack, x, x + fullWid, y, Color.WHITE.toInt());
-        gui.drawHorizontalLine(matrixStack, x, x + fullWid, y + 12, Color.WHITE.toInt());
+        drawContext.drawText(gui.getFontRend(), shortScriptName(script), eventSelector.getX() + eventSelector.getItemWidth() + 2, eventSelector.getY() + 3, Color.WHITE.toInt(), false);//TODO customizeable color
+        gui.drawHorizontalLine(drawContext, x, x + fullWid, y, Color.WHITE.toInt());
+        gui.drawHorizontalLine(drawContext, x, x + fullWid, y + 12, Color.WHITE.toInt());
     }
 
     private String shortScriptName(String script2) {
@@ -713,4 +712,5 @@ public class GuiBinding implements Moveable, Drawable, InputSubscriber, IBinding
     public Drawable getDrawableElement() {
         return this;
     }
+
 }

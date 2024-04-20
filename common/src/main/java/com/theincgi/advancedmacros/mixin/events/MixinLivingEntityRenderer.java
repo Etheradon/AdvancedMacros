@@ -1,11 +1,10 @@
 package com.theincgi.advancedmacros.mixin.events;
 
+import com.theincgi.advancedmacros.AdvancedMacros;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-
-import com.theincgi.advancedmacros.AdvancedMacros;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

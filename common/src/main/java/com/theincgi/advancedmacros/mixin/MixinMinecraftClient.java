@@ -1,9 +1,8 @@
 package com.theincgi.advancedmacros.mixin;
 
-import net.minecraft.client.MinecraftClient;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.access.IMinecraftClient;
+import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient implements IMinecraftClient {
+
     @Shadow
     protected abstract boolean doAttack();
 
@@ -48,4 +48,5 @@ public abstract class MixinMinecraftClient implements IMinecraftClient {
     public Thread am_getThread() {
         return thread;
     }
+
 }

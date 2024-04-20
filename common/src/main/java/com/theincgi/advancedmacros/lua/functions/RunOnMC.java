@@ -11,6 +11,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import java.util.concurrent.ExecutionException;
 
 public class RunOnMC extends VarArgFunction {
+
     public RunOnMC() {
     }
 
@@ -35,4 +36,5 @@ public class RunOnMC extends VarArgFunction {
             throw new LuaError(e.getCause());
         }
     }
+
 }

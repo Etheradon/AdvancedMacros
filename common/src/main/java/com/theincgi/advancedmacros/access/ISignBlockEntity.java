@@ -4,6 +4,8 @@ import net.minecraft.text.Text;
 
 public interface ISignBlockEntity {
 
-    Text[] am_getLines();
+    Text[] am_getFrontLines();
+
+    Text[] am_getBackLines();
 
 }

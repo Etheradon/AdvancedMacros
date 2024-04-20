@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class TaskDispatcher {
+
     private static ConcurrentLinkedQueue<CallableTask<?>> callableTasks = new ConcurrentLinkedQueue<>();
     private static ConcurrentLinkedQueue<RunnableTask> runnableTasks = new ConcurrentLinkedQueue<>();
     private static ArrayList<DelayedTask<?>> delayedTasks = new ArrayList<>();
@@ -23,6 +24,7 @@ public class TaskDispatcher {
     }
 
     private static class DelayedTask<Z> {
+
         private Object task;
 
         public DelayedTask(Callable<Z> t, long exTime) {
@@ -49,6 +51,7 @@ public class TaskDispatcher {
         public long getExecutionTime() {
             return executionTime;
         }
+
     }
 
     public static <T> ListenableFuture<T> delayTask(Callable<T> c, long millis) {
@@ -139,6 +142,7 @@ public class TaskDispatcher {
     }
 
     private static class CallableTask<U> {
+
         Callable<U> c;
         LF future;
         boolean isDone = false;
@@ -235,9 +239,11 @@ public class TaskDispatcher {
                 future.markDone(null);
             }
         }
+
     }
 
     private static class RunnableTask {
+
         Runnable r;
         LF future;
         boolean isDone = false;
@@ -313,6 +319,7 @@ public class TaskDispatcher {
                     }
                 }
             }
+
         }
 
         public RunnableTask(Runnable r) {
@@ -329,6 +336,7 @@ public class TaskDispatcher {
                 future.markDone();
             }
         }
+
     }
 
 }

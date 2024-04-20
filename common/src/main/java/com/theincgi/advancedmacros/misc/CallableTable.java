@@ -1,14 +1,13 @@
 package com.theincgi.advancedmacros.misc;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.resource.Resource;
-import net.minecraft.util.Identifier;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.theincgi.advancedmacros.AdvancedMacros;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
 import org.luaj.vm2_v3_0_1.LuaFunction;
 import org.luaj.vm2_v3_0_1.LuaString;
 import org.luaj.vm2_v3_0_1.LuaTable;
@@ -23,6 +22,7 @@ import java.util.Optional;
 import java.util.WeakHashMap;
 
 public class CallableTable extends LuaTable {
+
     public static final String LUA_FUNCTION_KEY = "luaFunction",
             DEFINITION = "definition",
             TOOLTIP = "tooltip",
@@ -209,7 +209,7 @@ public class CallableTable extends LuaTable {
     }
 
     public static String getCurrentLanguage() {
-        return MinecraftClient.getInstance().getLanguageManager().getLanguage().getCode(); //TESTME for tooltips
+        return MinecraftClient.getInstance().getLanguageManager().getLanguage(); //TESTME for tooltips
     }
 
     public static JsonObject getDocJson() {
@@ -248,6 +248,7 @@ public class CallableTable extends LuaTable {
     }
 
     private static final class SelfRemover extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             if (args.arg1() instanceof CallableTable) {
@@ -267,5 +268,7 @@ public class CallableTable extends LuaTable {
         public String tojstring() {
             return toString();
         }
+
     }
+
 }

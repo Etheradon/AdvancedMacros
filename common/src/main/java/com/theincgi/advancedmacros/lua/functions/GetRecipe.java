@@ -1,19 +1,19 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.theincgi.advancedmacros.misc.CallableTable;
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.util.registry.Registry;
-
-import com.theincgi.advancedmacros.misc.CallableTable;
-import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.registry.Registries;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 
 public class GetRecipe extends CallableTable {
+
     public static final String GUI_NAME = "guiName";
 
     public GetRecipe() {
@@ -23,14 +23,14 @@ public class GetRecipe extends CallableTable {
             public LuaValue call(LuaValue arg) {
                 LuaTable types = new LuaTable();
                 MinecraftClient.getInstance().world.getRecipeManager().values().forEach(r -> {
-                    LuaValue v = types.get(r.getType().toString()); //holds recipes of some type, like furnace recpies
+                    LuaValue v = types.get(r.value().getType().toString()); //holds recipes of some type, like furnace recpies
                     if (v.isnil()) {
-                        types.set(r.getType().toString(), v = new LuaTable());
+                        types.set(r.value().getType().toString(), v = new LuaTable());
                     }
-                    if (arg.isnil() || Registry.ITEM.getId(r.getOutput().getItem()).toString().contains(arg.checkjstring())) { //no search item
-                        ItemStack output = r.getOutput();
+                    if (arg.isnil() || Registries.ITEM.getId(r.value().getResult(null).getItem()).toString().contains(arg.checkjstring())) { //no search item
+                        ItemStack output = r.value().getResult(null);
                         LuaTable pair = new LuaTable();
-                        pair.set("in", recipeInputs(r));
+                        pair.set("in", recipeInputs(r.value()));
                         pair.set("out", Utils.itemStackToLuatable(output));
                         v.set(v.length() + 1, pair);
                     } else {

@@ -1,18 +1,18 @@
 package com.theincgi.advancedmacros.lua.functions;
 
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
-
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.ThreeArgFunction;
 
 public class GetBlock extends ThreeArgFunction {
+
     @Override
     public LuaValue call(LuaValue arg1, LuaValue arg2, LuaValue arg3) {
         int x = (arg1.checkint()), y = arg2.checkint(), z = (arg3.checkint());
@@ -30,7 +30,8 @@ public class GetBlock extends ThreeArgFunction {
         }
         LuaTable result = Utils.blockToTable(block, te);
         BlockState s;
-        result.set("mapColor", Utils.parseColor(block.getMapColor(MinecraftClient.getInstance().player.world, pos)));
+        result.set("mapColor", Utils.parseColor(block.getMapColor(MinecraftClient.getInstance().player.getWorld(), pos)));
         return result;
     }
+
 }

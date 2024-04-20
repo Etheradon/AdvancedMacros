@@ -1,8 +1,5 @@
 package com.theincgi.advancedmacros.gui.elements;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
@@ -12,12 +9,14 @@ import com.theincgi.advancedmacros.lua.LuaValTexture;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Settings;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
 import java.awt.image.BufferedImage;
 
 public class GuiButton extends GuiRect implements InputSubscriber, Focusable {
+
     //	Property colorText;
     //	Property clickSound;
     //	Property buttonImg;
@@ -132,7 +131,7 @@ public class GuiButton extends GuiRect implements InputSubscriber, Focusable {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui gui, int mouseX, int mouseY, float partialTicks) {
+    public void onDraw(DrawContext drawContext, Gui gui, int mouseX, int mouseY, float partialTicks) {
         if (!isVisible) {
             return;
         }
@@ -161,26 +160,25 @@ public class GuiButton extends GuiRect implements InputSubscriber, Focusable {
         scale(GuiAnimation.map(scaleAnimation.doInterpolate(), 0, 1, 1, scaleTo)); //map p from [0,1] to [1,1.5]
         //shade.scale(getScale());
 
-        super.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
         if (texture != null) {
             RenderSystem.bindTexture(0);
             //			GL11.glDisable(GL11.GL_ALPHA_TEST);
             //			GL11.glDepthMask(false);
             //			GL11.glDisable(GL11.GL_LIGHTING);
-            gui.drawImage(matrixStack, texture.getResourceLocation(), getDrawX() + 1, getDrawY() + 1, getDrawWid() - 1, getDrawHei() - 1, 0, 0, 1, 1);
+            gui.drawImage(drawContext, texture.getResourceLocation(), getDrawX() + 1, getDrawY() + 1, getDrawWid() - 1, getDrawHei() - 1, 0, 0, 1, 1);
         }
         if (isInBounds(mouseX, mouseY) && isEnabled) {
-            drawShade(matrixStack, gui);
+            drawShade(drawContext, gui);
         }
 
         if (text != null) {
-            gui.drawCenteredString(matrixStack, gui.getFontRend(), text, getDrawX() + getDrawWid() / 2, getDrawY() + getDrawHei() / 2, textColor.toInt());
+            gui.drawCenteredString(drawContext, gui.getFontRend(), text, getDrawX() + getDrawWid() / 2, getDrawY() + getDrawHei() / 2, textColor.toInt());
         }
 
         //FIXME un-editable: gui.getFontRend().FONT_HEIGHT=oldHeight;
 
         if (!isEnabled) {
-            Screen.fill(matrixStack, getDrawX() + 1, getDrawY() + 1, getDrawX() + getDrawWid(), getDrawY() + getDrawHei(), disableColor);
+            drawContext.fill(getDrawX() + 1, getDrawY() + 1, getDrawX() + getDrawWid(), getDrawY() + getDrawHei(), disableColor);
         }
         //		RenderSystem.popAttrib();
     }

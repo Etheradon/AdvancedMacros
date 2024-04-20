@@ -11,9 +11,12 @@ public class GetFPS extends CallableTable {
     }
 
     private static class Op extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return valueOf(-1);//MinecraftClient.getInstance().getDebugFPS());
         }
+
     }
+
 }

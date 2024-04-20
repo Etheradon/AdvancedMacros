@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.StringJoiner;
 
 public class StringSerialization {
+
     private StringSerialization() {
     }
 
@@ -25,6 +26,7 @@ public class StringSerialization {
     }
 
     public static class StringPack extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             String pattern = args.checkjstring(1);
@@ -261,6 +263,7 @@ public class StringSerialization {
             }//this is the end of the for loop itterating the pattern length
             return LuaValue.valueOf(out.asString());
         }//end of invoke
+
     }
 
     public static void throwArgErr(String method, int argNum, String reason, char pf) {
@@ -503,6 +506,7 @@ public class StringSerialization {
     }
 
     public static class PackSize extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             String format = arg.checkjstring();
@@ -559,6 +563,7 @@ public class StringSerialization {
             }
             return LuaValue.valueOf(sum);
         }
+
     }
 
     public static enum PackFormat {
@@ -750,11 +755,13 @@ public class StringSerialization {
     }
 
     public static class ByteArrayStack {
+
         Node head, tail;
         int bytes = 0;
         int items = 0;
 
         private class Node {
+
             Node next;
             byte[] chunk;
 
@@ -774,6 +781,7 @@ public class StringSerialization {
             public String toString() {
                 return Arrays.toString(chunk);
             }
+
         }
 
         public int getBytes() {
@@ -831,5 +839,7 @@ public class StringSerialization {
         public String asString() {
             return new String(toCompleteArray());
         }
+
     }
+
 }

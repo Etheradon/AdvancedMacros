@@ -21,6 +21,7 @@ import java.io.RandomAccessFile;
 import java.nio.file.Files;
 
 public class FileSystem extends LuaTable {
+
     public FileSystem() {
         set("open", new Open());
         set("exists", new Exists());
@@ -47,6 +48,7 @@ public class FileSystem extends LuaTable {
     }
 
     private static class Open extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0, LuaValue arg1) {
             LuaTable controls = new ClosingLuaTable("file");
@@ -102,6 +104,7 @@ public class FileSystem extends LuaTable {
     //TODO move syncLock to the open class so we dont keep so many unnecessary copies
 
     public static class ClosingLuaTable extends LuaTable {
+
         String traceback;
         String objName;
 
@@ -154,9 +157,11 @@ public class FileSystem extends LuaTable {
             }
             super.finalize();
         }
+
     }
 
     private static class ReadAll extends ZeroArgFunction {
+
         Object syncLock;
         FileInputStream fis;
 
@@ -179,9 +184,11 @@ public class FileSystem extends LuaTable {
                 }
             }
         }
+
     }
 
     private static class Read extends ZeroArgFunction {
+
         FileInputStream fis;
         Object syncLock;
         boolean lineMode;
@@ -228,17 +235,21 @@ public class FileSystem extends LuaTable {
             } while (isDelim(sChar));
             return sChar;
         }
+
     }
 
     private static class ParentDir extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             File f = Utils.parseFileLocation(arg);
             return valueOf(f.getParent());
         }
+
     }
 
     private static class ReadByte extends ZeroArgFunction {
+
         FileInputStream fis;
         Object syncLock;
 
@@ -258,9 +269,11 @@ public class FileSystem extends LuaTable {
                 }
             }
         }
+
     }
 
     private static class Available extends ZeroArgFunction {
+
         private Object syncLock;
         private FileInputStream fis;
 
@@ -282,9 +295,11 @@ public class FileSystem extends LuaTable {
 
             }
         }
+
     }
 
     private static class Close extends ZeroArgFunction {
+
         private Object syncLock;
         private Closeable[] closeables;
         protected boolean hasClosed = false;
@@ -317,9 +332,11 @@ public class FileSystem extends LuaTable {
                 hasClosed = true;
             }
         }
+
     }
 
     private static class Write extends OneArgFunction {
+
         private FileOutputStream fos;
         private Object syncLock;
 
@@ -340,9 +357,11 @@ public class FileSystem extends LuaTable {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private static class WriteLine extends OneArgFunction {
+
         private FileOutputStream fos;
         private Object syncLock;
 
@@ -363,9 +382,11 @@ public class FileSystem extends LuaTable {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private static class WriteByte extends OneArgFunction {
+
         private FileOutputStream fos;
         private Object syncLock;
 
@@ -386,17 +407,21 @@ public class FileSystem extends LuaTable {
             }
             return LuaValue.NONE;
         }
+
     }
 
     private static class Exists extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             File f = Utils.parseFileLocation(arg0);
             return LuaValue.valueOf(f.exists());
         }
+
     }
 
     private static class Copy extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0, LuaValue arg1) {
             File from = Utils.parseFileLocation(arg0);
@@ -413,50 +438,62 @@ public class FileSystem extends LuaTable {
                 throw new LuaError("IOExeption occurred trying to copy (" + e.getMessage() + ")");
             }
         }
+
     }
 
     private static class Delete extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             File file = Utils.parseFileLocation(arg0);
             return LuaValue.valueOf(file.delete());
         }
+
     }
 
     private static class Rename extends TwoArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0, LuaValue arg1) {
             File from = Utils.parseFileLocation(arg0);
             File to = Utils.parseFileLocation(arg1);
             return LuaValue.valueOf(from.renameTo(to));
         }
+
     }
 
     private static class MkDir extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             File f = Utils.parseFileLocation(arg0);
             return LuaValue.valueOf(f.mkdir());
         }
+
     }
 
     private static class MkDirs extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             File f = Utils.parseFileLocation(arg0);
             return LuaValue.valueOf(f.mkdirs());
         }
+
     }
 
     private static class IsDir extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             File f = Utils.parseFileLocation(arg0);
             return LuaValue.valueOf(f.isDirectory());
         }
+
     }//TODO Check list("") or list()
 
     private static class List extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             if (arg0.isnil()) {
@@ -473,6 +510,7 @@ public class FileSystem extends LuaTable {
             }
             return t;
         }
+
     }
 
     //	private static void assertAddress(LuaValue arg) {

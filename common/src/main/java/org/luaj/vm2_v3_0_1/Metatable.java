@@ -10,7 +10,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,24 +28,35 @@ import org.luaj.vm2_v3_0_1.LuaTable.Slot;
  */
 interface Metatable {
 
-	/** Return whether or not this table's keys are weak. */
-	public boolean useWeakKeys();
+    /**
+     * Return whether or not this table's keys are weak.
+     */
+    public boolean useWeakKeys();
 
-	/** Return whether or not this table's values are weak. */
-	public boolean useWeakValues();
+    /**
+     * Return whether or not this table's values are weak.
+     */
+    public boolean useWeakValues();
 
-	/** Return this metatable as a LuaValue. */
-	public LuaValue toLuaValue();
+    /**
+     * Return this metatable as a LuaValue.
+     */
+    public LuaValue toLuaValue();
 
-	/** Return an instance of Slot appropriate for the given key and value. */
-	public Slot entry( LuaValue key, LuaValue value );
+    /**
+     * Return an instance of Slot appropriate for the given key and value.
+     */
+    public Slot entry(LuaValue key, LuaValue value);
 
-	/** Returns the given value wrapped in a weak reference if appropriate. */
-	public LuaValue wrap( LuaValue value );
+    /**
+     * Returns the given value wrapped in a weak reference if appropriate.
+     */
+    public LuaValue wrap(LuaValue value);
 
-	/**
-	 * Returns the value at the given index in the array, or null if it is a weak reference that
-	 * has been dropped.
-	 */
-	public LuaValue arrayget(LuaValue[] array, int index);
+    /**
+     * Returns the value at the given index in the array, or null if it is a weak reference that
+     * has been dropped.
+     */
+    public LuaValue arrayget(LuaValue[] array, int index);
+
 }

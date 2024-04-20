@@ -1,12 +1,12 @@
 package com.theincgi.advancedmacros.hud.hud2D;
 
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec3f;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.hud.Destroyable;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.math.MatrixStack;
+import org.joml.Quaternionf;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
@@ -180,7 +180,7 @@ public abstract class Hud2DItem implements Destroyable {
 
     protected void applyTransformation(MatrixStack matrixStack) {
         matrixStack.translate(x, y, 0);
-        matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(angle));
+        matrixStack.multiply(new Quaternionf().rotateLocalY((float) Math.toRadians(angle)));
     }
 
     @Override
@@ -204,7 +204,7 @@ public abstract class Hud2DItem implements Destroyable {
         AdvancedMacros.EVENT_HANDLER.addHud2DItem(this);
     }
 
-    abstract public void render(MatrixStack matrixStack, float partialTicks);
+    abstract public void render(DrawContext drawContext, float partialTicks);
 
     /**
      * Called by the render loop, not the render method
@@ -221,4 +221,5 @@ public abstract class Hud2DItem implements Destroyable {
     public float getOpacity() {
         return color.getA();
     }
+
 }

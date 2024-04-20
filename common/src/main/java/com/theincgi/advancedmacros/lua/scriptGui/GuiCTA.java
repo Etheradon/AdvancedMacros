@@ -1,11 +1,10 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.elements.ColorTextArea;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -19,6 +18,7 @@ import java.util.HashMap;
  * Script controled color text area
  */
 public class GuiCTA extends ScriptGuiElement {
+
     ColorTextArea cta;
 
     public GuiCTA(Gui gui, Group parent) {
@@ -201,14 +201,14 @@ public class GuiCTA extends ScriptGuiElement {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-        super.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+        super.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
         if (!visible) {
             return;
         }
         cta.setPos((int) x, (int) y);
         cta.resize((int) wid, (int) hei);
-        cta.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+        cta.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
     }
 
     public ColorTextArea getCTA() {
@@ -276,4 +276,5 @@ public class GuiCTA extends ScriptGuiElement {
     public boolean onScroll(Gui g, double i) {
         return cta.onScroll(g, i);
     }
+
 }

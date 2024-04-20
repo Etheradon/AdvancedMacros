@@ -1,9 +1,5 @@
 package com.theincgi.advancedmacros.gui;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.event.EventHandler;
 import com.theincgi.advancedmacros.event.EventHandler.EventName;
@@ -26,6 +22,9 @@ import com.theincgi.advancedmacros.lua.OpenChangeLog;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Settings;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -453,7 +452,7 @@ public class MacroMenuGui extends Gui implements IBindingsGui {
     //
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
 
         for (Moveable m : bindingsList.getItems()) {
             if (m instanceof GuiBinding) {
@@ -465,7 +464,7 @@ public class MacroMenuGui extends Gui implements IBindingsGui {
         }
         resize(MinecraftClient.getInstance(), width, height);
         //gb.setWidth(width-10);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(drawContext, mouseX, mouseY, partialTicks);
     }
 
     public static void updateScriptList() {
@@ -516,4 +515,5 @@ public class MacroMenuGui extends Gui implements IBindingsGui {
     public Gui getGui() {
         return this;
     }
+
 }

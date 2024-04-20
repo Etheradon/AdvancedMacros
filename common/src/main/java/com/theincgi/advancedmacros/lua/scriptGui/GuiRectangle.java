@@ -1,18 +1,18 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.elements.GuiRect;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 
 public class GuiRectangle extends ScriptGuiElement {
+
     public GuiRectangle(Gui gui, Group parent) {
         super(gui, parent);
         enableColorControl();
@@ -21,8 +21,8 @@ public class GuiRectangle extends ScriptGuiElement {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-        super.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+        super.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
         if (!visible) {
             return;
         }
@@ -55,7 +55,6 @@ public class GuiRectangle extends ScriptGuiElement {
 
     public static void drawRectangle(float dx, float dy, float dw, float dh, Color color, float z) {
         //RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
         //RenderSystem.enableAlpha();
         //		RenderSystem.enableBlend();
         RenderSystem.setShaderColor(color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, color.getA() / 255f);
@@ -73,7 +72,6 @@ public class GuiRectangle extends ScriptGuiElement {
         buffer.vertex(dx + dw, dy, z).next(); //bottom right
 
         Tessellator.getInstance().draw();
-        RenderSystem.enableTexture();
         //RenderSystem.disableBlend();
         // RenderSystem.disableBlend();
         // Gui.drawRect((int)dx, (int)dy, (int)dx+dw, (int)dy+dh, color.toInt());

@@ -1,7 +1,5 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
@@ -11,6 +9,7 @@ import com.theincgi.advancedmacros.gui.elements.GuiButton;
 import com.theincgi.advancedmacros.gui.elements.Moveable;
 import com.theincgi.advancedmacros.misc.HIDUtils;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaFunction;
 import org.luaj.vm2_v3_0_1.LuaTable;
@@ -22,6 +21,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public abstract class ScriptGuiElement extends LuaTable implements Drawable, InputSubscriber, Moveable {
+
     //enable/disable draw
     //isDrawing
     //setHoverTint(color)
@@ -355,7 +355,7 @@ public abstract class ScriptGuiElement extends LuaTable implements Drawable, Inp
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
         boolean now = GuiButton.isInBounds(mouseX, mouseY, (int) x, (int) y, (int) wid, (int) hei);
         if (now != mouseWasOver) {
             if (now) {

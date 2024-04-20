@@ -1,12 +1,12 @@
 package com.theincgi.advancedmacros.misc;
 
-import net.minecraft.text.ClickEvent;
-
 import com.theincgi.advancedmacros.lua.LuaDebug.LuaThread;
+import net.minecraft.text.ClickEvent;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
 public class LuaTextComponentClickEvent extends ClickEvent {
+
     LuaValue onClick;
     private final LuaTextComponent ltc;
 
@@ -28,4 +28,5 @@ public class LuaTextComponentClickEvent extends ClickEvent {
         }
         t.start();
     }
+
 }

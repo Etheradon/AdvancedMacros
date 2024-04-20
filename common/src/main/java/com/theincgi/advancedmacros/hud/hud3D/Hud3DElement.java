@@ -1,16 +1,15 @@
 package com.theincgi.advancedmacros.hud.hud3D;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.theincgi.advancedmacros.lua.LuaValTexture;
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Matrix4f;
-
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.theincgi.advancedmacros.lua.LuaValTexture;
-import com.theincgi.advancedmacros.misc.Utils;
+import org.joml.Matrix4f;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -19,6 +18,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import org.lwjgl.opengl.GL11;
 
 public class Hud3DElement extends WorldHudItem {
+
     //public LuaTable data;
     LuaValTexture texture;// = Utils.checkTexture("resource:holoblock.png");
 
@@ -47,6 +47,7 @@ public class Hud3DElement extends WorldHudItem {
     }
 
     public class DoElementOp extends VarArgFunction {
+
         ElementOps op;
 
         public DoElementOp(ElementOps op) {
@@ -67,6 +68,7 @@ public class Hud3DElement extends WorldHudItem {
                     throw new LuaError("Unimplemented function");
             }
         }
+
     }
 
     public enum ElementOps {
@@ -152,10 +154,7 @@ public class Hud3DElement extends WorldHudItem {
             VertexFormat type = VertexFormats.POSITION;
             if (useTexture) {
                 texture.bindTexture();
-                RenderSystem.enableTexture();
                 type = VertexFormats.POSITION_TEXTURE;
-            } else {
-                RenderSystem.disableTexture();
             }
 
             int gLMode = mode.equals("strip") ? GL11.GL_TRIANGLE_STRIP :

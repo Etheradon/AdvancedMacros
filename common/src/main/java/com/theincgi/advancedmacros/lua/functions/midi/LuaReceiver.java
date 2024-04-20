@@ -8,6 +8,7 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
 
 public class LuaReceiver implements Receiver {
+
     LuaFunction onEvent;
 
     public LuaReceiver() {

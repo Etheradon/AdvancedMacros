@@ -3,12 +3,12 @@ package com.theincgi.advancedmacros.lua.functions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.render.entity.PlayerModelPart;
-
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.TwoArgFunction;
 
 public class SkinCustomizer extends TwoArgFunction {
+
     @Override
     public LuaValue call(LuaValue arg0, LuaValue arg1) {
         GameOptions set = MinecraftClient.getInstance().options;
@@ -49,4 +49,5 @@ public class SkinCustomizer extends TwoArgFunction {
                 + "parts:{cape, hat/helmet, jacket/chest, \n"
                 + "left/right leg, left/right arm}");
     }
+
 }

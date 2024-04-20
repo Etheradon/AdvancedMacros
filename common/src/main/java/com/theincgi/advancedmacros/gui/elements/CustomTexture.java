@@ -4,7 +4,6 @@ import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
@@ -12,6 +11,7 @@ import java.nio.ByteBuffer;
 
 //TODO check usage, LuaTexVal tends to get used, dont recall this as much
 public class CustomTexture {
+
     BufferedImage bufferedImage;
     ByteBuffer buffer;
     private int textureID;
@@ -64,4 +64,5 @@ public class CustomTexture {
     private void unbindTex() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
+
 }

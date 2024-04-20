@@ -8,6 +8,7 @@ import javax.sound.midi.MidiDevice;
 import java.util.ArrayList;
 
 public class MidiLib2 extends LuaTable {
+
     public static final ArrayList<MidiDevice> devices = new ArrayList<>();
 
     public MidiLib2() {
@@ -34,4 +35,5 @@ public class MidiLib2 extends LuaTable {
             }
         });
     }
+
 }

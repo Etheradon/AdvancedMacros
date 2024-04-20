@@ -1,9 +1,5 @@
 package com.theincgi.advancedmacros.gui.elements;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.event.EventHandler;
@@ -16,6 +12,8 @@ import com.theincgi.advancedmacros.gui2.ScriptBrowser2;
 import com.theincgi.advancedmacros.misc.HIDUtils.Keyboard;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.lwjgl.glfw.GLFW;
@@ -196,7 +194,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
         if (wid == 0 || hei == 0 || !isVisible) {
             return;
         }
@@ -217,14 +215,14 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
         //System.out.println("DRAW");
         viewX = (int) hBar.getOffset();
         viewY = (int) vBar.getOffset();
-        g.drawBoxedRectangle(matrixStack, x, y, wid - 7, hei - 7, propPalette.getColor("colors", "frame").toInt(), propPalette.getColor("colors", "textFill").toInt());
+        g.drawBoxedRectangle(drawContext, x, y, wid - 7, hei - 7, propPalette.getColor("colors", "frame").toInt(), propPalette.getColor("colors", "textFill").toInt());
         hBar.setWid(7);
         vBar.setWid(7);
         hBar.setLen(wid - 7);
         vBar.setLen(hei - 7);
-        g.drawBoxedRectangle(matrixStack, x + wid - 7, y + hei - 7, 7, 7, propPalette.getColor("colors", "frame").toInt(), propPalette.getColor("colors", "textFill").toInt());
-        hBar.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
-        vBar.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+        g.drawBoxedRectangle(drawContext, x + wid - 7, y + hei - 7, 7, 7, propPalette.getColor("colors", "frame").toInt(), propPalette.getColor("colors", "textFill").toInt());
+        hBar.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
+        vBar.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
         if (textChanged) {
             clearGrids();
             loadText();
@@ -234,26 +232,26 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
             solveSelectionGrid();
             updateScrollbarContent(false);
         }
-        drawSelectionBG(matrixStack, g);
-        drawStringBoxes(matrixStack, g);
-        drawCursor(matrixStack, g);
-        drawText(matrixStack, g);
-        drawStringBoxFrame(matrixStack, g);
-        drawSelectionBox(matrixStack, g);//it moves!
-        offerTooltip(matrixStack, g, mouseX, mouseY);
+        drawSelectionBG(drawContext, g);
+        drawStringBoxes(drawContext, g);
+        drawCursor(drawContext, g);
+        drawText(drawContext, g);
+        drawStringBoxFrame(drawContext, g);
+        drawSelectionBox(drawContext, g);//it moves!
+        offerTooltip(drawContext, g, mouseX, mouseY);
         textChanged = false;
         resized = false;
         //System.out.println("Debug active");
     }
 
-    private void offerTooltip(MatrixStack matrixStack, Gui g, int mx, int my) {
+    private void offerTooltip(DrawContext drawContext, Gui g, int mx, int my) {
         Point over = cursorOver(mx, my);
         //System.out.println(over);
         //System.out.println(System.currentTimeMillis()-hoverTime);
         if (hoverCursor.equals(over)) {
             //System.out.println("EEQ");
             if (System.currentTimeMillis() - hoverTime > 1500) {
-                AdvancedMacros.getDocumentationManager().tooltip(matrixStack, g, hoverWord, mx, my, g.width, g.height);
+                AdvancedMacros.getDocumentationManager().tooltip(drawContext, g, hoverWord, mx, my, g.width, g.height);
             }
         } else {
             hoverCursor.set(over);
@@ -310,14 +308,14 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
         }
     }
 
-    private void drawSelectionBG(MatrixStack matrixStack, Gui g) {
+    private void drawSelectionBG(DrawContext drawContext, Gui g) {
         int sCol = propPalette.getColor("colors", "selectionFill").toInt(); //Utils.parseColor(selectionFillColor.getPropValue()).toInt();
         for (int dy = 0; dy < selection.length; dy++) {
             for (int dx = 0; dx < selection[dy].length; dx++) {
                 if (selection[dy][dx]) {
                     int left = x + dx * charWid + 2, top = y + dy * charHei + 2;
                     int right = left + charWid, bottom = top + charHei;
-                    Screen.fill(matrixStack, left, top, right, bottom, sCol);
+                    drawContext.fill(left, top, right, bottom, sCol);
                 }
             }
         }
@@ -325,7 +323,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
 
     private int blinkOffset = 0;
 
-    private void drawCursor(MatrixStack matrixStack, Gui g) {
+    private void drawCursor(DrawContext drawContext, Gui g) {
         if (!isFocused()) {
             return;
         }
@@ -344,7 +342,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
         right = left + charWid;
         top = y + (cursor.getY() - viewY) * charHei + 1;
         bottom = top + charHei;
-        Screen.fill(matrixStack, left, top, right, bottom, col);
+        drawContext.fill(left, top, right, bottom, col);
     }
 
     /**
@@ -391,7 +389,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
         }
     }
 
-    private void drawStringBoxes(MatrixStack matrixStack, Gui g) {
+    private void drawStringBoxes(DrawContext drawContext, Gui g) {
         if (!doSyntaxHighlighting) {
             return;
         }
@@ -410,14 +408,14 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
                 if (quote[dy][dx] || isDrawing) {
                     int left = x + dx * charWid + 1, top = y + dy * charHei + 1;
                     int right = left + charWid, bottom = top + charHei;
-                    Screen.fill(matrixStack, left, top, right, bottom, boxFillColor);
+                    drawContext.fill(left, top, right, bottom, boxFillColor);
                 }
                 isDrawing = quote[dy][dx];
             }
         }
     }
 
-    private void drawStringBoxFrame(MatrixStack matrixStack, Gui g) {
+    private void drawStringBoxFrame(DrawContext drawContext, Gui g) {
         if (!doSyntaxHighlighting) {
             return;
         }
@@ -432,16 +430,16 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
                     if (quote[dy][dx]) {//starting
                         if (!(dx == 0 && viewX > 0) || (viewX == 0 && dx == 0))//only draw when it doesnt go off edge of screen
                         {
-                            g.drawVerticalLine(matrixStack, left, top, bottom, boxFrameColor);
+                            g.drawVerticalLine(drawContext, left, top, bottom, boxFrameColor);
                         }
                     } else {//ending
                         //if(!(dx==quote[dy].length-1 && viewX))
-                        g.drawVerticalLine(matrixStack, right, top, bottom, boxFrameColor);
+                        g.drawVerticalLine(drawContext, right, top, bottom, boxFrameColor);
                     }
                 }
                 if (quote[dy][dx] || isDrawing) {
-                    g.drawHorizontalLine(matrixStack, left, right, top, boxFrameColor);
-                    g.drawHorizontalLine(matrixStack, left, right, bottom, boxFrameColor);
+                    g.drawHorizontalLine(drawContext, left, right, top, boxFrameColor);
+                    g.drawHorizontalLine(drawContext, left, right, bottom, boxFrameColor);
                 }
                 isDrawing = quote[dy][dx];
             }
@@ -458,7 +456,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
     //			}
     //		}
 
-    private void drawSelectionBox(MatrixStack matrixStack, Gui g) {
+    private void drawSelectionBox(DrawContext drawContext, Gui g) {
         for (int y = 0; y < selection.length; y++) {
             for (int x = 0; x < selection[y].length; x++) {
                 if (selection[y][x]) {
@@ -468,22 +466,22 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
                     int py = this.y + y * charHei + 2;
                     if (y < selection.length - 1) {//space to check down
                         if (!selection[y + 1][x]) {
-                            drawBlinkyLine(matrixStack, g, BlinkyLineDirection.LEFT, px, py);
+                            drawBlinkyLine(drawContext, g, BlinkyLineDirection.LEFT, px, py);
                         }
                     }
                     if (y > 0) {
                         if (!selection[y - 1][x]) {
-                            drawBlinkyLine(matrixStack, g, BlinkyLineDirection.RIGHT, px, py);
+                            drawBlinkyLine(drawContext, g, BlinkyLineDirection.RIGHT, px, py);
                         }
                     }
                     if (x < selection[y].length - 1) {
                         if (!selection[y][x + 1]) {
-                            drawBlinkyLine(matrixStack, g, BlinkyLineDirection.DOWN, px, py);
+                            drawBlinkyLine(drawContext, g, BlinkyLineDirection.DOWN, px, py);
                         }
                     }
                     if (x > 0) {
                         if (!selection[y][x - 1]) {
-                            drawBlinkyLine(matrixStack, g, BlinkyLineDirection.UP, px, py);
+                            drawBlinkyLine(drawContext, g, BlinkyLineDirection.UP, px, py);
                         }
 
                     }
@@ -492,7 +490,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
         }
     }
 
-    private void drawText(MatrixStack matrixStack, Gui g) {
+    private void drawText(DrawContext drawContext, Gui g) {
         //visChars[3][3]='A';
         //cols[3][3]=new Color(0,0,255);
         for (int y = 0; y < visChars.length; y++) {
@@ -507,7 +505,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
                 int offset = (int) ((charWid - g.getFontRend().getWidth(String.valueOf(visChars[y][x]))) / 2);
 
                 String frmt = formating[y][x];
-                g.getFontRend().draw(matrixStack, frmt + visChars[y][x], this.x + charWid * x + 3 + offset, this.y + charHei * y + 4, cols[y][x].toInt());
+                drawContext.drawText(g.getFontRend(), frmt + visChars[y][x], this.x + charWid * x + 3 + offset, this.y + charHei * y + 4, cols[y][x].toInt(), false);
             }
         }
 
@@ -551,12 +549,14 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
     private Pattern variablePattern = Pattern.compile(variableRegEx);
 
     private class Q {
+
         int start, end;
 
         public Q(int a, int b) {
             start = a;
             end = b;
         }
+
     }
 
     private void solveTextColor() {
@@ -1467,7 +1467,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
         gui.setFocusItem(b ? this : null);
     }
 
-    private void drawBlinkyLine(MatrixStack matrixStack, Gui g, BlinkyLineDirection bld, int x, int y) {
+    private void drawBlinkyLine(DrawContext drawContext, Gui g, BlinkyLineDirection bld, int x, int y) {
         int sCol = propPalette.getColor("colors", "selectionFrame").toInt();//Utils.parseColor(selectionFrameColor.getPropValue()).toInt();
         int i = (int) (System.currentTimeMillis() / 250 % 6);
         if (bld.isUp() || bld.isLeft()) {
@@ -1480,34 +1480,34 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
         boolean c = (bld.isLeft() || bld.isRight()) ? (x * 2 + 1) % 6 != i : (x * 2 + 1) % 6 != i;
         if (bld.isRight()) {
             if (b) {
-                g.drawHorizontalLine(matrixStack, x, x + charWid / 2, y, sCol);
+                g.drawHorizontalLine(drawContext, x, x + charWid / 2, y, sCol);
             }
             if (c) {
-                g.drawHorizontalLine(matrixStack, x + charWid / 2, x + charWid, y, sCol);
+                g.drawHorizontalLine(drawContext, x + charWid / 2, x + charWid, y, sCol);
             }
         }
         if (bld.isLeft()) {
             if (b) {
-                g.drawHorizontalLine(matrixStack, x, x + charWid / 2, y + charHei, sCol);
+                g.drawHorizontalLine(drawContext, x, x + charWid / 2, y + charHei, sCol);
             }
             if (c) {
-                g.drawHorizontalLine(matrixStack, x + charWid / 2, x + charWid, y + charHei, sCol);
+                g.drawHorizontalLine(drawContext, x + charWid / 2, x + charWid, y + charHei, sCol);
             }
         }
         if (bld.isDown()) {
             if (b) {
-                g.drawVerticalLine(matrixStack, x + charWid, y, y + charHei / 2, sCol);
+                g.drawVerticalLine(drawContext, x + charWid, y, y + charHei / 2, sCol);
             }
             if (c) {
-                g.drawVerticalLine(matrixStack, x + charWid, y + charHei / 2, y + charHei, sCol);
+                g.drawVerticalLine(drawContext, x + charWid, y + charHei / 2, y + charHei, sCol);
             }
         }
         if (bld.isUp()) {
             if (b) {
-                g.drawVerticalLine(matrixStack, x, y, y + charHei / 2, sCol);
+                g.drawVerticalLine(drawContext, x, y, y + charHei / 2, sCol);
             }
             if (c) {
-                g.drawVerticalLine(matrixStack, x, y + charHei / 2, y + charHei, sCol);
+                g.drawVerticalLine(drawContext, x, y + charHei / 2, y + charHei, sCol);
             }
         }
     }
@@ -1536,6 +1536,7 @@ public class ColorTextArea implements Drawable, InputSubscriber, Moveable, Focus
     }
 
     public class Point {
+
         private int x, y;
         private int lastX, lastY;
 

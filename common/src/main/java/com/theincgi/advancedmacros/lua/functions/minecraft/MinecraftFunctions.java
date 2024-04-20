@@ -16,6 +16,7 @@ public class MinecraftFunctions extends LuaTable {
     }
 
     private class DoOp extends VarArgFunction {
+
         OpCodes op;
 
         public DoOp(OpCodes op) {
@@ -53,4 +54,5 @@ public class MinecraftFunctions extends LuaTable {
             }
         }
     }
+
 }

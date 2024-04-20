@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class HTTP extends OneArgFunction {
+
     //
     @Override
     public LuaValue call(LuaValue arg) {
@@ -56,6 +57,7 @@ public class HTTP extends OneArgFunction {
     //	�TRACE
 
     public static class LuaConnection extends LuaTable {
+
         HttpURLConnection conn;
 
         public LuaConnection(HttpURLConnection conn) throws IOException {
@@ -128,6 +130,7 @@ public class HTTP extends OneArgFunction {
     }
 
     public static class LuaInputStream extends LuaTable {
+
         InputStream in;
 
         public LuaInputStream(InputStream in) {
@@ -207,9 +210,11 @@ public class HTTP extends OneArgFunction {
         public InputStream getInputStream() {
             return in;
         }
+
     }
 
     public static class LuaOutputStream extends LuaTable {
+
         OutputStream out;
 
         public LuaOutputStream(OutputStream out) {
@@ -289,4 +294,5 @@ public class HTTP extends OneArgFunction {
         }
 
     }
+
 }

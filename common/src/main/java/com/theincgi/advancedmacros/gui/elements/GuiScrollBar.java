@@ -1,13 +1,11 @@
 package com.theincgi.advancedmacros.gui.elements;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.Gui.Focusable;
 import com.theincgi.advancedmacros.gui.Gui.InputSubscriber;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaError;
 
 public class GuiScrollBar implements Drawable, InputSubscriber, Focusable, Moveable {
@@ -143,7 +141,7 @@ public class GuiScrollBar implements Drawable, InputSubscriber, Focusable, Movea
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui gui, int mouseX, int mouseY, float partialTicks) { //FIXME not OCD friendly
+    public void onDraw(DrawContext drawContext, Gui gui, int mouseX, int mouseY, float partialTicks) { //FIXME not OCD friendly
         if (!isVisible()) {
             return;
         }
@@ -156,29 +154,29 @@ public class GuiScrollBar implements Drawable, InputSubscriber, Focusable, Movea
                 buttonShade = propertyPalette.getColor("colors", "buttonShade").toInt();
 
         if (orientation.isUPDOWN()) {
-            gui.drawBoxedRectangle(matrixStack, x, y, wid, len, barFrame, barBG); //track
+            gui.drawBoxedRectangle(drawContext, x, y, wid, len, barFrame, barBG); //track
             int buttonLen = getButtonLen() - 1;
             int buttonY = getButtonY() + 1;
-            gui.drawBoxedRectangle(matrixStack, x + 1, buttonY - 1, wid - 2, buttonLen + 1, buttonFrame, buttonFill);
-            gui.drawHorizontalLine(matrixStack, x + 4, x + wid - 4, buttonY + buttonLen / 2, buttonDetail);
-            gui.drawHorizontalLine(matrixStack, x + 4, x + wid - 4, buttonY + buttonLen / 2 - 2, buttonDetail);
-            gui.drawHorizontalLine(matrixStack, x + 4, x + wid - 4, buttonY + buttonLen / 2 + 2, buttonDetail);
+            gui.drawBoxedRectangle(drawContext, x + 1, buttonY - 1, wid - 2, buttonLen + 1, buttonFrame, buttonFill);
+            gui.drawHorizontalLine(drawContext, x + 4, x + wid - 4, buttonY + buttonLen / 2, buttonDetail);
+            gui.drawHorizontalLine(drawContext, x + 4, x + wid - 4, buttonY + buttonLen / 2 - 2, buttonDetail);
+            gui.drawHorizontalLine(drawContext, x + 4, x + wid - 4, buttonY + buttonLen / 2 + 2, buttonDetail);
             //System.out.println(">>> "+x+" "+y+" "+wid+" "+len+" "+buttonLen+" "+buttonY);
 
             if (anchorSet || isInButton(mouseX, mouseY)) {
-                Screen.fill(matrixStack, x + 1, buttonY, wid + x, buttonLen + buttonY + 1, buttonShade);
+                drawContext.fill(x + 1, buttonY, wid + x, buttonLen + buttonY + 1, buttonShade);
             }
         } else if (orientation.isLEFTRIGHT()) {
-            gui.drawBoxedRectangle(matrixStack, x, y, len, wid, barFrame, barBG); //track
+            gui.drawBoxedRectangle(drawContext, x, y, len, wid, barFrame, barBG); //track
 
-            gui.drawBoxedRectangle(matrixStack, getButtonX(), y + 1, getButtonLen() - 1, wid - 2, buttonFrame, buttonFill);
+            gui.drawBoxedRectangle(drawContext, getButtonX(), y + 1, getButtonLen() - 1, wid - 2, buttonFrame, buttonFill);
 
-            gui.drawVerticalLine(matrixStack, getButtonX() + getButtonLen() / 2, y + 2, y + wid - 2, buttonDetail);
-            gui.drawVerticalLine(matrixStack, getButtonX() + getButtonLen() / 2 - 2, y + 2, y + wid - 2, buttonDetail);
-            gui.drawVerticalLine(matrixStack, getButtonX() + getButtonLen() / 2 + 2, y + 2, y + wid - 2, buttonDetail);
+            gui.drawVerticalLine(drawContext, getButtonX() + getButtonLen() / 2, y + 2, y + wid - 2, buttonDetail);
+            gui.drawVerticalLine(drawContext, getButtonX() + getButtonLen() / 2 - 2, y + 2, y + wid - 2, buttonDetail);
+            gui.drawVerticalLine(drawContext, getButtonX() + getButtonLen() / 2 + 2, y + 2, y + wid - 2, buttonDetail);
 
             if (anchorSet || isInButton(mouseX, mouseY)) {
-                Screen.fill(matrixStack, getButtonX(), y + 1, getButtonX() + getButtonLen(), y + wid, buttonShade);
+                drawContext.fill(getButtonX(), y + 1, getButtonX() + getButtonLen(), y + wid, buttonShade);
             }
         }
         //		gui.drawBoxedRectangle(x, y,
@@ -495,4 +493,5 @@ public class GuiScrollBar implements Drawable, InputSubscriber, Focusable, Movea
     public void setY(int y) {
         this.y = y;
     }
+
 }

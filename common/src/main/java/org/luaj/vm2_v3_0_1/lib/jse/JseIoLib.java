@@ -1,25 +1,33 @@
 /*******************************************************************************
-* Copyright (c) 2009 Luaj.org. All rights reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-******************************************************************************/
+ * Copyright (c) 2009 Luaj.org. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ ******************************************************************************/
 package org.luaj.vm2_v3_0_1.lib.jse;
+
+import com.theincgi.advancedmacros.misc.Utils;
+import org.luaj.vm2_v3_0_1.Globals;
+import org.luaj.vm2_v3_0_1.LuaError;
+import org.luaj.vm2_v3_0_1.LuaString;
+import org.luaj.vm2_v3_0_1.LuaValue;
+import org.luaj.vm2_v3_0_1.lib.IoLib;
+import org.luaj.vm2_v3_0_1.lib.LibFunction;
 
 import java.io.BufferedInputStream;
 import java.io.EOFException;
@@ -29,29 +37,20 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
 
-import org.luaj.vm2_v3_0_1.Globals;
-import org.luaj.vm2_v3_0_1.LuaError;
-import org.luaj.vm2_v3_0_1.LuaString;
-import org.luaj.vm2_v3_0_1.LuaValue;
-import org.luaj.vm2_v3_0_1.lib.IoLib;
-import org.luaj.vm2_v3_0_1.lib.LibFunction;
-
-import com.theincgi.advancedmacros.misc.Utils;
-
-/** 
- * Subclass of {@link IoLib} and therefore {@link LibFunction} which implements the lua standard {@code io} 
- * library for the JSE platform. 
- * <p> 
- * It uses RandomAccessFile to implement seek on files.  
+/**
+ * Subclass of {@link IoLib} and therefore {@link LibFunction} which implements the lua standard {@code io}
+ * library for the JSE platform.
  * <p>
- * Typically, this library is included as part of a call to 
- * {@link org.luaj.vm2_v3_0_1.lib.jse.JsePlatform#standardGlobals()}
+ * It uses RandomAccessFile to implement seek on files.
+ * <p>
+ * Typically, this library is included as part of a call to
+ * {@link JsePlatform#standardGlobals()}
  * <pre> {@code
  * Globals globals = JsePlatform.standardGlobals();
  * globals.get("io").get("write").call(LuaValue.valueOf("hello, world\n"));
  * } </pre>
  * <p>
- * For special cases where the smallest possible footprint is desired, 
+ * For special cases where the smallest possible footprint is desired,
  * a minimal set of libraries could be loaded
  * directly via {@link Globals#load(LuaValue)} using code such as:
  * <pre> {@code
@@ -64,8 +63,9 @@ import com.theincgi.advancedmacros.misc.Utils;
  * <p>However, other libraries such as <em>MathLib</em> are not loaded in this case.
  * <p>
  * This has been implemented to match as closely as possible the behavior in the corresponding library in C.
+ *
  * @see LibFunction
- * @see org.luaj.vm2_v3_0_1.lib.jse.JsePlatform
+ * @see JsePlatform
  * @see org.luaj.vm2.lib.jme.JmePlatform
  * @see IoLib
  * @see org.luaj.vm2.lib.jme.JmeIoLib
@@ -73,322 +73,340 @@ import com.theincgi.advancedmacros.misc.Utils;
  */
 public class JseIoLib extends IoLib {
 
-	@Override
-	protected File wrapStdin() throws IOException {
-		return new StdinFile();
-	}
-	
-	@Override
-	protected File wrapStdout() throws IOException {
-		return new StdoutFile(FTYPE_STDOUT);
-	}
-	
-	@Override
-	protected File wrapStderr() throws IOException {
-		return new StdoutFile(FTYPE_STDERR);
-	}
-	
-	@Override
-	protected File openFile( String filename, boolean readMode, boolean appendMode, boolean updateMode, boolean binaryMode ) throws IOException {
-		//TheIncgi's Edit
-		filename = Utils.parseFileLocation(filename, 1).toString();
-		//End of edit
-		RandomAccessFile f = new RandomAccessFile(filename,readMode? "r": "rw");
-		if ( appendMode ) {
-			f.seek(f.length());
-		} else {
-			if ( ! readMode ) {
+    @Override
+    protected File wrapStdin() throws IOException {
+        return new StdinFile();
+    }
+
+    @Override
+    protected File wrapStdout() throws IOException {
+        return new StdoutFile(FTYPE_STDOUT);
+    }
+
+    @Override
+    protected File wrapStderr() throws IOException {
+        return new StdoutFile(FTYPE_STDERR);
+    }
+
+    @Override
+    protected File openFile(String filename, boolean readMode, boolean appendMode, boolean updateMode, boolean binaryMode) throws IOException {
+        //TheIncgi's Edit
+        filename = Utils.parseFileLocation(filename, 1).toString();
+        //End of edit
+        RandomAccessFile f = new RandomAccessFile(filename, readMode ? "r" : "rw");
+        if (appendMode) {
+            f.seek(f.length());
+        } else {
+            if (!readMode) {
                 f.setLength(0);
             }
-		}
-		return new FileImpl( f );
-	}
-	
-	@Override
-	protected File openProgram(String prog, String mode) throws IOException {
-		final Process p = Runtime.getRuntime().exec(prog);
-		return "w".equals(mode)? 
-				new FileImpl( p.getOutputStream() ):  
-				new FileImpl( p.getInputStream() ); 
-	}
+        }
+        return new FileImpl(f);
+    }
 
-	@Override
-	protected File tmpFile() throws IOException {
-		java.io.File f = java.io.File.createTempFile(".luaj","bin");
-		f.deleteOnExit();
-		return new FileImpl( new RandomAccessFile(f,"rw") );
-	}
-	
-	private static void notimplemented() {
-		throw new LuaError("not implemented");
-	}
-	
+    @Override
+    protected File openProgram(String prog, String mode) throws IOException {
+        final Process p = Runtime.getRuntime().exec(prog);
+        return "w".equals(mode) ?
+                new FileImpl(p.getOutputStream()) :
+                new FileImpl(p.getInputStream());
+    }
 
-	private final class FileImpl extends File {
-		private final RandomAccessFile file;
-		private final InputStream is;
-		private final OutputStream os;
-		private boolean closed = false;
-		private boolean nobuffer = false;
-		private FileImpl( RandomAccessFile file, InputStream is, OutputStream os ) {
-			this.file = file;
-			this.is = is!=null? is.markSupported()? is: new BufferedInputStream(is): null;
-			this.os = os;
-		}
-		private FileImpl( RandomAccessFile f ) {
-			this( f, null, null );
-		}
-		private FileImpl( InputStream i ) {
-			this( null, i, null );
-		}
-		private FileImpl( OutputStream o ) {
-			this( null, null, o );
-		}
-		@Override
-		public String tojstring() {
-			return "file ("+this.hashCode()+")";
-		}
-		@Override
-		public boolean isstdfile() {
-			return file == null;
-		}
-		@Override
-		public void close() throws IOException  {
-			closed = true;
-			if ( file != null ) {
-				file.close();
-			}
-		}
-		@Override
-		public void flush() throws IOException {
-			if ( os != null ) {
+    @Override
+    protected File tmpFile() throws IOException {
+        java.io.File f = java.io.File.createTempFile(".luaj", "bin");
+        f.deleteOnExit();
+        return new FileImpl(new RandomAccessFile(f, "rw"));
+    }
+
+    private static void notimplemented() {
+        throw new LuaError("not implemented");
+    }
+
+    private final class FileImpl extends File {
+
+        private final RandomAccessFile file;
+        private final InputStream is;
+        private final OutputStream os;
+        private boolean closed = false;
+        private boolean nobuffer = false;
+
+        private FileImpl(RandomAccessFile file, InputStream is, OutputStream os) {
+            this.file = file;
+            this.is = is != null ? is.markSupported() ? is : new BufferedInputStream(is) : null;
+            this.os = os;
+        }
+
+        private FileImpl(RandomAccessFile f) {
+            this(f, null, null);
+        }
+
+        private FileImpl(InputStream i) {
+            this(null, i, null);
+        }
+
+        private FileImpl(OutputStream o) {
+            this(null, null, o);
+        }
+
+        @Override
+        public String tojstring() {
+            return "file (" + this.hashCode() + ")";
+        }
+
+        @Override
+        public boolean isstdfile() {
+            return file == null;
+        }
+
+        @Override
+        public void close() throws IOException {
+            closed = true;
+            if (file != null) {
+                file.close();
+            }
+        }
+
+        @Override
+        public void flush() throws IOException {
+            if (os != null) {
                 os.flush();
             }
-		}
-		@Override
-		public void write(LuaString s) throws IOException {
-			if ( os != null ) {
-                os.write( s.m_bytes, s.m_offset, s.m_length );
-            } else if ( file != null ) {
-                file.write( s.m_bytes, s.m_offset, s.m_length );
+        }
+
+        @Override
+        public void write(LuaString s) throws IOException {
+            if (os != null) {
+                os.write(s.m_bytes, s.m_offset, s.m_length);
+            } else if (file != null) {
+                file.write(s.m_bytes, s.m_offset, s.m_length);
             } else {
                 notimplemented();
             }
-			if ( nobuffer ) {
+            if (nobuffer) {
                 flush();
             }
-		}
-		@Override
-		public boolean isclosed() {
-			return closed;
-		}
-		@Override
-		public int seek(String option, int pos) throws IOException {
-			if ( file != null ) {
-				if ( "set".equals(option) ) {
-					file.seek(pos);
-				} else if ( "end".equals(option) ) {
-					file.seek(file.length()+pos);
-				} else {
-					file.seek(file.getFilePointer()+pos);
-				}
-				return (int) file.getFilePointer();
-			}
-			notimplemented();
-			return 0;
-		}
-		@Override
-		public void setvbuf(String mode, int size) {
-			nobuffer = "no".equals(mode);
-		}
+        }
 
-		// get length remaining to read
-		@Override
-		public int remaining() throws IOException {
-			return file!=null? (int) (file.length()-file.getFilePointer()): -1;
-		}
-		
-		// peek ahead one character
-		@Override
-		public int peek() throws IOException {
-			if ( is != null ) {
-				is.mark(1);
-				int c = is.read();
-				is.reset();
-				return c;
-			} else if ( file != null ) {
-				long fp = file.getFilePointer();
-				int c = file.read();
-				file.seek(fp);
-				return c;
-			}
-			notimplemented();
-			return 0;
-		}		
-		
-		// return char if read, -1 if eof, throw IOException on other exception 
-		@Override
-		public int read() throws IOException {
-			if ( is != null ) {
+        @Override
+        public boolean isclosed() {
+            return closed;
+        }
+
+        @Override
+        public int seek(String option, int pos) throws IOException {
+            if (file != null) {
+                if ("set".equals(option)) {
+                    file.seek(pos);
+                } else if ("end".equals(option)) {
+                    file.seek(file.length() + pos);
+                } else {
+                    file.seek(file.getFilePointer() + pos);
+                }
+                return (int) file.getFilePointer();
+            }
+            notimplemented();
+            return 0;
+        }
+
+        @Override
+        public void setvbuf(String mode, int size) {
+            nobuffer = "no".equals(mode);
+        }
+
+        // get length remaining to read
+        @Override
+        public int remaining() throws IOException {
+            return file != null ? (int) (file.length() - file.getFilePointer()) : -1;
+        }
+
+        // peek ahead one character
+        @Override
+        public int peek() throws IOException {
+            if (is != null) {
+                is.mark(1);
+                int c = is.read();
+                is.reset();
+                return c;
+            } else if (file != null) {
+                long fp = file.getFilePointer();
+                int c = file.read();
+                file.seek(fp);
+                return c;
+            }
+            notimplemented();
+            return 0;
+        }
+
+        // return char if read, -1 if eof, throw IOException on other exception
+        @Override
+        public int read() throws IOException {
+            if (is != null) {
                 return is.read();
-            } else if ( file != null ) {
-				return file.read();
-			}
-			notimplemented();
-			return 0;
-		}
+            } else if (file != null) {
+                return file.read();
+            }
+            notimplemented();
+            return 0;
+        }
 
-		// return number of bytes read if positive, -1 if eof, throws IOException
-		@Override
-		public int read(byte[] bytes, int offset, int length) throws IOException {
-			if (file!=null) {
-				return file.read(bytes, offset, length);
-			} else if (is!=null) {
-				return is.read(bytes, offset, length);
-			} else {
-				notimplemented();
-			}
-			return length;
-		}
-	}
+        // return number of bytes read if positive, -1 if eof, throws IOException
+        @Override
+        public int read(byte[] bytes, int offset, int length) throws IOException {
+            if (file != null) {
+                return file.read(bytes, offset, length);
+            } else if (is != null) {
+                return is.read(bytes, offset, length);
+            } else {
+                notimplemented();
+            }
+            return length;
+        }
 
-	private final class StdoutFile extends File {
-		private final int file_type;
+    }
 
-		private StdoutFile(int file_type) {
-			this.file_type = file_type;
-		}
+    private final class StdoutFile extends File {
 
-		@Override
-		public String tojstring() {
-			return "file ("+this.hashCode()+")";
-		}
+        private final int file_type;
 
-		private final PrintStream getPrintStream() {
-			return file_type == FTYPE_STDERR?
-					globals.STDERR:
-					globals.STDOUT;
-		}
+        private StdoutFile(int file_type) {
+            this.file_type = file_type;
+        }
 
-		@Override
-		public void write(LuaString string) throws IOException {
-			getPrintStream().write(string.m_bytes, string.m_offset, string.m_length);
-		}
+        @Override
+        public String tojstring() {
+            return "file (" + this.hashCode() + ")";
+        }
 
-		@Override
-		public void flush() throws IOException {
-			getPrintStream().flush();
-		}
+        private final PrintStream getPrintStream() {
+            return file_type == FTYPE_STDERR ?
+                    globals.STDERR :
+                    globals.STDOUT;
+        }
 
-		@Override
-		public boolean isstdfile() {
-			return true;
-		}
+        @Override
+        public void write(LuaString string) throws IOException {
+            getPrintStream().write(string.m_bytes, string.m_offset, string.m_length);
+        }
 
-		@Override
-		public void close() throws IOException {
-			// do not close std files.
-		}
+        @Override
+        public void flush() throws IOException {
+            getPrintStream().flush();
+        }
 
-		@Override
-		public boolean isclosed() {
-			return false;
-		}
+        @Override
+        public boolean isstdfile() {
+            return true;
+        }
 
-		@Override
-		public int seek(String option, int bytecount) throws IOException {
-			return 0;
-		}
+        @Override
+        public void close() throws IOException {
+            // do not close std files.
+        }
 
-		@Override
-		public void setvbuf(String mode, int size) {
-		}
+        @Override
+        public boolean isclosed() {
+            return false;
+        }
 
-		@Override
-		public int remaining() throws IOException {
-			return 0;
-		}
+        @Override
+        public int seek(String option, int bytecount) throws IOException {
+            return 0;
+        }
 
-		@Override
-		public int peek() throws IOException, EOFException {
-			return 0;
-		}
+        @Override
+        public void setvbuf(String mode, int size) {
+        }
 
-		@Override
-		public int read() throws IOException, EOFException {
-			return 0;
-		}
+        @Override
+        public int remaining() throws IOException {
+            return 0;
+        }
 
-		@Override
-		public int read(byte[] bytes, int offset, int length)
-				throws IOException {
-			return 0;
-		}
-	}
+        @Override
+        public int peek() throws IOException, EOFException {
+            return 0;
+        }
 
-	private final class StdinFile extends File {
-		private StdinFile() {
-		}
+        @Override
+        public int read() throws IOException, EOFException {
+            return 0;
+        }
 
-		@Override
-		public String tojstring() {
-			return "file ("+this.hashCode()+")";
-		}
+        @Override
+        public int read(byte[] bytes, int offset, int length)
+                throws IOException {
+            return 0;
+        }
 
-		@Override
-		public void write(LuaString string) throws IOException {
-		}
+    }
 
-		@Override
-		public void flush() throws IOException {
-		}
+    private final class StdinFile extends File {
 
-		@Override
-		public boolean isstdfile() {
-			return true;
-		}
+        private StdinFile() {
+        }
 
-		@Override
-		public void close() throws IOException {
-			// do not close std files.
-		}
+        @Override
+        public String tojstring() {
+            return "file (" + this.hashCode() + ")";
+        }
 
-		@Override
-		public boolean isclosed() {
-			return false;
-		}
+        @Override
+        public void write(LuaString string) throws IOException {
+        }
 
-		@Override
-		public int seek(String option, int bytecount) throws IOException {
-			return 0;
-		}
+        @Override
+        public void flush() throws IOException {
+        }
 
-		@Override
-		public void setvbuf(String mode, int size) {
-		}
+        @Override
+        public boolean isstdfile() {
+            return true;
+        }
 
-		@Override
-		public int remaining() throws IOException {
-			return 0;
-		}
+        @Override
+        public void close() throws IOException {
+            // do not close std files.
+        }
 
-		@Override
-		public int peek() throws IOException, EOFException {
-			globals.STDIN.mark(1);
-			int c = globals.STDIN.read();
-			globals.STDIN.reset();
-			return c;
-		}
+        @Override
+        public boolean isclosed() {
+            return false;
+        }
 
-		@Override
-		public int read() throws IOException, EOFException {
-			return globals.STDIN.read();
-		}
+        @Override
+        public int seek(String option, int bytecount) throws IOException {
+            return 0;
+        }
 
-		@Override
-		public int read(byte[] bytes, int offset, int length)
-				throws IOException {
-			return globals.STDIN.read(bytes, offset, length);
-		}
-	}
+        @Override
+        public void setvbuf(String mode, int size) {
+        }
+
+        @Override
+        public int remaining() throws IOException {
+            return 0;
+        }
+
+        @Override
+        public int peek() throws IOException, EOFException {
+            globals.STDIN.mark(1);
+            int c = globals.STDIN.read();
+            globals.STDIN.reset();
+            return c;
+        }
+
+        @Override
+        public int read() throws IOException, EOFException {
+            return globals.STDIN.read();
+        }
+
+        @Override
+        public int read(byte[] bytes, int offset, int length)
+                throws IOException {
+            return globals.STDIN.read(bytes, offset, length);
+        }
+
+    }
+
 }

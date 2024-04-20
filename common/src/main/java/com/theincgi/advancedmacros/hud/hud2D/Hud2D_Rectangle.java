@@ -1,19 +1,20 @@
 package com.theincgi.advancedmacros.hud.hud2D;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.theincgi.advancedmacros.gui.Color;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.theincgi.advancedmacros.gui.Color;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 import org.luaj.vm2_v3_0_1.lib.TwoArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class Hud2D_Rectangle extends Hud2DItem {
+
     //Color color = Color.BLACK;
     int colorInt;
     float wid, hei;
@@ -58,7 +59,9 @@ public class Hud2D_Rectangle extends Hud2DItem {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, float partialTicks) {
+    public void render(DrawContext drawContext, float partialTicks) {
+        MatrixStack matrixStack = drawContext.getMatrices();
+
         matrixStack.push();
         applyTransformation(matrixStack);
         float dx = 0, dy = 0, dw = wid, dh = hei;
@@ -110,7 +113,6 @@ public class Hud2D_Rectangle extends Hud2DItem {
         buffer.vertex(dx + dw, dy, z).next(); //bottom right
 
         Tessellator.getInstance().draw();
-        RenderSystem.enableTexture();
         //RenderSystem.disableBlend();
         // RenderSystem.disableBlend();
         // Gui.drawRect((int)dx, (int)dy, (int)dx+dw, (int)dy+dh, color.toInt());

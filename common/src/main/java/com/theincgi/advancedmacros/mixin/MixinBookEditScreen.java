@@ -1,34 +1,42 @@
 package com.theincgi.advancedmacros.mixin;
 
-import net.minecraft.client.gui.screen.ingame.BookEditScreen;
-
 import com.theincgi.advancedmacros.access.IBookEditScreen;
+import net.minecraft.client.gui.screen.ingame.BookEditScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
 
 @Mixin(BookEditScreen.class)
 public abstract class MixinBookEditScreen implements IBookEditScreen {
 
-    @Shadow private boolean dirty;
+    @Shadow
+    private boolean dirty;
 
-    @Shadow protected abstract void updateButtons();
+    @Shadow
+    protected abstract void updateButtons();
 
-    @Shadow protected abstract void finalizeBook(boolean signBook);
+    @Shadow
+    protected abstract void finalizeBook(boolean signBook);
 
-    @Shadow private String title;
+    @Shadow
+    private String title;
 
-    @Shadow private int currentPage;
+    @Shadow
+    private int currentPage;
 
-    @Shadow protected abstract void changePage();
+    @Shadow
+    protected abstract void changePage();
 
-    @Shadow protected abstract int countPages();
+    @Shadow
+    protected abstract int countPages();
 
-    @Shadow protected abstract String getCurrentPageContent();
+    @Shadow
+    protected abstract String getCurrentPageContent();
 
-    @Shadow protected abstract void setPageContent(String newContent);
+    @Shadow
+    protected abstract void setPageContent(String newContent);
 
-    @Shadow protected abstract void appendNewPage();
+    @Shadow
+    protected abstract void appendNewPage();
 
     @Override
     public void am_markDirty() {
@@ -84,4 +92,5 @@ public abstract class MixinBookEditScreen implements IBookEditScreen {
     public void am_appendNewPage() {
         appendNewPage();
     }
+
 }

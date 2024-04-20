@@ -6,6 +6,7 @@ import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 
 public class PropertyPalette {
+
     public final String[] key;
     public LuaTable settings;
 
@@ -116,4 +117,5 @@ public class PropertyPalette {
         System.arraycopy(keyPath, 0, path2, key.length, keyPath.length);
         return new PropertyPalette(path2);
     }
+
 }

@@ -1,13 +1,12 @@
 package com.theincgi.advancedmacros.lua.functions;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.util.ScreenshotRecorder;
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.theincgi.advancedmacros.event.TaskDispatcher;
 import com.theincgi.advancedmacros.lua.util.BufferedImageControls;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.client.util.ScreenshotRecorder;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
@@ -37,4 +36,5 @@ public class GetScreen extends ZeroArgFunction {
             throw new LuaError("Error occurred getting the screenshot");
         }
     }
+
 }

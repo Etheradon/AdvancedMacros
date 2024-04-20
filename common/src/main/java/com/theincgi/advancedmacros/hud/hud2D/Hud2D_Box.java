@@ -1,12 +1,13 @@
 package com.theincgi.advancedmacros.hud.hud2D;
 
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
-
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class Hud2D_Box extends Hud2D_Rectangle {
+
     float thickness = 1, lastThickness = 1;
 
     public Hud2D_Box() {
@@ -28,7 +29,9 @@ public class Hud2D_Box extends Hud2D_Rectangle {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, float partialTicks) {
+    public void render(DrawContext drawContext, float partialTicks) {
+        MatrixStack matrixStack = drawContext.getMatrices();
+
         matrixStack.push();
         //TODO 1.19 Update: RenderSystem.pushTextureAttributes();
         applyTransformation(matrixStack);
@@ -53,4 +56,5 @@ public class Hud2D_Box extends Hud2D_Rectangle {
         super.updateLastPos();
         lastThickness = thickness;
     }
+
 }

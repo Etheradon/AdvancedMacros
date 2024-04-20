@@ -1,5 +1,9 @@
 package com.theincgi.advancedmacros.lua.functions.entity;
 
+import com.google.common.base.Predicates;
+import com.theincgi.advancedmacros.misc.CallableTable;
+import com.theincgi.advancedmacros.misc.Pair;
+import com.theincgi.advancedmacros.misc.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -11,11 +15,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-
-import com.google.common.base.Predicates;
-import com.theincgi.advancedmacros.misc.CallableTable;
-import com.theincgi.advancedmacros.misc.Pair;
-import com.theincgi.advancedmacros.misc.Utils;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -25,6 +24,7 @@ import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 import java.util.List;
 
 public class GetAABB {
+
     @SuppressWarnings("unchecked")
     //private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntityPredicates.NOT_SPECTATING, EntityPredicates.IS_ALIVE); //new Predicate<Entity>()
     //	{
@@ -45,6 +45,7 @@ public class GetAABB {
     }
 
     private class Get extends VarArgFunction {
+
         MinecraftClient mc = MinecraftClient.getInstance();
         World world = mc.world;
 
@@ -59,9 +60,9 @@ public class GetAABB {
                 BlockPos pos;
                 if (args.arg1().istable()) {
                     LuaValue t = args.arg1();
-                    pos = new BlockPos(t.get(1).checkdouble(), t.get(2).checkdouble(), t.get(3).checkdouble());
+                    pos = new BlockPos(t.get(1).checkint(), t.get(2).checkint(), t.get(3).checkint());
                 } else {
-                    pos = new BlockPos(args.arg(1).checkdouble(), args.arg(2).checkdouble(), args.arg(3).checkdouble());
+                    pos = new BlockPos(args.arg(1).checkint(), args.arg(2).checkint(), args.arg(3).checkint());
                 }
                 BlockState block = world.getBlockState(pos);
                 if (block.isAir()) {
@@ -90,9 +91,11 @@ public class GetAABB {
                 throw new LuaError("Invalid arguments");
             }
         }
+
     }
 
     private static class AABB extends LuaTable {
+
         Box aabb;
         Entity entity;
 
@@ -112,6 +115,7 @@ public class GetAABB {
         }
 
         private class DoOp extends VarArgFunction {
+
             OpCode code;
 
             public DoOp(OpCode code) {
@@ -205,6 +209,7 @@ public class GetAABB {
                         throw new LuaError("Undefined operation: " + code.name());
                 }
             }
+
         }
 
         static enum OpCode {
@@ -222,5 +227,7 @@ public class GetAABB {
             //calculateIntercept,
             findEntityOnPath;
         }
+
     }
+
 }

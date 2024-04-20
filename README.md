@@ -1,8 +1,5 @@
-Port of Advanced Macros to 1.19.
-Supports Fabric and Forge
+# AdvancedMacros
 
+genSourcesWithVineflower
 
-### TODO:
- - Implement all events
- - Complete the events (there were new things added to the game)
- - Fix rendering code
+In Project Structure -> Libraries -> minecraft-merged-1.20.4-net.fabricmc.yarn.1_20_4.1.20.4+build.1-v2 -> + -> Attach Files or Directories -> Select the -sources.jar

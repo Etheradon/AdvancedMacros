@@ -1,22 +1,22 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.DiffuseLighting;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.elements.GuiRect;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.item.ItemStack;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 import org.luaj.vm2_v3_0_1.lib.TwoArgFunction;
 
 public class GuiItemIcon extends ScriptGuiElement {
+
     static ItemRenderer itemRender = MinecraftClient.getInstance().getItemRenderer();
     static TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
 
@@ -71,13 +71,12 @@ public class GuiItemIcon extends ScriptGuiElement {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-        super.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+        super.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
         DiffuseLighting.disableGuiDepthLighting();
         DiffuseLighting.enableGuiDepthLighting();
-        itemRender.zOffset = z;
 
-        itemRender.renderGuiItemIcon(itemStack, (int) x, (int) y);
+        drawContext.drawItemInSlot(MinecraftClient.getInstance().textRenderer, itemStack, (int) x, (int) y);
         DiffuseLighting.disableGuiDepthLighting();
         RenderSystem.bindTexture(0);
 

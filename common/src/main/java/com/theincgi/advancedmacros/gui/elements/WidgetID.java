@@ -6,6 +6,7 @@ package com.theincgi.advancedmacros.gui.elements;
  * 799 = RunningScripts 800 -  899 = InputGui 900 -  999 = 1000 - 1099 =
  */
 public class WidgetID {
+
     private static long nextId = 1;
     private long ID = nextId++;
     boolean force = false;
@@ -20,4 +21,5 @@ public class WidgetID {
         ID = forceID;
         force = true;
     }
+
 }

@@ -1,16 +1,16 @@
 package com.theincgi.advancedmacros.gui.elements;
 
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.Gui.InputSubscriber;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.text.Text;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.lwjgl.glfw.GLFW;
 
 public class PopupPrompt implements InputSubscriber, Drawable {
+
     private int x, y, width, height;
     private String msg;
     GuiButton ok, cancel;
@@ -99,8 +99,8 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         cancel.setHeight(12);
         cancel.setPos(x + width / 2, y + height - 12);
         inputBox.setWidth(wid - 2);
-        inputBox.x = x + 1;
-        inputBox.y = ok.getY() - 12;
+        inputBox.setX(x + 1);
+        inputBox.setY(ok.getY() - 12);
         //new GuiTextField(0, gui.getFontRend(), x+1, ok.getY()-12, width-2, 12);
     }
 
@@ -109,8 +109,8 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         isVisible = true;
         ans = null;
         inputBox.setText("");
-        inputBox.setCursor(0);
-        inputBox.changeFocus(true);
+        inputBox.setCursor(0, false);
+        inputBox.setFocused(true);
         gui.drawLast = this;
         //gui.nextKeyListen=null;
         gui.firstSubsciber = this;
@@ -124,8 +124,8 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         isVisible = true;
         ans = null;
         inputBox.setText("");
-        inputBox.setCursor(0);
-        inputBox.changeFocus(false);
+        inputBox.setCursor(0, false);
+        inputBox.setFocused(false);
         gui.drawLast = this;
         //gui.nextKeyListen=null;
         gui.firstSubsciber = this;
@@ -139,8 +139,8 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         isVisible = true;
         ans = null;
         inputBox.setText("");
-        inputBox.setCursor(0);
-        inputBox.changeFocus(false);
+        inputBox.setCursor(0, false);
+        inputBox.setFocused(false);
         gui.drawLast = this;
         //gui.nextKeyListen=null;
         gui.firstSubsciber = this;
@@ -154,8 +154,8 @@ public class PopupPrompt implements InputSubscriber, Drawable {
         isVisible = true;
         ans = null;
         inputBox.setText("");
-        inputBox.setCursor(0);
-        inputBox.changeFocus(false);
+        inputBox.setCursor(0, false);
+        inputBox.setFocused(false);
         gui.drawLast = this;
         //gui.nextKeyListen=null;
         gui.firstSubsciber = this;
@@ -170,14 +170,14 @@ public class PopupPrompt implements InputSubscriber, Drawable {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui gui, int mouseX, int mouseY, float partialTicks) {
+    public void onDraw(DrawContext drawContext, Gui gui, int mouseX, int mouseY, float partialTicks) {
         if (isVisible) {
-            gui.renderBackground(matrixStack);
-            gui.drawBoxedRectangle(matrixStack, x, y, width, height - 1, frame, fill);
-            gui.getFontRend().draw(matrixStack, msg, x + 3, y + 2, textColor);
-            inputBox.render(matrixStack, mouseX, mouseY, partialTicks);
-            ok.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
-            cancel.onDraw(matrixStack, gui, mouseX, mouseY, partialTicks);
+            gui.renderBackground(drawContext, mouseX, mouseY, partialTicks);
+            gui.drawBoxedRectangle(drawContext, x, y, width, height - 1, frame, fill);
+            drawContext.drawText(gui.getFontRend(), msg, x + 3, y + 2, textColor, false);
+            inputBox.render(drawContext, mouseX, mouseY, partialTicks);
+            ok.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
+            cancel.onDraw(drawContext, gui, mouseX, mouseY, partialTicks);
         }
     }
 
@@ -253,6 +253,7 @@ public class PopupPrompt implements InputSubscriber, Drawable {
     }
 
     public static class Answer {
+
         public Choice c;
         public String answer;
 

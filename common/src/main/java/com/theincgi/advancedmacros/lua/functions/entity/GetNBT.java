@@ -1,14 +1,13 @@
 package com.theincgi.advancedmacros.lua.functions.entity;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NbtCompound;
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.theincgi.advancedmacros.event.TaskDispatcher;
 import com.theincgi.advancedmacros.misc.Utils;
 import com.theincgi.advancedmacros.misc.Utils.NBTUtils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NbtCompound;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 
@@ -17,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class GetNBT {
 
     public static class GetPlayerNBT extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             AbstractClientPlayerEntity acpe = null;
@@ -32,9 +32,11 @@ public class GetNBT {
 
             return FALSE;
         }
+
     }
 
     public static class GetEntityNBT extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg) {
             Entity entity = MinecraftClient.getInstance().world.getEntityById(arg.checkint());
@@ -45,6 +47,7 @@ public class GetNBT {
 
             return FALSE;
         }
+
     }
 
     public static LuaValue getNbt(AbstractClientPlayerEntity player) {
@@ -74,4 +77,5 @@ public class GetNBT {
             return LuaValue.FALSE;
         }
     }
+
 }

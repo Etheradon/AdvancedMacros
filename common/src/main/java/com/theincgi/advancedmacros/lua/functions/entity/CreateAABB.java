@@ -4,6 +4,7 @@ import com.theincgi.advancedmacros.misc.CallableTable;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
 public class CreateAABB extends CallableTable {
+
     static final String[] docName = {"createAABB"};
 
     public CreateAABB() {
@@ -14,4 +15,5 @@ public class CreateAABB extends CallableTable {
     private static class CreateGenerator extends VarArgFunction {
 
     }
+
 }

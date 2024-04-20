@@ -1,6 +1,7 @@
 package com.theincgi.advancedmacros.misc;
 
 public class Pair<A, B> {
+
     public A a;
     public B b;
 
@@ -8,4 +9,5 @@ public class Pair<A, B> {
         this.a = a;
         this.b = b;
     }
+
 };

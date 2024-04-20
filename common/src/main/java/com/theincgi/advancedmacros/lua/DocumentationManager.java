@@ -1,15 +1,14 @@
 package com.theincgi.advancedmacros.lua;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.resource.Resource;
-import net.minecraft.util.Identifier;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.gui.Color;
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.elements.ColorTextArea;
 import com.theincgi.advancedmacros.misc.CallableTable;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.resource.Resource;
+import net.minecraft.util.Identifier;
 import org.luaj.vm2_v3_0_1.LuaClosure;
 import org.luaj.vm2_v3_0_1.LuaFunction;
 import org.luaj.vm2_v3_0_1.LuaTable;
@@ -26,11 +25,12 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class DocumentationManager {
+
     private final int textColor = Color.WHITE.toInt();
     private final int tooltipFrame = 0xFF_82_c6_f4;
     private final int tooltipFill = 0xc0_22_66_c4; //aa_rr_gg_bb
 
-    public void tooltip(MatrixStack matrixStack, Gui g, String fName, int x, int y, int screenWid, int screenHei) {
+    public void tooltip(DrawContext drawContext, Gui g, String fName, int x, int y, int screenWid, int screenHei) {
         //System.out.println("ToolTipping");
         LinkedList<String> text = getLine1(fName);
         //System.out.println(fName+" "+text);
@@ -44,9 +44,9 @@ public class DocumentationManager {
         int hei = text.size() * 12;
         int prefX = Math.min(x + 2, screenWid - wid - 5);
         int prefY = Math.min(y + 10, screenHei - hei - 5);
-        g.drawBoxedRectangle(matrixStack, prefX, prefY, wid + 4, hei + 4, tooltipFrame, tooltipFill);
+        g.drawBoxedRectangle(drawContext, prefX, prefY, wid + 4, hei + 4, tooltipFrame, tooltipFill);
         for (int l = 0; l < text.size(); l++) {
-            g.getFontRend().draw(matrixStack, text.get(l), prefX + 2, prefY + 4 + (l * 12), textColor);
+            drawContext.drawText(g.getFontRend(), text.get(l), prefX + 2, prefY + 4 + (l * 12), textColor, false);
         }
     }
 

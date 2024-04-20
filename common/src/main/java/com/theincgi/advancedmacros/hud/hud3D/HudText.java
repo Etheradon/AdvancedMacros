@@ -1,16 +1,16 @@
 package com.theincgi.advancedmacros.hud.hud3D;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.misc.CallableTable;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class HudText extends WorldHudItem {
+
     MinecraftClient mc = MinecraftClient.getInstance();
     String text = "";
 
@@ -55,18 +55,22 @@ public class HudText extends WorldHudItem {
 
     //Definitly stolen from the FontRenderer class
     private class SetText extends OneArgFunction {
+
         @Override
         public LuaValue call(LuaValue arg0) {
             setText(arg0.checkjstring());
             return LuaValue.NONE;
         }
+
     }
 
     private class GetText extends ZeroArgFunction {
+
         @Override
         public LuaValue call() {
             return LuaValue.valueOf(getText());
         }
+
     }
 
 }

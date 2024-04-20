@@ -1,18 +1,18 @@
 package com.theincgi.advancedmacros.lua.scriptGui;
 
-import net.minecraft.client.util.math.MatrixStack;
-
 import com.theincgi.advancedmacros.gui.Gui;
 import com.theincgi.advancedmacros.gui.elements.GuiScrollBar;
 import com.theincgi.advancedmacros.gui.elements.GuiScrollBar.Orientation;
 import com.theincgi.advancedmacros.misc.PropertyPalette;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.gui.DrawContext;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.lib.OneArgFunction;
 import org.luaj.vm2_v3_0_1.lib.ZeroArgFunction;
 
 public class ScriptGuiScrollBar extends ScriptGuiElement {
+
     GuiScrollBar bar;
     PropertyPalette propPal;
 
@@ -137,9 +137,9 @@ public class ScriptGuiScrollBar extends ScriptGuiElement {
     }
 
     @Override
-    public void onDraw(MatrixStack matrixStack, Gui g, int mouseX, int mouseY, float partialTicks) {
-        super.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
-        bar.onDraw(matrixStack, g, mouseX, mouseY, partialTicks);
+    public void onDraw(DrawContext drawContext, Gui g, int mouseX, int mouseY, float partialTicks) {
+        super.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
+        bar.onDraw(drawContext, g, mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -241,4 +241,5 @@ public class ScriptGuiScrollBar extends ScriptGuiElement {
     public int getY() {
         return bar.getY();
     }
+
 }

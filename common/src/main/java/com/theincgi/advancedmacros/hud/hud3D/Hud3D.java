@@ -1,11 +1,10 @@
 package com.theincgi.advancedmacros.hud.hud3D;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-
 import com.theincgi.advancedmacros.AdvancedMacros;
 import com.theincgi.advancedmacros.misc.CallableTable;
 import com.theincgi.advancedmacros.misc.Utils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import org.luaj.vm2_v3_0_1.LuaError;
 import org.luaj.vm2_v3_0_1.LuaTable;
 import org.luaj.vm2_v3_0_1.LuaValue;
@@ -13,6 +12,7 @@ import org.luaj.vm2_v3_0_1.Varargs;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
 public class Hud3D extends LuaTable {
+
     public Hud3D() {
         for (Hud3DOpCode op : Hud3DOpCode.values()) {
             this.set(op.toString(), new CallableTable(op.getDocLocation(), new DoOp(op)));
@@ -21,6 +21,7 @@ public class Hud3D extends LuaTable {
     }
 
     private class DoOp extends VarArgFunction {
+
         Hud3DOpCode op;
 
         public DoOp(Hud3DOpCode op) {
@@ -73,6 +74,7 @@ public class Hud3D extends LuaTable {
                     throw new LuaError("Unimplemented function " + op);
             }
         }
+
     }
 
     private static enum Hud3DOpCode {
@@ -97,4 +99,5 @@ public class Hud3D extends LuaTable {
             }
         }
     }
+
 }

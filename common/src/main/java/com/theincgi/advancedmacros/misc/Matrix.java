@@ -5,6 +5,7 @@ import net.minecraft.util.math.MathHelper;
 import java.util.Arrays;
 
 public class Matrix {
+
     /**
      * Stored as [rows][cols]
      */
@@ -160,4 +161,5 @@ public class Matrix {
     public static enum Axis {
         X, Y, Z;
     }
+
 }

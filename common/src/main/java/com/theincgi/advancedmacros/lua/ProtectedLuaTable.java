@@ -7,6 +7,7 @@ import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
 
 public class ProtectedLuaTable extends LuaTable {
+
     public ProtectedLuaTable() {
         LuaTable meta = new LuaTable();
         meta.set("__newindex", AdvancedMacros.globals.load("error(\"Table is read only\")"));
@@ -101,4 +102,5 @@ public class ProtectedLuaTable extends LuaTable {
     private void err() {
         throw new LuaError("Table is protected");
     }
+
 }

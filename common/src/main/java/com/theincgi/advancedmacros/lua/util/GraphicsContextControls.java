@@ -10,15 +10,11 @@ import org.luaj.vm2_v3_0_1.LuaValue;
 import org.luaj.vm2_v3_0_1.Varargs;
 import org.luaj.vm2_v3_0_1.lib.VarArgFunction;
 
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Polygon;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class GraphicsContextControls extends LuaTable {
+
     BufferedImage img;
     BufferedImageControls bic;
     Color clearColor = Color.CLEAR;
@@ -45,6 +41,7 @@ public class GraphicsContextControls extends LuaTable {
     }
 
     public class DrawOp extends VarArgFunction {
+
         Draw op;
 
         public DrawOp(Draw op) {
@@ -338,6 +335,7 @@ public class GraphicsContextControls extends LuaTable {
     private static BufferedImage dummy = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 
     public static class MeasureString extends VarArgFunction {
+
         @Override
         public Varargs invoke(Varargs args) {
             String s = args.checkjstring(1);
@@ -355,6 +353,7 @@ public class GraphicsContextControls extends LuaTable {
             extra.set("leading", fm.getLeading());
             return out.unpack();
         }
+
     }
 
     public static Font parseFont(Varargs args) {
@@ -475,4 +474,5 @@ public class GraphicsContextControls extends LuaTable {
             }
         }
     }
+
 }
